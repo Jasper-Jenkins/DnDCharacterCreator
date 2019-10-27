@@ -2,8 +2,8 @@
 Web based Dungeons and Dragons character creator.
 
 #Work in progress
--User login 
--Building Character
+* User login 
+* Building Character
   * Race
   * Class
   * SubClass
@@ -12,7 +12,7 @@ Web based Dungeons and Dragons character creator.
   * Ability Points
   * Proficiences
   * Languages
--Saving Character
+* Saving Character
 
 #Work Done
--Connection with DnD API (DONE)
+* Connection with DnD API (DONE)
