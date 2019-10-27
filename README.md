@@ -15,4 +15,4 @@ Web based Dungeons and Dragons character creator.
 * Saving Character
 
 #Work Done
-* Connection with DnD API (DONE)
+* Connection with DnD API 
