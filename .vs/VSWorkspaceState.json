@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\components\\character",
+    "\\app\\components\\classes",
+    "\\app\\components\\image",
+    "\\app\\components\\quote",
+    "\\app\\components\\todo",
+    "\\app\\components\\weather",
+    "\\assets"
+  ],
+  "SelectedNode": "\\app\\main.js",
+  "PreviewInSolutionExplorer": false
+}
