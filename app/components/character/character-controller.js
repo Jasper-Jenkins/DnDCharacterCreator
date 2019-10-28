@@ -4,12 +4,10 @@ const _characterService = new CharacterService()
 
 function drawCharacter() {
     console.log("The Character info:", _characterService)
-    var characters = _characterService.Characters;
-
-
+    var races = _characterService.Races;
     var template = '';
 
-    template += ``
+    template += `<div class="col-3">${races}</div>`
        
     document.getElementById('character').innerHTML = template;
 }
@@ -18,9 +16,9 @@ export default class CharacterController {
 
     constructor() {
         _characterService.addSubscriber('character', drawCharacter)
-        _characterService.getCharacters()
+        _characterService.getAllRaces()
     }
-
+    /*
     chooseName(e) {
         e.preventDefault()
         var form = e.target
@@ -30,7 +28,7 @@ export default class CharacterController {
         }
         form.reset()
         console.log("Name Chosen by the player: ", characterName)
-    }
+    }*/
 
     
 }
