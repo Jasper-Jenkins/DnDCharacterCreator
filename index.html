@@ -3,9 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
     <title>Inspire</title>
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
@@ -15,86 +17,14 @@
 
 
 <body id="body" class="container-fluid">
-  <!--  <div class="row">
-        <div class="col text-center" id="time"></div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-
-        </div>
-        <div id="weatherInfo" class="col-8">
-            <div class="row">
-                <div id="weather" class="col text-center">
-                    <p>
-                        Your Weather Template
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col text-center">
-                    <form onsubmit="app.controllers.weatherController.chooseCity(event)">
-                        <input type="text" name="city" id="city" placeholder="Choose your city">
-                        <button type="submit" class="btn btn-primary" id="chooseCity"> Choose </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-2">
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-
-        </div>
-        <div id="quote" class="col-8 text-center">
-
-        </div>
-        <div class="col-2">
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-
-        </div>
-        <div class="col-8">
-
-            <div class="row">
-                <div id="todo" class="col text-center">
-                    <h2>To do list!</h2>
-                    <p>
-                        To do's to do:
-                        <span id="todoCount">0</span>
-                    </p>
-                    <div id="todolist">
-
-                    </div>
-                    <form onsubmit="app.controllers.todoController.addTodo(event)">
-                        <input type="text" name="description" id="todos" placeholder="New to do">
-                        <button type="submit" class="btn btn-primary" id="addtodo"> Add </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-
-        </div>
-    </div>-->
-    <div class="row">
-        <div class="col-12">
-            <div class="row" id="chooseRace">
-               <!-- Character choices will be populated here by the controller -->
-            </div>
-            
-            <form onsubmit="app.controllers.playerController.chooseName(event)">
-                <input type="text" name="characterName" id="characterName" placeholder="Choose your Champions name">
-                <button type="submit" class="btn btn-primary" id="chooseName"> Choose your name wisely </button>
-            </form>
-        </div>
-        <div class="col-6" id="'playerTwo">
-
-        </div>
+    <div class="row" id="chooseRace">
+        <!-- Character choices will be populated here by the controller -->
+        <!--
+        <form onsubmit="app.controllers.playerController.chooseName(event)">
+            <input type="text" name="characterName" id="characterName" placeholder="Choose your Champions name">
+            <button type="submit" class="btn btn-primary" id="chooseName"> Choose your name wisely </button>
+        </form>
+        -->
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <script type="module" src="app/main.js"></script>

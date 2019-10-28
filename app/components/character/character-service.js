@@ -1,4 +1,13 @@
-import Characters from "../../models/characters.js";
+//import Characters from "../../models/characters.js";
+
+//Classes for handling races
+import CharacterRaces from "../../models/character-races.js"
+import CharacterRace from "../../models/character-race.js"
+
+//Classes for handling classes
+import CharacterClasses from "../../models/character-classes.js"
+import CharacterClass from "../../models/character-class.js"
+
 
 // @ts-ignore
 const characterApi = axios.create({
@@ -8,19 +17,19 @@ const characterApi = axios.create({
 });
 
 let _state = {
-    character: {}
-}
-
-let _races = {
-    races: {}
-}
-
-let _classes = {
-    classes: {}
+    character: {},
+    races: {},
+    race: {},
+    classes: {},
+    class: {}
 }
 
 let _subscribers = {
-    character: []
+    character: [],
+    races: [],
+    race: [],
+    classes: [],
+    class: []
 }
 
 function _setState(prop, data) {
@@ -35,11 +44,12 @@ export default class CharacterService {
     }
 
     get Classes() {
-        return _classes.classes;
+        return _state.classes;
     }
 
     get Races() {
-        return _races.races;
+        console.log("What is being returned as races: ", _state.races)
+        return _state.races;
     }
 
     addSubscriber(prop, fn) {
@@ -49,11 +59,12 @@ export default class CharacterService {
     getAllRaces() {
         console.log('Asking DnD for the races of Faerun.')
         characterApi.get("/races/")
-            .then(res =>
-                console.log('The races we were given: ', res))
-        _setState('character', new AllRaces())
+            .then(res => {
+                console.log('The races we were given: ', res)
+                _setState('races', new CharacterRaces(res.data))
+            })                    
             .catch(err => {
-                console.log("Character creation error: ", err)
+                console.log("Error asking for ALL races: ", err)
                 //_setState('error', err.response.data)
             })
         console.log("What are the character subscribers: ", _subscribers)
@@ -62,11 +73,11 @@ export default class CharacterService {
     getSpecificRace(raceNumber) {
         console.log('Asking DnD for the races of Faerun.')
         characterApi.get("/races/" + raceNumber)
-            .then(res =>
-                console.log('The races we were given: ', res))
-        _setState('character', new CharacterRace())
-            .catch(err => {
-                console.log("Character creation error: ", err)
+            .then(res => {
+                console.log('The races we were given: ', res)
+                _setState('race', new CharacterRace(res))
+            }).catch(err => {
+                console.log("Error asking for a specific race: ", err)
                 //_setState('error', err.response.data)
             })
         console.log("What are the character subscribers: ", _subscribers)
@@ -76,10 +87,10 @@ export default class CharacterService {
         console.log('Asking DnD for the classes of the Forgotten Realms.')
         characterApi.get("/classes/")
             .then(res => {
-                console.log('What DnD allows: ', res)
-                _setState('character', new AllClasses(res))
+                console.log('All Classes from DnD API: ', res)
+                _setState('classes', new CharacterClasses(res))
             }).catch(err => {
-                console.log("Character creation error: ", err)
+                console.log("Error requesting ALL Classes: ", err)
                 //_setState('error', err.response.data)
             })
         //        console.log("What are the character subscribers: ", _subscribers)
@@ -89,8 +100,8 @@ export default class CharacterService {
         console.log('Requesting specific class information.')
         characterApi.get("/classes/" + classNumber)
             .then(res => {
-                console.log('Class information: ', res)
-                _setClasses('classes', new CharacterClass(res))
+                console.log('Specific Class from DnD API: ', res)
+                _setState('class', new CharacterClass(res))
             }).catch(err => {
                 console.log("Error requesting specific class info: ", err)
             })
