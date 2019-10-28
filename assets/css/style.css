@@ -7,10 +7,24 @@
 
 #chooseRace{
     background-color: aliceblue;
-    margin: 5mm auto;
+    margin: 3mm auto;
+    padding: 3mm 0mm;
 }
 
 .race {
-    border:white 2px solid;
+    border: black 2px solid;
     background-color: navajowhite;
+    min-height: 45mm;
+    max-height: 45mm;
+    min-width: 25mm;
+    max-width: 25mm;
+    margin: 1mm;
+    padding: 0mm;
 }
+
+.race p {
+    margin: 0mm;
+    padding: 0mm;
+
+}
+ 
