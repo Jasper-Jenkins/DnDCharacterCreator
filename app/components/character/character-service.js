@@ -39,7 +39,7 @@ function _setState(prop, data) {
 
 export default class CharacterService {
 
-    get Characters() {
+    get Character() {
         return _state.character
     }
 
@@ -48,8 +48,11 @@ export default class CharacterService {
     }
 
     get Races() {
-        console.log("What is being returned as races: ", _state.races)
         return _state.races;
+    }
+
+    get Race() {
+        return _state.race;
     }
 
     addSubscriber(prop, fn) {
@@ -70,12 +73,12 @@ export default class CharacterService {
         console.log("What are the character subscribers: ", _subscribers)
     }
 
-    getSpecificRace(raceNumber) {
-        console.log('Asking DnD for the races of Faerun.')
-        characterApi.get("/races/" + raceNumber)
+    getSpecificRace(num) {
+        console.log('Specific race details.')
+        characterApi.get("/races/" + num)
             .then(res => {
-                console.log('The races we were given: ', res)
-                _setState('race', new CharacterRace(res))
+                console.log('Specific race information: ', res)
+                _setState('race', new CharacterRace(res.data))
             }).catch(err => {
                 console.log("Error asking for a specific race: ", err)
                 //_setState('error', err.response.data)
@@ -88,7 +91,7 @@ export default class CharacterService {
         characterApi.get("/classes/")
             .then(res => {
                 console.log('All Classes from DnD API: ', res)
-                _setState('classes', new CharacterClasses(res))
+                _setState('classes', new CharacterClasses(res.data))
             }).catch(err => {
                 console.log("Error requesting ALL Classes: ", err)
                 //_setState('error', err.response.data)
@@ -101,7 +104,7 @@ export default class CharacterService {
         characterApi.get("/classes/" + classNumber)
             .then(res => {
                 console.log('Specific Class from DnD API: ', res)
-                _setState('class', new CharacterClass(res))
+                _setState('class', new CharacterClass(res.data))
             }).catch(err => {
                 console.log("Error requesting specific class info: ", err)
             })

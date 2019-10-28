@@ -1,9 +1,9 @@
-import PlayerController from "./components/character/character-controller.js";
+import CharacterController from "./components/character/character-controller.js";
 
 class App {
   constructor() {
     this.controllers = {
-        playerController: new PlayerController()
+        characterController: new CharacterController()
         }
     }
  }

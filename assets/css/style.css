@@ -3,6 +3,7 @@
     background-attachment: fixed;
     background-size: cover;
     background-color: aquamarine;
+    padding:1mm;
 }
 
 #chooseRace{
@@ -16,8 +17,8 @@
     background-color: navajowhite;
     min-height: 45mm;
     max-height: 45mm;
-    min-width: 25mm;
-    max-width: 25mm;
+    min-width: 30mm;
+    max-width: 30mm;
     margin: 1mm;
     padding: 0mm;
 }
