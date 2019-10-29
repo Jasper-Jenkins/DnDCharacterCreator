@@ -12,17 +12,36 @@
     padding: 3mm 0mm;
 }
 
+#classSelection {
+    background-color: aliceblue;
+    margin: 3mm auto;
+    padding: 3mm 0mm;
+}
+
 #raceInfo {
     position: absolute;
     margin: 30mm auto;
-    padding:0mm;
-    visibility: hidden;
+    padding: 0mm;
     height: auto;
     z-index: 2;
     background-color: burlywood;
 }
 
 #raceInfo p {
+    margin: 5px;
+    padding: 0px;
+}
+
+#classInfo {
+    position: absolute;
+    margin: 30mm auto;
+    padding: 0mm;
+    height: auto;
+    z-index: 2;
+    background-color: burlywood;
+}
+
+#classInfo p {
     margin: 5px;
     padding: 0px;
 }
@@ -37,7 +56,7 @@
     background-color: aquamarine;
 }
 
-.race {
+.characterRace {
     border: black 2px solid;
     background-color: navajowhite;
     min-height: 45mm;
@@ -48,9 +67,29 @@
     padding: 0mm;
 }
 
-.race p {
+.characterRace p {
     margin: 0mm;
     padding: 0mm;
 }
 
+.characterClass {
+    border: black 2px solid;
+    background-color: navajowhite;
+    min-height: 45mm;
+    max-height: 45mm;
+    min-width: 30mm;
+    max-width: 30mm;
+    margin: 1mm;
+    padding: 0mm;
+}
+
+.characterClass p {
+    margin: 0mm;
+    padding: 0mm;
+}
  
+.characterProgress {
+  
+    border: 2px black solid;
+
+}

@@ -22,12 +22,7 @@ let _state = {
     racesInfo: [],
     race: {},
     classes: {},
-    classesInfo: {},
-    class: {}
-}
-
-let _character = {
-    race: {},
+    classesInfo: [],
     class: {}
 }
 
@@ -42,12 +37,12 @@ let _subscribers = {
 }
 
 function _setState(prop, data) {
-    if (prop == "racesInfo") {
+    if (prop == "racesInfo" || prop == "classesInfo") {
         _state[prop].push(data);
     } else if (prop == "character") {
         _state[prop].push(data);
     } else {
-        _state[prop] = data
+        _state[prop] = data 
     }
     _subscribers[prop].forEach(fn => fn());
 }
@@ -76,36 +71,29 @@ export default class CharacterService {
         let races = _state.racesInfo; //array 
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-                _setState('race', new CharacterRace(races[i]))
+                if (!!(_state.character[0])) {
+                    _setState('character', { 'details': new CharacterRace(races[i]) })
+                } else {
+                    //yes this is a repeat, but it will change to give an option to override or keep current race
+                    _setState('character', { 'details': new CharacterRace(races[i]) })
+                }
             }
         }
     }
 
     chosenClass(classIndex) {
         let classes = _state.classesInfo; 
-        for (var i = 0; i < races.length; i++) {
-            if (races[i].index == classIndex) {
-                _setState('class', new CharacterRace(races[i]))
+        for (var i = 0; i < classes.length; i++) {
+            if (classes[i].index == classIndex) {
+                if (!(_state.character[1])) {
+                    _setState('character', { 'details': new CharacterClass(classes[i]) })
+                } else {
+                    alert("Nuh uh")
+                }
             }
         }
     }
-    /*
-    setCharacterDetails(detail) {
-        if (detail.name == "race") {
-            _setState('character', { 0: new CharacterRaces(detail) })
-        }
-
-    console.log("ONE OF THESE IS CHOSEN: ", races)
-        console.log("THIS ONE HAS BEEN CHOSEN: ", race)
-        for (var i = 0; i < races.length; i++) {
-            if (races[i].index == raceIndex && ) {
-                var chosenKey = races[i].name;
-                _setState('character', new CharacterRace(races[i]))
-            }
-        }
-    }
-    */
-
+   
     getAllRaces() {
         console.log('Requesting the races of Faerun from the DnD API')
         characterApi.get("/races/")
@@ -121,7 +109,7 @@ export default class CharacterService {
     }
 
     getSpecificRace(url) {
-        console.log('Specific race details.')
+        console.log('Requesting specific race information.')
         characterApi.get(url)
             .then(res => {
                 console.log('Race information: ', res.data)
@@ -134,13 +122,11 @@ export default class CharacterService {
     //    console.log("What are the subscribers when SPECIFIC races are requested: ", _subscribers)
     }
 
-
-
     getAllClasses() {
         console.log('Conjuring the champion classes of Faerun.')
         characterApi.get("/classes/")
             .then(res => {
-                console.log('All the classes of Fearun: ', res.data)
+             //   console.log('All the classes of Fearun: ', res.data)
                 _setState('classes', new CharacterClasses(res.data))
             }).catch(err => {
                 console.log("Error requesting ALL Classes: ", err)
@@ -153,8 +139,8 @@ export default class CharacterService {
         console.log('Requesting specific class information.')
         characterApi.get(url)
             .then(res => {
-                console.log('Class information: ', res.data)
-                _setState('class', new CharacterClass(res.data))
+               // console.log('Class information: ', res.data)
+                _setState('classesInfo', new CharacterClass(res.data))
             }).catch(err => {
     //            console.log("Error requesting specific class info: ", err)
             })

@@ -2,7 +2,7 @@ export default class CharacterRace {
     constructor(data) {
        // console.log('[Character Race Data]', data);
 
-        this.id = data._id;
+        this._id = data._id;
         this.ability_bonuses = data.ability_bonuses;
         this.age = data.age;
         this.alignment = data.alignment;

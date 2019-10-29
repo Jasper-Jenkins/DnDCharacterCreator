@@ -6,6 +6,7 @@ export default class CharacterClasses {
         this.race = race;
         this.profession = profession; //also class (hunter, wizard, ..., ), but language doesnt like "class" alone 
         */
-        this.classes = data;
+        this.count = data.count;
+        this.results = data.results;
     }
 }
