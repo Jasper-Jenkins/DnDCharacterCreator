@@ -6,7 +6,7 @@
     padding:1mm;
 }
 
-#chooseRace{
+#raceSelection{
     background-color: aliceblue;
     margin: 3mm auto;
     padding: 3mm 0mm;
@@ -28,7 +28,13 @@
 }
 
 #chooseRace {
+    background-color: aliceblue;
+    margin: 3mm auto;
+    padding: 0mm;
+}
 
+#chooseRace :hover {
+    background-color: aquamarine;
 }
 
 .race {
@@ -45,7 +51,6 @@
 .race p {
     margin: 0mm;
     padding: 0mm;
-
 }
 
  

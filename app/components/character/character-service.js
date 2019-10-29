@@ -17,12 +17,17 @@ const characterApi = axios.create({
 });
 
 let _state = {
-    character: {},
+    character: [],
     races: {},
     racesInfo: [],
     race: {},
     classes: {},
     classesInfo: {},
+    class: {}
+}
+
+let _character = {
+    race: {},
     class: {}
 }
 
@@ -39,6 +44,8 @@ let _subscribers = {
 function _setState(prop, data) {
     if (prop == "racesInfo") {
         _state[prop].push(data);
+    } else if (prop == "character") {
+        _state[prop].push(data);
     } else {
         _state[prop] = data
     }
@@ -48,35 +55,56 @@ function _setState(prop, data) {
 export default class CharacterService {
 
     get Character() { return _state.character }
-
-       
+           
     get Races() { return _state.races; }
 
     get RacesInfo() { return _state.racesInfo; }
 
     get Race() { return _state.race; }
-
-
+    
     get Classes() { return _state.classes }
 
     get ClassesInfo() { return _state.classesInfo }
 
     get Class() { return _state.class }  
 
-
     addSubscriber(prop, fn) {
         _subscribers[prop].push(fn)
     }
 
-    chosenRace(index) {
-        let races = _state.races;
+    chosenRace(raceIndex) {
+        let races = _state.racesInfo; //array 
         for (var i = 0; i < races.length; i++) {
-            if (races[i].index == index) {
-                _setState('race', new CharacterRace(race))
+            if (races[i].index == raceIndex) {
+                _setState('race', new CharacterRace(races[i]))
             }
         }
     }
 
+    chosenClass(classIndex) {
+        let classes = _state.classesInfo; 
+        for (var i = 0; i < races.length; i++) {
+            if (races[i].index == classIndex) {
+                _setState('class', new CharacterRace(races[i]))
+            }
+        }
+    }
+    /*
+    setCharacterDetails(detail) {
+        if (detail.name == "race") {
+            _setState('character', { 0: new CharacterRaces(detail) })
+        }
+
+    console.log("ONE OF THESE IS CHOSEN: ", races)
+        console.log("THIS ONE HAS BEEN CHOSEN: ", race)
+        for (var i = 0; i < races.length; i++) {
+            if (races[i].index == raceIndex && ) {
+                var chosenKey = races[i].name;
+                _setState('character', new CharacterRace(races[i]))
+            }
+        }
+    }
+    */
 
     getAllRaces() {
         console.log('Requesting the races of Faerun from the DnD API')
@@ -121,9 +149,9 @@ export default class CharacterService {
         //        console.log("What are the character subscribers: ", _subscribers)
     }
 
-    getSpecificClass(classNumber) {
+    getSpecificClass(url) {
         console.log('Requesting specific class information.')
-        characterApi.get("/classes/" + classNumber)
+        characterApi.get(url)
             .then(res => {
                 console.log('Class information: ', res.data)
                 _setState('class', new CharacterClass(res.data))
