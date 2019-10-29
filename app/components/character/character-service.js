@@ -19,78 +19,100 @@ const characterApi = axios.create({
 let _state = {
     character: {},
     races: {},
+    racesInfo: [],
     race: {},
     classes: {},
+    classesInfo: {},
     class: {}
 }
 
 let _subscribers = {
     character: [],
     races: [],
+    racesInfo: [],
     race: [],
     classes: [],
+    classesInfo: [],
     class: []
 }
 
 function _setState(prop, data) {
-    _state[prop] = data
+    if (prop == "racesInfo") {
+        _state[prop].push(data);
+    } else {
+        _state[prop] = data
+    }
     _subscribers[prop].forEach(fn => fn());
 }
 
 export default class CharacterService {
 
-    get Character() {
-        return _state.character
-    }
+    get Character() { return _state.character }
 
-    get Classes() {
-        return _state.classes;
-    }
+       
+    get Races() { return _state.races; }
 
-    get Races() {
-        return _state.races;
-    }
+    get RacesInfo() { return _state.racesInfo; }
 
-    get Race() {
-        return _state.race;
-    }
+    get Race() { return _state.race; }
+
+
+    get Classes() { return _state.classes }
+
+    get ClassesInfo() { return _state.classesInfo }
+
+    get Class() { return _state.class }  
+
 
     addSubscriber(prop, fn) {
         _subscribers[prop].push(fn)
     }
 
+    chosenRace(index) {
+        let races = _state.races;
+        for (var i = 0; i < races.length; i++) {
+            if (races[i].index == index) {
+                _setState('race', new CharacterRace(race))
+            }
+        }
+    }
+
+
     getAllRaces() {
-        console.log('Asking DnD for the races of Faerun.')
+        console.log('Requesting the races of Faerun from the DnD API')
         characterApi.get("/races/")
             .then(res => {
-                console.log('The races we were given: ', res)
+                console.log('All the races of Faerun: ', res.data)
                 _setState('races', new CharacterRaces(res.data))
             })                    
             .catch(err => {
-                console.log("Error asking for ALL races: ", err)
+                console.log("Error requesting ALL races: ", err)
                 //_setState('error', err.response.data)
             })
-        console.log("What are the character subscribers: ", _subscribers)
+     //   console.log("What are the subscribers when ALL races are requested: ", _subscribers)
     }
 
-    getSpecificRace(num) {
+    getSpecificRace(url) {
         console.log('Specific race details.')
-        characterApi.get("/races/" + num)
+        characterApi.get(url)
             .then(res => {
-                console.log('Specific race information: ', res)
-                _setState('race', new CharacterRace(res.data))
-            }).catch(err => {
-                console.log("Error asking for a specific race: ", err)
+                console.log('Race information: ', res.data)
+                _setState('racesInfo', new CharacterRace(res.data))
+            })
+            .catch(err => {
+                console.log("Error requesting a SINGLE race: ", err)
                 //_setState('error', err.response.data)
             })
-        console.log("What are the character subscribers: ", _subscribers)
+    //    console.log("What are the subscribers when SPECIFIC races are requested: ", _subscribers)
     }
+
+
 
     getAllClasses() {
-        console.log('Asking DnD for the classes of the Forgotten Realms.')
+        console.log('Conjuring the champion classes of Faerun.')
         characterApi.get("/classes/")
             .then(res => {
-                console.log('All Classes from DnD API: ', res)
+                console.log('All the classes of Fearun: ', res.data)
                 _setState('classes', new CharacterClasses(res.data))
             }).catch(err => {
                 console.log("Error requesting ALL Classes: ", err)
@@ -103,10 +125,10 @@ export default class CharacterService {
         console.log('Requesting specific class information.')
         characterApi.get("/classes/" + classNumber)
             .then(res => {
-                console.log('Specific Class from DnD API: ', res)
+                console.log('Class information: ', res.data)
                 _setState('class', new CharacterClass(res.data))
             }).catch(err => {
-                console.log("Error requesting specific class info: ", err)
+    //            console.log("Error requesting specific class info: ", err)
             })
     }
 

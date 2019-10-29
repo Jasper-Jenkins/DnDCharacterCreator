@@ -12,6 +12,25 @@
     padding: 3mm 0mm;
 }
 
+#raceInfo {
+    position: absolute;
+    margin: 30mm auto;
+    padding:0mm;
+    visibility: hidden;
+    height: auto;
+    z-index: 2;
+    background-color: burlywood;
+}
+
+#raceInfo p {
+    margin: 5px;
+    padding: 0px;
+}
+
+#chooseRace {
+
+}
+
 .race {
     border: black 2px solid;
     background-color: navajowhite;
@@ -28,4 +47,5 @@
     padding: 0mm;
 
 }
+
  
