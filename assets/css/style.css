@@ -10,21 +10,26 @@
    margin: 0 auto;
    padding: 20px; 
    position: absolute;
-   z-index: 5;
+   z-index: 10;
    visibility: hidden;
    width:auto;
 }
 
 #raceSelection{
+    position: absolute;
     background-color: aliceblue;
     margin: 3mm auto;
     padding: 3mm 0mm;
+    z-index: 1;
 }
 
 #classSelection {
+    position: absolute;
     background-color: aliceblue;
     margin: 3mm auto;
     padding: 3mm 0mm;
+    visibility: hidden;
+    z-index:0;
 }
 
 #raceInfo {
@@ -32,7 +37,7 @@
     margin: 30mm auto;
     padding: 0mm;
     height: auto;
-    z-index: 2;
+    z-index: 3;
     background-color: burlywood;
 }
 
@@ -46,7 +51,7 @@
     margin: 30mm auto;
     padding: 0mm;
     height: auto;
-    z-index: 2;
+    z-index: 0;
     background-color: burlywood;
 }
 
@@ -108,9 +113,7 @@
 }
  
 .characterProgress {
-  
     border: 2px black solid;
-
 }
 
 .chooseNewRace {

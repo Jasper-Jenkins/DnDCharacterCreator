@@ -45,6 +45,12 @@ function _setState(prop, data) {
     _subscribers[prop].forEach(fn => fn());
 }
 
+function _replaceInState(prop, data) {
+    if (prop == 'character') {
+        _state[prop][0] = data;
+    }
+}
+
 export default class CharacterService {
 
     get Character() { return _state.character }
@@ -69,34 +75,38 @@ export default class CharacterService {
         let races = _state.racesInfo; //array 
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-                if (!(_state.character[0])) {
                     _setState('character', { 'details': new CharacterRace(races[i]) })
-                } else {
-
-
-
-
-                    //yes this is a repeat, but it will change to give an option to override or keep current race
-                    alert("Nuh uh")
-
-                    //_setState('character', { 'details': new CharacterRace(races[i]) })
-                }
             }
         }
     }
+
+    replaceRace(raceIndex) {
+        let races = _state.racesInfo;
+          for (var i = 0; i < races.length; i++) {
+            if (races[i].index == raceIndex) {
+                    _replaceInState('character', { 'details': new CharacterRace(races[i]) })
+            }
+        }
+    }    
 
     chosenClass(classIndex) {
         let classes = _state.classesInfo; 
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
-                if (!(_state.character[1])) {
                     _setState('character', { 'details': new CharacterClass(classes[i]) })
-                } else {
-                    alert("Nuh uh")
-                }
             }
         }
     }
+
+    replaceClass(classIndex) {
+        let classes = _state.classesInfo;
+        for (var i = 0; i < classes.length; i++) {
+            if (classes[i].index == classIndex) {
+                _replaceInState('character', { 'details': new CharacterClass(classes[i]) })
+            }
+        }
+    }
+
    
     getAllRaces() {
         console.log('Requesting the races of Faerun from the DnD API')

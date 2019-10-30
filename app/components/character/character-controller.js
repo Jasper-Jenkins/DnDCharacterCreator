@@ -24,7 +24,7 @@ function drawRaceInfo(raceName) {
     for (var i = 0; i < race.length; i++) {
         if (race[i].name == raceName) {
               template += `<div class="col-12">
-                            <p class="close" onclick="app.controllers.characterController.close('raceInfo')">Close</p>
+                            <p class="close" onclick="app.controllers.characterController.hide('raceInfo')">Close</p>
                             <p>Race: ${race[i].name}</p>
                             <p>Ability Bonuses: STR +${race[i].ability_bonuses[0]}, DEX +${race[i].ability_bonuses[1]}, CON +${race[i].ability_bonuses[2]}, INT +${race[i].ability_bonuses[3]}, WIS +${race[i].ability_bonuses[4]}, CHA +${race[i].ability_bonuses[5]}</p>
                             <p>Size: ${race[i].size} </p>
@@ -48,7 +48,7 @@ function drawClasses() {
         
     for (var i = 0; i < classes.count; i++) {
         template += `<div class="col characterClass text-center" onclick="app.controllers.characterController.classInfo('${classes.results[i].name}')">
-                         <p>${classes.results[i].name}</p>   
+                        <p>${classes.results[i].name}</p> 
                      </div>`
         _characterService.getSpecificClass(classes.results[i].url);
     }
@@ -65,7 +65,7 @@ function drawClassInfo(className) {
         if (cClass[i].name == className) {
             console.log("eureka");
             template += `<div class="col-12">
-                            <p class="close" onclick="app.controllers.characterController.close('classInfo')">Close</p>
+                            <p class="close" onclick="app.controllers.characterController.hide('classInfo')">Close</p>
                             <p> Class: ${cClass[i].name} </p>
                             <p> Hit die: ${cClass[i].hit_die} </p>
                             <p> GIibberish trying to find out why the class choice div is not going across the whole screen. I suspect its from the content and needs to have more so that it will go across the screen.
@@ -94,31 +94,41 @@ function drawCharacterProgress() {
 function drawChooseAnotherRace(newRace) {
     var template = '';
     var character = _characterService.Character;
-
     if (character[0].details.name == newRace.name) {
         template += `<div class="col-12"><p>You already have ${character[0].details.name} chosen as a race.</p> 
                      <div class="row justify-content-center text-center">
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.close('alert')"><p>Choose another</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Choose another</p></div>
                      </div>`   
     } else {
-
         template += `<div class="col-12"><p>You already have chosen ${character[0].details.name} as a race. Would you rather be ${newRace.name}</p> 
                      <div class="row justify-content-center text-center">
-                           <div class="col-6 chooseNewRace"><p>Change to ${newRace.name}</p></div>
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.close('alert')"><p>Continue as ${character[0].details.name}</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherRace(${newRace.index})"><p>Change to ${newRace.name}</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Continue as ${character[0].details.name}</p></div>
                      </div>`;
-
     }
                 
     document.getElementById('alert').innerHTML = template;
-    document.getElementById('alert').style.visibility = "visible";
 }
 
-function drawAlert(message) {
+function drawChooseAnotherClass(newClass) {
     var template = '';
-    template += `<div class="col-12"> <p>${message}</p> </div><div class="close">X</div>`
+    var character = _characterService.Character;
+    if (character[1].details.name == newClass.name) {
+        template += `<div class="col-12"><p>You already have ${character[1].details.name} chosen as a race.</p> 
+                     <div class="row justify-content-center text-center">
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Choose another</p></div>
+                     </div>`
+    } else {
+        template += `<div class="col-12"><p>You already have chosen ${character[1].details.name} as a race. Would you rather be ${newClass.name}</p> 
+                     <div class="row justify-content-center text-center">
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherClass(${newClass.index})"><p>Change to ${newClass.name}</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Continue as ${character[1].details.name}</p></div>
+                     </div>`;
+    }
+
     document.getElementById('alert').innerHTML = template;
 }
+
 
 export default class CharacterController {
 
@@ -143,45 +153,73 @@ export default class CharacterController {
 
     raceInfo(raceName) {
         drawRaceInfo(raceName);
-        document.getElementById('raceInfo').style.visibility = 'visible';
+        this.show('raceInfo');
     }
 
     classInfo(className) {
         drawClassInfo(className);
-        document.getElementById('classInfo').style.visibility = 'visible';
-    }
-    
-    chooseAnotherRace() {
-
+        this.show('classInfo');
     }
 
-    close(elementToHide) {
-        document.getElementById(elementToHide).innerHTML = '';
-        document.getElementById(elementToHide).style.visibility = "hidden";
-    }
-   
     chooseRace(raceIndex) {
         var raceCheck = _characterService.Character;
-        var newRace = _characterService.Races;
-
+        var newRace = _characterService.RacesInfo;
+        console.log("NEW RACE", newRace)
         if (raceCheck[0] == undefined) {
             _characterService.chosenRace(raceIndex);
         } else {
-            console.log("NEW RACE", newRace.results[raceIndex-1].name)
-
-            console.log("RACE INDEX", raceIndex)
-            drawChooseAnotherRace(newRace.results[raceIndex-1]);
-            //closeAlert();
-            //drawAlert("You done messsed up A-A-ron!");   
+            for (var i = 0; i < newRace.length; i++) {
+                if (newRace[i].index == raceIndex) {
+                    drawChooseAnotherRace(newRace[i]);
+                    this.show('alert');
+                }
+            }
         }
         drawCharacterProgress();
-        this.close("raceInfo");
+        this.hide("raceInfo");
+    }
+           
+    chooseAnotherRace(raceIndex) {
+        _characterService.replaceRace(raceIndex);
+        drawCharacterProgress();
+        this.hide('alert');
     }
 
-    chooseClass(classIndex) {
-        _characterService.chosenClass(classIndex);
-        drawCharacterProgress();
-        this.close("classInfo");
-    }
     
+    chooseClass(classIndex) {
+        var classCheck = _characterService.Character;
+        var newClass = _characterService.ClassesInfo;
+        if (classCheck[1] == undefined) {
+            _characterService.chosenClass(classIndex);
+        } else {
+            for (var i = 0; i < newClass.length; i++) {
+                if (newClass[i].index == classIndex) {
+                    drawChooseAnotherClass(newClass[i]);
+                    this.show('alert')
+                }
+            }
+        }
+        drawCharacterProgress();
+        this.hide("classInfo");
+    }
+
+    chooseAnotherClass(classIndex) {
+        _characterService.replaceClass(classIndex);
+        drawCharacterProgress();
+        this.hide('alert');
+    }
+
+    hide(elementToHide) {
+        document.getElementById(elementToHide).style.zIndex = 0;
+        document.getElementById(elementToHide).innerHTML = '';
+        document.getElementById(elementToHide).style.visibility = "hidden";
+    }
+
+    show(elementToShow) {
+        document.getElementById(elementToShow).style.zIndex = 2;
+        document.getElementById(elementToShow).style.visibility = "visible";
+    }
+   
+   
+
 }

@@ -38,22 +38,26 @@
     <div class="row" id="character">
         <!-- Overall Character sheet with all character data will be displayed here-->
     </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="row justify-content-center" id="raceSelection">
+                <!-- race selection will be populated here by the controller -->
+                <!--
+                <form onsubmit="app.controllers.playerController.chooseName(event)">
+                    <input type="text" name="characterName" id="characterName" placeholder="Choose your Champions name">
+                    <button type="submit" class="btn btn-primary" id="chooseName"> Choose your name wisely </button>
+                </form>
+                -->
+            </div>
+            <div class="row justify-content-center" id="classSelection">
+                <!-- class selection will be populated here by the controller -->
 
-    <div class="row justify-content-center" id="raceSelection">
-        <!-- race selection will be populated here by the controller -->
-        <!--
-        <form onsubmit="app.controllers.playerController.chooseName(event)">
-            <input type="text" name="characterName" id="characterName" placeholder="Choose your Champions name">
-            <button type="submit" class="btn btn-primary" id="chooseName"> Choose your name wisely </button>
-        </form>
-        -->
+            </div>
+
+
+        </div>
     </div>
-    <div class="row justify-content-center" id="classSelection">
-        <!-- class selection will be populated here by the controller -->
-
-    </div>
-
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <script type="module" src="app/main.js"></script>
 </body>

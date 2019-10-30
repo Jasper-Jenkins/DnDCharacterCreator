@@ -2,14 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\app",
+    "\\app\\components",
     "\\app\\components\\character",
-    "\\app\\components\\classes",
-    "\\app\\components\\image",
-    "\\app\\components\\quote",
-    "\\app\\components\\todo",
-    "\\app\\components\\weather",
-    "\\assets"
+    "\\app\\models",
+    "\\assets",
+    "\\assets\\css"
   ],
-  "SelectedNode": "\\app\\main.js",
+  "SelectedNode": "\\app\\models\\character.js",
   "PreviewInSolutionExplorer": false
 }
