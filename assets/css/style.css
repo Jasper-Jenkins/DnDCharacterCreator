@@ -3,7 +3,16 @@
     background-attachment: fixed;
     background-size: cover;
     background-color: aquamarine;
-    padding:1mm;
+    padding:0px;
+}
+#alert {    
+   background-color: cadetblue;
+   margin: 0 auto;
+   padding: 20px; 
+   position: absolute;
+   z-index: 5;
+   visibility: hidden;
+   width:auto;
 }
 
 #raceSelection{
@@ -56,6 +65,16 @@
     background-color: aquamarine;
 }
 
+#chooseClass {
+    background-color: aliceblue;
+    margin: 3mm auto;
+    padding: 0mm;
+}
+
+#chooseClass :hover {
+    background-color: aquamarine;
+}
+
 .characterRace {
     border: black 2px solid;
     background-color: navajowhite;
@@ -92,4 +111,9 @@
   
     border: 2px black solid;
 
+}
+
+.chooseNewRace {
+    border: black 2px solid;
+    margin:0 auto;
 }

@@ -37,9 +37,7 @@ let _subscribers = {
 }
 
 function _setState(prop, data) {
-    if (prop == "racesInfo" || prop == "classesInfo") {
-        _state[prop].push(data);
-    } else if (prop == "character") {
+    if (prop == "racesInfo" || prop == "classesInfo" || prop == "character") {
         _state[prop].push(data);
     } else {
         _state[prop] = data 
@@ -71,11 +69,17 @@ export default class CharacterService {
         let races = _state.racesInfo; //array 
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-                if (!!(_state.character[0])) {
+                if (!(_state.character[0])) {
                     _setState('character', { 'details': new CharacterRace(races[i]) })
                 } else {
+
+
+
+
                     //yes this is a repeat, but it will change to give an option to override or keep current race
-                    _setState('character', { 'details': new CharacterRace(races[i]) })
+                    alert("Nuh uh")
+
+                    //_setState('character', { 'details': new CharacterRace(races[i]) })
                 }
             }
         }
