@@ -61,7 +61,7 @@ function drawClassInfo(className) {
     var template = '';
     console.log(cClass)
     for (var i = 0; i < cClass.length; i++) {
-        console.log(cClass[i].name + " and " + className)
+      //  console.log(cClass[i].name + " and " + className)
         if (cClass[i].name == className) {
             console.log("eureka");
             template += `<div class="col-12">
@@ -86,8 +86,10 @@ function drawCharacterProgress() {
     console.log("CHARACTER", character);
     var template = '';
     for (var i = 0; i < character.length; i++) {
+
         template += `<div class="col-2 characterProgress">${character[i].details.name}</div> `
-    }
+
+    } 
     document.getElementById('characterProgress').innerHTML = template;
 }
 
@@ -153,12 +155,12 @@ export default class CharacterController {
 
     raceInfo(raceName) {
         drawRaceInfo(raceName);
-        this.show('raceInfo');
+        this.showInfo('raceInfo');
     }
 
     classInfo(className) {
         drawClassInfo(className);
-        this.show('classInfo');
+        this.showInfo('classInfo');
     }
 
     chooseRace(raceIndex) {
@@ -177,6 +179,8 @@ export default class CharacterController {
         }
         drawCharacterProgress();
         this.hide("raceInfo");
+        this.hide("raceSelection");
+        this.show("classSelection");
     }
            
     chooseAnotherRace(raceIndex) {
@@ -184,10 +188,10 @@ export default class CharacterController {
         drawCharacterProgress();
         this.hide('alert');
     }
-
-    
+        
     chooseClass(classIndex) {
         var classCheck = _characterService.Character;
+        console.log("CLASSCHECK: ", classCheck)
         var newClass = _characterService.ClassesInfo;
         if (classCheck[1] == undefined) {
             _characterService.chosenClass(classIndex);
@@ -195,7 +199,7 @@ export default class CharacterController {
             for (var i = 0; i < newClass.length; i++) {
                 if (newClass[i].index == classIndex) {
                     drawChooseAnotherClass(newClass[i]);
-                    this.show('alert')
+                    this.showInfo('alert')
                 }
             }
         }
@@ -215,11 +219,16 @@ export default class CharacterController {
         document.getElementById(elementToHide).style.visibility = "hidden";
     }
 
-    show(elementToShow) {
+    showInfo(elementToShow) {
         document.getElementById(elementToShow).style.zIndex = 2;
         document.getElementById(elementToShow).style.visibility = "visible";
     }
-   
+
+    show(elementToShow) {
+        document.getElementById(elementToShow).style.zIndex = 1;
+        document.getElementById(elementToShow).style.visibility = "visible";
+    }
+
    
 
 }

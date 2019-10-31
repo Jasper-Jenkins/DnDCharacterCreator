@@ -8,6 +8,6 @@
     "\\assets",
     "\\assets\\css"
   ],
-  "SelectedNode": "\\app\\models\\character.js",
+  "SelectedNode": "\\app\\components\\character\\character-controller.js",
   "PreviewInSolutionExplorer": false
 }

@@ -45,9 +45,11 @@ function _setState(prop, data) {
     _subscribers[prop].forEach(fn => fn());
 }
 
-function _replaceInState(prop, data) {
-    if (prop == 'character') {
+function _replaceInState(prop, data, key) {
+    if (key == 'race') {
         _state[prop][0] = data;
+    } else if (key == 'class') {
+        _state[prop][1] = data;
     }
 }
 
@@ -84,13 +86,14 @@ export default class CharacterService {
         let races = _state.racesInfo;
           for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-                    _replaceInState('character', { 'details': new CharacterRace(races[i]) })
+                _replaceInState('character', { 'details': new CharacterRace(races[i]) }, 'race')
             }
         }
     }    
 
     chosenClass(classIndex) {
         let classes = _state.classesInfo; 
+        console.log("CLASSES: ", classes)
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
                     _setState('character', { 'details': new CharacterClass(classes[i]) })
@@ -102,7 +105,7 @@ export default class CharacterService {
         let classes = _state.classesInfo;
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
-                _replaceInState('character', { 'details': new CharacterClass(classes[i]) })
+                _replaceInState('character', { 'details': new CharacterClass(classes[i]) }, 'class')
             }
         }
     }
