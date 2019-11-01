@@ -53,6 +53,7 @@ function _replaceInState(prop, data, key) {
     }
 }
 
+
 export default class CharacterService {
 
     get Character() { return _state.character }
@@ -109,20 +110,34 @@ export default class CharacterService {
             }
         }
     }
+    
+    fillRaces() {
+        var races = _state.races;
+        for (var i = 0; i < races.count; i++) {
+            this.getSpecificRace(races.results[i].url)
+        }
+    }
 
-   
+    fillClasses() {
+        var classes = _state.classes;
+        for (var i = 0; i < classes.count; i++) {
+            this.getSpecificClass(classes.results[i].url)
+        }
+    }
+
+
     getAllRaces() {
         console.log('Requesting the races of Faerun from the DnD API')
         characterApi.get("/races/")
             .then(res => {
                 console.log('All the races of Faerun: ', res.data)
                 _setState('races', new CharacterRaces(res.data))
+                this.fillRaces();    
             })                    
             .catch(err => {
                 console.log("Error requesting ALL races: ", err)
                 //_setState('error', err.response.data)
             })
-     //   console.log("What are the subscribers when ALL races are requested: ", _subscribers)
     }
 
     getSpecificRace(url) {
@@ -131,12 +146,12 @@ export default class CharacterService {
             .then(res => {
                 console.log('Race information: ', res.data)
                 _setState('racesInfo', new CharacterRace(res.data))
+            
             })
             .catch(err => {
                 console.log("Error requesting a SINGLE race: ", err)
                 //_setState('error', err.response.data)
             })
-    //    console.log("What are the subscribers when SPECIFIC races are requested: ", _subscribers)
     }
 
     getAllClasses() {
@@ -145,11 +160,11 @@ export default class CharacterService {
             .then(res => {
              //   console.log('All the classes of Fearun: ', res.data)
                 _setState('classes', new CharacterClasses(res.data))
+                this.fillClasses();
             }).catch(err => {
                 console.log("Error requesting ALL Classes: ", err)
                 //_setState('error', err.response.data)
             })
-        //        console.log("What are the character subscribers: ", _subscribers)
     }
 
     getSpecificClass(url) {

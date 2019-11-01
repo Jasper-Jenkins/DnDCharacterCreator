@@ -13,7 +13,7 @@ function drawRaces() {
                             <div class="col-6"></div>
                         </div>
                      </div>`
-        _characterService.getSpecificRace(races.results[i].url);
+     //   _characterService.getSpecificRace(races.results[i].url);
     }   
     document.getElementById('raceSelection').innerHTML = template;
 }
@@ -50,7 +50,7 @@ function drawClasses() {
         template += `<div class="col characterClass text-center" onclick="app.controllers.characterController.classInfo('${classes.results[i].name}')">
                         <p>${classes.results[i].name}</p> 
                      </div>`
-        _characterService.getSpecificClass(classes.results[i].url);
+     //   _characterService.getSpecificClass(classes.results[i].url);
     }
     document.getElementById('classSelection').innerHTML = template;
 }
@@ -68,7 +68,7 @@ function drawClassInfo(className) {
                             <p class="close" onclick="app.controllers.characterController.hide('classInfo')">Close</p>
                             <p> Class: ${cClass[i].name} </p>
                             <p> Hit die: ${cClass[i].hit_die} </p>
-                            <p> GIibberish trying to find out why the class choice div is not going across the whole screen. I suspect its from the content and needs to have more so that it will go across the screen.
+                            <p> Gibberish trying to find out why the class choice div is not going across the whole screen. I suspect its from the content and needs to have more so that it will go across the screen.
                             <div class="row text-center" onclick="app.controllers.characterController.chooseClass(${cClass[i].index})">
                                 <div class="col-12" id="chooseClass"> 
                                     <p>Choose ${cClass[i].name}</p>
@@ -83,12 +83,9 @@ function drawClassInfo(className) {
 
 function drawCharacterProgress() {
     var character = _characterService.Character;
-    console.log("CHARACTER", character);
     var template = '';
     for (var i = 0; i < character.length; i++) {
-
-        template += `<div class="col-2 characterProgress">${character[i].details.name}</div> `
-
+        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreen(${i})">${character[i].details.name}</div> `
     } 
     document.getElementById('characterProgress').innerHTML = template;
 }
@@ -107,8 +104,7 @@ function drawChooseAnotherRace(newRace) {
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherRace(${newRace.index})"><p>Change to ${newRace.name}</p></div>
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Continue as ${character[0].details.name}</p></div>
                      </div>`;
-    }
-                
+    }                
     document.getElementById('alert').innerHTML = template;
 }
 
@@ -137,11 +133,10 @@ export default class CharacterController {
     constructor() {
         _characterService.addSubscriber('races', drawRaces);
         _characterService.addSubscriber('classes', drawClasses);
-     // _characterService.addSubscriber('race', drawSpecificRace);
         _characterService.getAllRaces();
-        _characterService.getAllClasses();
+        _characterService.getAllClasses();       
     }
-
+  
     /*chooseName(e) {
         e.preventDefault()
         var form = e.target
@@ -169,24 +164,28 @@ export default class CharacterController {
         console.log("NEW RACE", newRace)
         if (raceCheck[0] == undefined) {
             _characterService.chosenRace(raceIndex);
+            this.hide("raceInfo");
+            this.hide("raceSelection");
+            this.show("classSelection");
         } else {
             for (var i = 0; i < newRace.length; i++) {
                 if (newRace[i].index == raceIndex) {
                     drawChooseAnotherRace(newRace[i]);
-                    this.show('alert');
+                    this.showInfo('alert');
+                    this.hide("raceInfo");
                 }
             }
         }
         drawCharacterProgress();
-        this.hide("raceInfo");
-        this.hide("raceSelection");
-        this.show("classSelection");
+        
     }
            
     chooseAnotherRace(raceIndex) {
         _characterService.replaceRace(raceIndex);
         drawCharacterProgress();
         this.hide('alert');
+        this.hide('raceSelection');
+        this.show('classSelection');
     }
         
     chooseClass(classIndex) {
@@ -215,7 +214,7 @@ export default class CharacterController {
 
     hide(elementToHide) {
         document.getElementById(elementToHide).style.zIndex = 0;
-        document.getElementById(elementToHide).innerHTML = '';
+      //  document.getElementById(elementToHide).innerHTML = '';
         document.getElementById(elementToHide).style.visibility = "hidden";
     }
 
@@ -227,6 +226,21 @@ export default class CharacterController {
     show(elementToShow) {
         document.getElementById(elementToShow).style.zIndex = 1;
         document.getElementById(elementToShow).style.visibility = "visible";
+    }
+
+    swapScreen(index) {
+        var character = _characterService.Character
+        drawRaces();
+        drawClasses();
+        console.log("CHARACTER LENGTH", character.length)
+        var progressBar = ["raceSelection", "classSelection", "abilityScoreSelection"];
+        for (var i = 0; i < character.length+1; i++) {
+            if (index == i) {
+                this.show(progressBar[i])
+            } else {
+                this.hide(progressBar[i])
+            }
+        }
     }
 
    
