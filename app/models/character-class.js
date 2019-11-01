@@ -13,4 +13,5 @@ export default class CharacterClass {
         this.starting_equipment = data.starting_equipment;
         this.subclasses = data.subclasses;
     }
+
 }

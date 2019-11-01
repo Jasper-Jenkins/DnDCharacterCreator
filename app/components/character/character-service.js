@@ -20,10 +20,12 @@ let _state = {
     character: [],
     races: {},
     racesInfo: [],
-    race: {},
+    //race: {},
     classes: {},
     classesInfo: [],
-    class: {}
+  //  class: {},
+    abilityScores: {},
+    abilityScoresInfo: [],
 }
 
 let _subscribers = {
@@ -33,7 +35,9 @@ let _subscribers = {
     race: [],
     classes: [],
     classesInfo: [],
-    class: []
+    class: [],
+    abilityScores: [],
+    abilityScoresInfo: []
 }
 
 function _setState(prop, data) {
@@ -50,7 +54,9 @@ function _replaceInState(prop, data, key) {
         _state[prop][0] = data;
     } else if (key == 'class') {
         _state[prop][1] = data;
-    }
+    } else if (key == 'abilityScore') {
+        _state[prop][2] = data
+    };
 }
 
 
@@ -94,7 +100,6 @@ export default class CharacterService {
 
     chosenClass(classIndex) {
         let classes = _state.classesInfo; 
-        console.log("CLASSES: ", classes)
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
                     _setState('character', { 'details': new CharacterClass(classes[i]) })
@@ -111,20 +116,26 @@ export default class CharacterService {
         }
     }
     
-    fillRaces() {
+    fillRaceSelection() {
         var races = _state.races;
         for (var i = 0; i < races.count; i++) {
             this.getSpecificRace(races.results[i].url)
         }
     }
 
-    fillClasses() {
+    fillClassSelection() {
         var classes = _state.classes;
         for (var i = 0; i < classes.count; i++) {
             this.getSpecificClass(classes.results[i].url)
         }
     }
 
+    fillAbilityScoreInfo() {
+        var abilityScores = _state.abilityScores;
+        for (var i = 0; i < abilityScores.count; i++) {
+            this.getSpecificAbilityScore(abilityScores.results[i].url)
+        }
+    }
 
     getAllRaces() {
         console.log('Requesting the races of Faerun from the DnD API')
@@ -132,7 +143,7 @@ export default class CharacterService {
             .then(res => {
                 console.log('All the races of Faerun: ', res.data)
                 _setState('races', new CharacterRaces(res.data))
-                this.fillRaces();    
+                this.fillRaceSelection();    
             })                    
             .catch(err => {
                 console.log("Error requesting ALL races: ", err)
@@ -144,9 +155,8 @@ export default class CharacterService {
         console.log('Requesting specific race information.')
         characterApi.get(url)
             .then(res => {
-                console.log('Race information: ', res.data)
-                _setState('racesInfo', new CharacterRace(res.data))
-            
+              //  console.log('Race information: ', res.data)
+                _setState('racesInfo', new CharacterRace(res.data))            
             })
             .catch(err => {
                 console.log("Error requesting a SINGLE race: ", err)
@@ -160,7 +170,7 @@ export default class CharacterService {
             .then(res => {
              //   console.log('All the classes of Fearun: ', res.data)
                 _setState('classes', new CharacterClasses(res.data))
-                this.fillClasses();
+                this.fillClassSelection();
             }).catch(err => {
                 console.log("Error requesting ALL Classes: ", err)
                 //_setState('error', err.response.data)
@@ -174,7 +184,29 @@ export default class CharacterService {
                // console.log('Class information: ', res.data)
                 _setState('classesInfo', new CharacterClass(res.data))
             }).catch(err => {
-    //            console.log("Error requesting specific class info: ", err)
+                console.log("Error requesting specific class info: ", err)
+            })
+    }
+
+    getAllAbilityScores() {
+        characterApi.get('/ability-scores/')
+            .then(res => {
+             //   console.log("Ability Scores", res.data);
+                _setState('abilityScores', res.data)
+                this.fillAbilityScoreInfo();
+
+            }).catch(err => {
+                console.log("Error requesting ability scores: ", err)
+            })
+    }
+
+    getSpecificAbilityScore(url) {
+        characterApi.get(url)
+            .then(res => {
+                console.log("CHECK CHECK")
+                _setState('abilityScoresInfo', res.data)
+            }).catch(err => {
+                console.log("Error requesting ability score info ", err)
             })
     }
 

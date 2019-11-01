@@ -17,5 +17,7 @@ export default class CharacterRace {
         this.traits = data.traits;
         this.url = data.url;
 
-    }
+
+    }      
+
 }

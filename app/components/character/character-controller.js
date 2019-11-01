@@ -2,19 +2,10 @@ import CharacterService from "./character-service.js";
 
 const _characterService = new CharacterService();
 
-function drawRaces() {
+function drawRaceSelection() {
     var races = _characterService.Races;
     var template = '';
-    for (var i = 0; i < races.count; i++) {
-        template += `<div class="col characterRace text-center" onclick="app.controllers.characterController.raceInfo('${races.results[i].name}')">
-                        <p>${races.results[i].name}</p> 
-                        <div class="row">
-                            <div class="col-6"></div>
-                            <div class="col-6"></div>
-                        </div>
-                     </div>`
-     //   _characterService.getSpecificRace(races.results[i].url);
-    }   
+    template += races.Template;
     document.getElementById('raceSelection').innerHTML = template;
 }
 
@@ -42,15 +33,13 @@ function drawRaceInfo(raceName) {
 }
 
 
-function drawClasses() {
+function drawClassSelection() {
     var classes = _characterService.Classes;
-    var template = '';
-        
+    var template = '';        
     for (var i = 0; i < classes.count; i++) {
         template += `<div class="col characterClass text-center" onclick="app.controllers.characterController.classInfo('${classes.results[i].name}')">
                         <p>${classes.results[i].name}</p> 
-                     </div>`
-     //   _characterService.getSpecificClass(classes.results[i].url);
+                     </div>`;
     }
     document.getElementById('classSelection').innerHTML = template;
 }
@@ -59,9 +48,7 @@ function drawClasses() {
 function drawClassInfo(className) {
     var cClass = _characterService.ClassesInfo;
     var template = '';
-    console.log(cClass)
     for (var i = 0; i < cClass.length; i++) {
-      //  console.log(cClass[i].name + " and " + className)
         if (cClass[i].name == className) {
             console.log("eureka");
             template += `<div class="col-12">
@@ -87,7 +74,7 @@ function drawCharacterProgress() {
     for (var i = 0; i < character.length; i++) {
         template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreen(${i})">${character[i].details.name}</div> `
     } 
-    document.getElementById('characterProgress').innerHTML = template;
+     document.getElementById('characterProgress').innerHTML = template;
 }
 
 function drawChooseAnotherRace(newRace) {
@@ -131,10 +118,11 @@ function drawChooseAnotherClass(newClass) {
 export default class CharacterController {
 
     constructor() {
-        _characterService.addSubscriber('races', drawRaces);
-        _characterService.addSubscriber('classes', drawClasses);
+        _characterService.addSubscriber('races', drawRaceSelection);
+        _characterService.addSubscriber('classes', drawClassSelection);
         _characterService.getAllRaces();
-        _characterService.getAllClasses();       
+        _characterService.getAllClasses();
+        _characterService.getAllAbilityScores();
     }
   
     /*chooseName(e) {
@@ -161,7 +149,6 @@ export default class CharacterController {
     chooseRace(raceIndex) {
         var raceCheck = _characterService.Character;
         var newRace = _characterService.RacesInfo;
-        console.log("NEW RACE", newRace)
         if (raceCheck[0] == undefined) {
             _characterService.chosenRace(raceIndex);
             this.hide("raceInfo");
@@ -177,7 +164,6 @@ export default class CharacterController {
             }
         }
         drawCharacterProgress();
-        
     }
            
     chooseAnotherRace(raceIndex) {
@@ -190,7 +176,6 @@ export default class CharacterController {
         
     chooseClass(classIndex) {
         var classCheck = _characterService.Character;
-        console.log("CLASSCHECK: ", classCheck)
         var newClass = _characterService.ClassesInfo;
         if (classCheck[1] == undefined) {
             _characterService.chosenClass(classIndex);
@@ -213,8 +198,8 @@ export default class CharacterController {
     }
 
     hide(elementToHide) {
+    //    console.log("WHY IS THIS WACK: ", elementToHide)
         document.getElementById(elementToHide).style.zIndex = 0;
-      //  document.getElementById(elementToHide).innerHTML = '';
         document.getElementById(elementToHide).style.visibility = "hidden";
     }
 
@@ -229,13 +214,9 @@ export default class CharacterController {
     }
 
     swapScreen(index) {
-        var character = _characterService.Character
-        drawRaces();
-        drawClasses();
-        console.log("CHARACTER LENGTH", character.length)
         var progressBar = ["raceSelection", "classSelection", "abilityScoreSelection"];
-        for (var i = 0; i < character.length+1; i++) {
-            if (index == i) {
+        for (var i = 0; i < progressBar.length; i++) {
+            if (i == index) {
                 this.show(progressBar[i])
             } else {
                 this.hide(progressBar[i])
