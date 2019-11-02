@@ -9,6 +9,16 @@ function drawRaceSelection() {
     document.getElementById('raceSelection').innerHTML = template;
 }
 
+function drawAbilityScores() {
+    var scores = _characterService.AbilityScores;
+    var template = '';
+
+    console.log("SCORES: ", scores)
+    template += scores.Template;
+    console.log("TEMPLATE: ", template)
+    document.getElementById('abilityScoreSelection').innerHTML = template;
+}
+
 function drawRaceInfo(raceName) {
     var race = _characterService.RacesInfo;
     var template = '';
@@ -120,6 +130,7 @@ export default class CharacterController {
     constructor() {
         _characterService.addSubscriber('races', drawRaceSelection);
         _characterService.addSubscriber('classes', drawClassSelection);
+        _characterService.addSubscriber('abilityScores', drawAbilityScores);
         _characterService.getAllRaces();
         _characterService.getAllClasses();
         _characterService.getAllAbilityScores();
@@ -179,16 +190,20 @@ export default class CharacterController {
         var newClass = _characterService.ClassesInfo;
         if (classCheck[1] == undefined) {
             _characterService.chosenClass(classIndex);
+            this.hide("classInfo");
+            this.hide("classSelection");
+            this.show("abilityScoreSelection");
         } else {
             for (var i = 0; i < newClass.length; i++) {
                 if (newClass[i].index == classIndex) {
                     drawChooseAnotherClass(newClass[i]);
                     this.showInfo('alert')
+                    this.hide('classInfo')
                 }
             }
         }
         drawCharacterProgress();
-        this.hide("classInfo");
+      //  this.hide("classInfo");
     }
 
     chooseAnotherClass(classIndex) {
@@ -198,7 +213,6 @@ export default class CharacterController {
     }
 
     hide(elementToHide) {
-    //    console.log("WHY IS THIS WACK: ", elementToHide)
         document.getElementById(elementToHide).style.zIndex = 0;
         document.getElementById(elementToHide).style.visibility = "hidden";
     }

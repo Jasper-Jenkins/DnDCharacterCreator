@@ -8,6 +8,10 @@ import CharacterRace from "../../models/character-race.js"
 import CharacterClasses from "../../models/character-classes.js"
 import CharacterClass from "../../models/character-class.js"
 
+//Class for handling ability scores
+import CharacterAbilityScores from "../../models/character-abilityscores.js"
+//import CharacterAbilityScore from "../../models/character-abilityscore.js"
+ 
 
 // @ts-ignore
 const characterApi = axios.create({
@@ -32,10 +36,10 @@ let _subscribers = {
     character: [],
     races: [],
     racesInfo: [],
-    race: [],
+    //race: [],
     classes: [],
     classesInfo: [],
-    class: [],
+   // class: [],
     abilityScores: [],
     abilityScoresInfo: []
 }
@@ -68,13 +72,17 @@ export default class CharacterService {
 
     get RacesInfo() { return _state.racesInfo; }
 
-    get Race() { return _state.race; }
+    //get Race() { return _state.race; }
     
     get Classes() { return _state.classes }
 
     get ClassesInfo() { return _state.classesInfo }
 
-    get Class() { return _state.class }  
+    //get Class() { return _state.class }  
+
+    get AbilityScores() { return _state.abilityScores }
+
+    get AbilityScoresInfo() { return _state.abilityScoresInfo }
 
     addSubscriber(prop, fn) {
         _subscribers[prop].push(fn)
@@ -89,6 +97,15 @@ export default class CharacterService {
         }
     }
 
+    chosenClass(classIndex) {
+        let classes = _state.classesInfo;
+        for (var i = 0; i < classes.length; i++) {
+            if (classes[i].index == classIndex) {
+                _setState('character', { 'details': new CharacterClass(classes[i]) })
+            }
+        }
+    }
+
     replaceRace(raceIndex) {
         let races = _state.racesInfo;
           for (var i = 0; i < races.length; i++) {
@@ -97,15 +114,6 @@ export default class CharacterService {
             }
         }
     }    
-
-    chosenClass(classIndex) {
-        let classes = _state.classesInfo; 
-        for (var i = 0; i < classes.length; i++) {
-            if (classes[i].index == classIndex) {
-                    _setState('character', { 'details': new CharacterClass(classes[i]) })
-            }
-        }
-    }
 
     replaceClass(classIndex) {
         let classes = _state.classesInfo;
@@ -191,8 +199,8 @@ export default class CharacterService {
     getAllAbilityScores() {
         characterApi.get('/ability-scores/')
             .then(res => {
-             //   console.log("Ability Scores", res.data);
-                _setState('abilityScores', res.data)
+             //  console.log("Ability Scores", res.data);
+                _setState('abilityScores', new CharacterAbilityScores(res.data))
                 this.fillAbilityScoreInfo();
 
             }).catch(err => {
@@ -203,7 +211,7 @@ export default class CharacterService {
     getSpecificAbilityScore(url) {
         characterApi.get(url)
             .then(res => {
-                console.log("CHECK CHECK")
+            //    console.log("Ability Score Info", res.data)
                 _setState('abilityScoresInfo', res.data)
             }).catch(err => {
                 console.log("Error requesting ability score info ", err)

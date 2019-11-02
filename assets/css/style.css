@@ -32,6 +32,15 @@
     z-index:0;
 }
 
+#abilityScoreSelection {
+    position: absolute;
+    background-color: aliceblue;
+    margin: 3mm auto;
+    padding: 3mm 0mm;
+    visibility: hidden;
+    z-index: 0;
+}
+
 #raceInfo {
     position: absolute;
     margin: 30mm auto;
