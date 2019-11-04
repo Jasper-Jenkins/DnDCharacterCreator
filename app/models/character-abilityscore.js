@@ -1,4 +1,4 @@
-export default class AbilityScore {
+export default class CharacterAbilityScore {
     constructor(data) {
         this.desc = data.desc;
         this.full_name = data.full_name;

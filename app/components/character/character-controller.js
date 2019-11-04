@@ -9,13 +9,17 @@ function drawRaceSelection() {
     document.getElementById('raceSelection').innerHTML = template;
 }
 
-function drawAbilityScores() {
+function drawClassSelection() {
+    var classes = _characterService.Classes;
+    var template = '';
+    template += classes.Template;
+    document.getElementById('classSelection').innerHTML = template;
+}
+
+function drawAbilityScoresSelection() {
     var scores = _characterService.AbilityScores;
     var template = '';
-
-    console.log("SCORES: ", scores)
     template += scores.Template;
-    console.log("TEMPLATE: ", template)
     document.getElementById('abilityScoreSelection').innerHTML = template;
 }
 
@@ -41,19 +45,6 @@ function drawRaceInfo(raceName) {
         }
     }
 }
-
-
-function drawClassSelection() {
-    var classes = _characterService.Classes;
-    var template = '';        
-    for (var i = 0; i < classes.count; i++) {
-        template += `<div class="col characterClass text-center" onclick="app.controllers.characterController.classInfo('${classes.results[i].name}')">
-                        <p>${classes.results[i].name}</p> 
-                     </div>`;
-    }
-    document.getElementById('classSelection').innerHTML = template;
-}
-
 
 function drawClassInfo(className) {
     var cClass = _characterService.ClassesInfo;
@@ -124,13 +115,21 @@ function drawChooseAnotherClass(newClass) {
     document.getElementById('alert').innerHTML = template;
 }
 
+function randomNumber() {
+    var abilityPoints = 0;
+    for (var i = 0; i < 3; i++) {
+        abilityPoints += Math.floor((Math.random() * 6) + 1);       
+    }
+    return abilityPoints;
+}
+
 
 export default class CharacterController {
 
     constructor() {
         _characterService.addSubscriber('races', drawRaceSelection);
         _characterService.addSubscriber('classes', drawClassSelection);
-        _characterService.addSubscriber('abilityScores', drawAbilityScores);
+        _characterService.addSubscriber('abilityScores', drawAbilityScoresSelection);
         _characterService.getAllRaces();
         _characterService.getAllClasses();
         _characterService.getAllAbilityScores();
@@ -203,7 +202,6 @@ export default class CharacterController {
             }
         }
         drawCharacterProgress();
-      //  this.hide("classInfo");
     }
 
     chooseAnotherClass(classIndex) {
@@ -237,7 +235,28 @@ export default class CharacterController {
             }
         }
     }
+    
+    generateAbilityScores() {
+        var abilityPoints = [];
+        var abilities = _characterService.AbilityScoresInfo;
+        for (var i = 0; i < abilities.length; i++){
+            if (abilities[i].index == i+1) {
+                console.log("ABILITY index of "+i, abilities[i].full_name)
+            }
+        //    abilityPoints[i] = 
+        }
+        console.log("ABILITIES", abilities)
+    //  for (var j = 0; j < 7; j++) {
+    //      abilities[i]
+    //  }
+    //  document.getElementById()
 
-   
+    }
+    
+    generateAbilityScore(ability) {
+        console.log("ABILITY: ", ability)
+        document.getElementById(ability.toLowerCase()).innerHTML = randomNumber();
+    }
+
 
 }

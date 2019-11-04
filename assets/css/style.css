@@ -121,7 +121,7 @@
     padding: 0mm;
 }
  
-.characterProgress {
+#characterProgress {
     border: 2px black solid;
 }
 

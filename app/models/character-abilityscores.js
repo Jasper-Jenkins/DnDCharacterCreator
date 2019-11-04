@@ -5,13 +5,22 @@ export default class CharacterAbilityScores {
     }
 
     get Template () {
-        var template = ""
-        template += `<div class="col-12">`
+        var template = ''
+        template += '<div class="col-12">'
+     //   console.log("ABILITY SCORES: ", this.results)
         for (var i = 0; i < this.count; i++) {
-            template +=                
-                `<div class="row" id="${this.results[i].name}">${this.results[i].name}</div>`
+            template +=
+                `<div class="row">
+                    <p>${this.results[i].name}:<span id="${this.results[i].name.toLowerCase()}"> 0</span><p>
+                 </div>
+                 <div class="row" onclick="app.controllers.characterController.generateAbilityScore('${this.results[i].name}')">
+                    <p>Generate</p>
+                 </div>`
         }
-        template +=`</div>`
+        template += `<div class="row" onclick="app.controllers.characterController.generateAbilityScores()">
+                         <p>Generate All scores</p>
+                     </div>
+                     </div>`
         return template;
     }
-}
+} 

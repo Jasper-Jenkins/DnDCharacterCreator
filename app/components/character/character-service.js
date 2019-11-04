@@ -10,7 +10,7 @@ import CharacterClass from "../../models/character-class.js"
 
 //Class for handling ability scores
 import CharacterAbilityScores from "../../models/character-abilityscores.js"
-//import CharacterAbilityScore from "../../models/character-abilityscore.js"
+import CharacterAbilityScore from "../../models/character-abilityscore.js"
  
 
 // @ts-ignore
@@ -45,7 +45,7 @@ let _subscribers = {
 }
 
 function _setState(prop, data) {
-    if (prop == "racesInfo" || prop == "classesInfo" || prop == "character") {
+    if (prop == "racesInfo" || prop == "classesInfo" || prop == "character" || prop == "abilityScoresInfo") {
         _state[prop].push(data);
     } else {
         _state[prop] = data 
@@ -58,7 +58,7 @@ function _replaceInState(prop, data, key) {
         _state[prop][0] = data;
     } else if (key == 'class') {
         _state[prop][1] = data;
-    } else if (key == 'abilityScore') {
+    } else if (key == 'abilityScores') {
         _state[prop][2] = data
     };
 }
@@ -149,7 +149,7 @@ export default class CharacterService {
         console.log('Requesting the races of Faerun from the DnD API')
         characterApi.get("/races/")
             .then(res => {
-                console.log('All the races of Faerun: ', res.data)
+    //            console.log('All the races of Faerun: ', res.data)
                 _setState('races', new CharacterRaces(res.data))
                 this.fillRaceSelection();    
             })                    
@@ -202,7 +202,6 @@ export default class CharacterService {
              //  console.log("Ability Scores", res.data);
                 _setState('abilityScores', new CharacterAbilityScores(res.data))
                 this.fillAbilityScoreInfo();
-
             }).catch(err => {
                 console.log("Error requesting ability scores: ", err)
             })
@@ -211,8 +210,8 @@ export default class CharacterService {
     getSpecificAbilityScore(url) {
         characterApi.get(url)
             .then(res => {
-            //    console.log("Ability Score Info", res.data)
-                _setState('abilityScoresInfo', res.data)
+          //      console.log("Ability Score Info", res.data)
+                _setState('abilityScoresInfo', new CharacterAbilityScore(res.data))
             }).catch(err => {
                 console.log("Error requesting ability score info ", err)
             })

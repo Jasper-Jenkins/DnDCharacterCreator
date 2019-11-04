@@ -17,9 +17,12 @@
 
 
 <body id="body" class="container-fluid">
-    <div class="row d-flex justify-content-center" id="alert">
+    <div class="row" id="alert">
+        <!-- z-index: 3-->
         <!--When a user does a no no-->
     </div>
+
+    <!--The Info div's are z-index:2-->
     <div class="row" id="classInfo">
         <!-- Information about a specific class will populate here.-->
     </div>
@@ -28,7 +31,7 @@
     </div>
 
   
-    <div class="row justify-content-left" id="characterProgress">
+    <div class="row" id="characterProgress">
         <!--
         Will populate as user makes choices about their player.
         This is eye candy across the top of the screen to show progress .
@@ -38,26 +41,22 @@
     <div class="row" id="character">
         <!-- Overall Character sheet with all character data will be displayed here-->
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="row justify-content-center" id="raceSelection">
-                <!-- race selection will be populated here by the controller -->
-                <!--
-                <form onsubmit="app.controllers.playerController.chooseName(event)">
-                    <input type="text" name="characterName" id="characterName" placeholder="Choose your Champions name">
-                    <button type="submit" class="btn btn-primary" id="chooseName"> Choose your name wisely </button>
-                </form>
-                -->
-            </div>
-            <div class="row justify-content-center" id="classSelection">
-                <!-- class selection will be populated here by the controller -->
-
-            </div>
-            <div class="row justify-content-center" id="abilityScoreSelection"></div>
-
-        </div>
+    <div class="row justify-content-center" id="raceSelection" style="visibility: hidden">
+        <!-- race selection will be populated here by the controller -->
+        <!--
+        <form onsubmit="app.controllers.playerController.chooseName(event)">
+            <input type="text" name="characterName" id="characterName" placeholder="Choose your Champions name">
+            <button type="submit" class="btn btn-primary" id="chooseName"> Choose your name wisely </button>
+        </form>
+        -->
     </div>
-    
+    <div class="row justify-content-center" id="classSelection" style="visibility: hidden">
+        <!-- class selection will be populated here by the controller -->
+
+    </div>
+    <div class="row justify-content-center" id="abilityScoreSelection" style="visibility: visible">
+
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <script type="module" src="app/main.js"></script>
 </body>
