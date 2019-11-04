@@ -241,7 +241,7 @@ export default class CharacterController {
         var abilities = _characterService.AbilityScoresInfo;
         for (var i = 0; i < abilities.length; i++){
             if (abilities[i].index == i+1) {
-                console.log("ABILITY index of "+i, abilities[i].full_name)
+                console.log("ABILITY index of ", abilities[i].full_name)
             }
         //    abilityPoints[i] = 
         }
@@ -255,8 +255,15 @@ export default class CharacterController {
     
     generateAbilityScore(ability) {
         console.log("ABILITY: ", ability)
-        document.getElementById(ability.toLowerCase()).innerHTML = randomNumber();
+        var num = randomNumber();
+        document.getElementById(ability.toLowerCase()).innerHTML = num;
+        this.setAbilityScore(ability, num)
+    }
+
+    setAbilityScore(ability, num) {
+        _characterService.setAbilityScore(ability, num)
     }
 
 
 }
+;

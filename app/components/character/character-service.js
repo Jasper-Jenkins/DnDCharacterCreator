@@ -27,9 +27,10 @@ let _state = {
     //race: {},
     classes: {},
     classesInfo: [],
-  //  class: {},
+    //  class: {},
     abilityScores: {},
     abilityScoresInfo: [],
+    abilityScoresData: []
 }
 
 let _subscribers = {
@@ -47,6 +48,8 @@ let _subscribers = {
 function _setState(prop, data) {
     if (prop == "racesInfo" || prop == "classesInfo" || prop == "character" || prop == "abilityScoresInfo") {
         _state[prop].push(data);
+    } else if (prop == "abilityScoresData") {
+        _state[prop] = data.slice();
     } else {
         _state[prop] = data 
     }
@@ -84,6 +87,8 @@ export default class CharacterService {
 
     get AbilityScoresInfo() { return _state.abilityScoresInfo }
 
+    get AbilityScoreData() { return _state.abilityScoreData }
+
     addSubscriber(prop, fn) {
         _subscribers[prop].push(fn)
     }
@@ -104,6 +109,17 @@ export default class CharacterService {
                 _setState('character', { 'details': new CharacterClass(classes[i]) })
             }
         }
+    }
+
+    setAbilityScore(ability, num) {
+        let abilities = _state.abilityScoresInfo;
+        console.log("abilities ----- ", abilities);
+
+        //    for (var i = 0; i < abilities)
+    }
+
+    chosenAbilityScores(arr) {
+        _setState('abilityScoresData', arr)
     }
 
     replaceRace(raceIndex) {
