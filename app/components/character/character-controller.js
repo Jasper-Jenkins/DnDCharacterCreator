@@ -237,27 +237,19 @@ export default class CharacterController {
     }
     
     generateAbilityScores() {
-        var abilityPoints = [];
-        var abilities = _characterService.AbilityScoresInfo;
-        for (var i = 0; i < abilities.length; i++){
-            if (abilities[i].index == i+1) {
-                console.log("ABILITY index of ", abilities[i].full_name)
-            }
-        //    abilityPoints[i] = 
+        var abilities = ["STR","DEX","CON","INT","WIS","CHA"];
+        var abilityScores = _characterService.AbilityScores;
+        for (var i = 0; i < abilityScores.count; i++){
+            if (abilityScores.results[i].name == abilities[i]) {
+                this.generateAbilityScore(abilityScores.results[i].name.toLowerCase())
+            }  
         }
-        console.log("ABILITIES", abilities)
-    //  for (var j = 0; j < 7; j++) {
-    //      abilities[i]
-    //  }
-    //  document.getElementById()
-
     }
     
     generateAbilityScore(ability) {
-        console.log("ABILITY: ", ability)
         var num = randomNumber();
-        document.getElementById(ability.toLowerCase()).innerHTML = num;
-        this.setAbilityScore(ability, num)
+        document.getElementById(ability).innerHTML = num;
+        //this.setAbilityScore( num)
     }
 
     setAbilityScore(ability, num) {

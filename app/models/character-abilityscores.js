@@ -13,7 +13,7 @@ export default class CharacterAbilityScores {
                 `<div class="row">
                     <p>${this.results[i].name}:<span id="${this.results[i].name.toLowerCase()}"> 0</span><p>
                  </div>
-                 <div class="row" onclick="app.controllers.characterController.generateAbilityScore('${this.results[i].name}')">
+                 <div class="row" onclick="app.controllers.characterController.generateAbilityScore('${this.results[i].name.toLowerCase()}')">
                     <p>Generate</p>
                  </div>`
         }

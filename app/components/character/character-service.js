@@ -114,6 +114,13 @@ export default class CharacterService {
     setAbilityScore(ability, num) {
         let abilities = _state.abilityScoresInfo;
         console.log("abilities ----- ", abilities);
+        for (var i = 0; i < abilities.length; i++) {
+        /* 
+         * if (abilities[i]) {
+                _setState('abilityScore', num)
+         * }
+         */
+        }
 
         //    for (var i = 0; i < abilities)
     }
