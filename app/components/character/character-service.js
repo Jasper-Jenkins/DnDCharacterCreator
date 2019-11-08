@@ -30,7 +30,8 @@ let _state = {
     //  class: {},
     abilityScores: {},
     abilityScoresInfo: [],
-    abilityScoresData: []
+    abilityScoresData: [],
+    levels:{ }
 }
 
 let _subscribers = {
@@ -45,11 +46,20 @@ let _subscribers = {
     abilityScoresInfo: []
 }
 
+function _setStateCharacter(prop, data) {
+    if (prop == "character" && (data.details instanceof CharacterRace) || (data.details instanceof CharacterClass)) {
+        _state[prop].push(data);
+        console.log('Eureka!!!!!', data.details)
+    }
+}
+
 function _setState(prop, data) {
-    if (prop == "racesInfo" || prop == "classesInfo" || prop == "character" || prop == "abilityScoresInfo") {
+    if (prop == "racesInfo" || prop == "classesInfo" || prop == "abilityScoresInfo") {
         _state[prop].push(data);
     } else if (prop == "abilityScoresData") {
         _state[prop] = data.slice();
+    } else if (prop == "character" && (data.details instanceof CharacterRace) || (data.details instanceof CharacterClass)) {
+        _state[prop].push(data);
     } else {
         _state[prop] = data 
     }
@@ -58,14 +68,16 @@ function _setState(prop, data) {
 
 function _replaceInState(prop, data, key) {
     if (key == 'race') {
+        console.log('Eureka!Race!', data)
         _state[prop][0] = data;
     } else if (key == 'class') {
+        console.log('Eureka!Class!', data)
         _state[prop][1] = data;
     } else if (key == 'abilityScores') {
+        console.log('Eureka!AbilityPoints!', data)
         _state[prop][2] = data
     };
 }
-
 
 export default class CharacterService {
 
@@ -94,49 +106,51 @@ export default class CharacterService {
     }
 
     chosenRace(raceIndex) {
-        let races = _state.racesInfo; //array 
+        let races = _state.racesInfo; 
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-                    _setState('character', { 'details': new CharacterRace(races[i]) })
+                _setState('character', { 'details': new CharacterRace(races[i]) })
             }
         }
-    }
-
-    chosenClass(classIndex) {
-        let classes = _state.classesInfo;
-        for (var i = 0; i < classes.length; i++) {
-            if (classes[i].index == classIndex) {
-                _setState('character', { 'details': new CharacterClass(classes[i]) })
-            }
-        }
-    }
-
-    setAbilityScore(ability, num) {
-        let abilities = _state.abilityScoresInfo;
-        console.log("abilities ----- ", abilities);
-        for (var i = 0; i < abilities.length; i++) {
-        /* 
-         * if (abilities[i]) {
-                _setState('abilityScore', num)
-         * }
-         */
-        }
-
-        //    for (var i = 0; i < abilities)
-    }
-
-    chosenAbilityScores(arr) {
-        _setState('abilityScoresData', arr)
     }
 
     replaceRace(raceIndex) {
         let races = _state.racesInfo;
-          for (var i = 0; i < races.length; i++) {
+        for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
                 _replaceInState('character', { 'details': new CharacterRace(races[i]) }, 'race')
             }
         }
     }    
+     
+    chosenClass(classIndex) {
+        let classes = _state.classesInfo;
+        for (var i = 0; i < classes.length; i++) {
+            if (classes[i].index == classIndex) {
+                _setStateCharacter('character', { 'details': new CharacterClass(classes[i]) })
+            }
+        }
+    }
+    saveAbilityScores() {
+        _setState('character', )
+    }
+
+    setAbilityScore(ability, num) {
+        let abilities = _state.abilityScoresInfo;
+        
+        for (var i = 0; i < abilities.length; i++) {
+            if (abilities[i].name == ability) {
+                abilities[i].setPoints(num)
+            }
+        }/*
+        for (var j = 0; j < abilities.length; j++) {
+            var abilities2 = _state.abilityScoresInfo;
+
+            console.log(`'${abilities2[j].full_name}' 2`, abilities2[j].points)
+
+            console.log(`'${abilities[j].full_name}' 1`, abilities[j].points)
+        }*/
+    }
 
     replaceClass(classIndex) {
         let classes = _state.classesInfo;
@@ -233,13 +247,22 @@ export default class CharacterService {
     getSpecificAbilityScore(url) {
         characterApi.get(url)
             .then(res => {
-          //      console.log("Ability Score Info", res.data)
+                console.log("Ability Score Info", res.data)
                 _setState('abilityScoresInfo', new CharacterAbilityScore(res.data))
             }).catch(err => {
                 console.log("Error requesting ability score info ", err)
             })
     }
 
+    getClassLevels(url) {
+        characterApi.get(url)
+            .then(res => {
+                console.log("CLASS LEVELS RESPONSE", res.data)
+                //_setState('levels', new CharacterClassLevels(res.data))
+            }).catch(err => {
+                console.log("Error requesting class levels info ", err)
+            })
+    }
   
   
 }

@@ -16,8 +16,22 @@ export default class CharacterRace {
         this.subraces = data.subraces;
         this.traits = data.traits;
         this.url = data.url;
+    }  
 
-
-    }      
+    get Template() {
+        var template = `<div class="col-12">
+                            <p class="close" onclick="app.controllers.characterController.hide('raceInfo')">Close</p>
+                            <p>Race: ${this.name}</p>
+                            <p>Ability Bonuses: STR +${this.ability_bonuses[0]}, DEX +${this.ability_bonuses[1]}, CON +${this.ability_bonuses[2]}, INT +${this.ability_bonuses[3]}, WIS +${this.ability_bonuses[4]}, CHA +${this.ability_bonuses[5]}</p>
+                            <p>Size: ${this.size} </p>
+                            <p>Alignment: ${this.alignment}</p>
+                            <div class="row text-center" onclick="app.controllers.characterController.chooseRace(${this.index})">
+                                <div class="col-12" id="chooseRace"> 
+                                    <p>Choose ${this.name}</p>
+                                </div>    
+                            </div>
+                         </div>`
+        return template;
+    }
 
 }

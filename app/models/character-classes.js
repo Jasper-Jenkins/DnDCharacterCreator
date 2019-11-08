@@ -8,7 +8,7 @@ export default class CharacterClasses {
     get Template() {
         var template = '';
         for (var i = 0; i < this.count; i++) {
-            template += `<div class="col characterClass text-center" onclick="app.controllers.characterController.classInfo('${this.results[i].name}')">
+            template += `<div class="col selection text-center" onclick="app.controllers.characterController.classInfo('${this.results[i].name}')">
                             <p>${this.results[i].name}</p> 
                          </div>`;
         }

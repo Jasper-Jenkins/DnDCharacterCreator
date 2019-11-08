@@ -9,41 +9,25 @@ function drawRaceSelection() {
     document.getElementById('raceSelection').innerHTML = template;
 }
 
-function drawClassSelection() {
-    var classes = _characterService.Classes;
-    var template = '';
-    template += classes.Template;
-    document.getElementById('classSelection').innerHTML = template;
-}
-
-function drawAbilityScoresSelection() {
-    var scores = _characterService.AbilityScores;
-    var template = '';
-    template += scores.Template;
-    document.getElementById('abilityScoreSelection').innerHTML = template;
-}
-
 function drawRaceInfo(raceName) {
     var race = _characterService.RacesInfo;
     var template = '';
     for (var i = 0; i < race.length; i++) {
         if (race[i].name == raceName) {
-              template += `<div class="col-12">
-                            <p class="close" onclick="app.controllers.characterController.hide('raceInfo')">Close</p>
-                            <p>Race: ${race[i].name}</p>
-                            <p>Ability Bonuses: STR +${race[i].ability_bonuses[0]}, DEX +${race[i].ability_bonuses[1]}, CON +${race[i].ability_bonuses[2]}, INT +${race[i].ability_bonuses[3]}, WIS +${race[i].ability_bonuses[4]}, CHA +${race[i].ability_bonuses[5]}</p>
-                            <p>Size: ${race[i].size} </p>
-                            <p>Alignment: ${race[i].alignment}</p>
-                            <div class="row text-center" onclick="app.controllers.characterController.chooseRace(${race[i].index})">
-                                <div class="col-12" id="chooseRace"> 
-                                    <p>Choose ${race[i].name}</p>
-                                </div>    
-                            </div>
-                         </div>`
+            template += race[i].Template;
             document.getElementById('raceInfo').innerHTML = template;
             break;
         }
     }
+}
+
+
+
+function drawClassSelection() {
+    var classes = _characterService.Classes;
+    var template = '';
+    template += classes.Template;
+    document.getElementById('classSelection').innerHTML = template;
 }
 
 function drawClassInfo(className) {
@@ -52,30 +36,33 @@ function drawClassInfo(className) {
     for (var i = 0; i < cClass.length; i++) {
         if (cClass[i].name == className) {
             console.log("eureka");
-            template += `<div class="col-12">
-                            <p class="close" onclick="app.controllers.characterController.hide('classInfo')">Close</p>
-                            <p> Class: ${cClass[i].name} </p>
-                            <p> Hit die: ${cClass[i].hit_die} </p>
-                            <p> Gibberish trying to find out why the class choice div is not going across the whole screen. I suspect its from the content and needs to have more so that it will go across the screen.
-                            <div class="row text-center" onclick="app.controllers.characterController.chooseClass(${cClass[i].index})">
-                                <div class="col-12" id="chooseClass"> 
-                                    <p>Choose ${cClass[i].name}</p>
-                                </div>    
-                            </div>
-                         </div>`
+            template += cClass[i].Template;
             document.getElementById('classInfo').innerHTML = template;
             break;
         }
     }
 }
 
+
+
+
+function drawAbilityScoresSelection() {
+    var scores = _characterService.AbilityScores;
+    var template = '';
+    template += scores.Template;
+    document.getElementById('abilityScoreSelection').innerHTML = template;
+}
+
+
+
 function drawCharacterProgress() {
     var character = _characterService.Character;
     var template = '';
+    console.log("CHARACTER", character)
     for (var i = 0; i < character.length; i++) {
         template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreen(${i})">${character[i].details.name}</div> `
     } 
-     document.getElementById('characterProgress').innerHTML = template;
+    document.getElementById('characterProgress').innerHTML = template;
 }
 
 function drawChooseAnotherRace(newRace) {
@@ -84,14 +71,14 @@ function drawChooseAnotherRace(newRace) {
     if (character[0].details.name == newRace.name) {
         template += `<div class="col-12"><p>You already have ${character[0].details.name} chosen as a race.</p> 
                      <div class="row justify-content-center text-center">
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Choose another</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreSelection', ['alert', 'raceSelection'])"><p>Choose another</p></div>
                      </div>`   
     } else {
         template += `<div class="col-12"><p>You already have chosen ${character[0].details.name} as a race. Would you rather be ${newRace.name}</p> 
                      <div class="row justify-content-center text-center">
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherRace(${newRace.index})"><p>Change to ${newRace.name}</p></div>
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Continue as ${character[0].details.name}</p></div>
-                     </div>`;
+                     </div>`
     }                
     document.getElementById('alert').innerHTML = template;
 }
@@ -108,7 +95,7 @@ function drawChooseAnotherClass(newClass) {
         template += `<div class="col-12"><p>You already have chosen ${character[1].details.name} as a race. Would you rather be ${newClass.name}</p> 
                      <div class="row justify-content-center text-center">
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherClass(${newClass.index})"><p>Change to ${newClass.name}</p></div>
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Continue as ${character[1].details.name}</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreSelection', ['alert', 'classSelection'])"><p>Continue as ${character[1].details.name}</p></div>
                      </div>`;
     }
 
@@ -156,20 +143,20 @@ export default class CharacterController {
         this.showInfo('classInfo');
     }
 
+
+
     chooseRace(raceIndex) {
         var raceCheck = _characterService.Character;
         var newRace = _characterService.RacesInfo;
         if (raceCheck[0] == undefined) {
             _characterService.chosenRace(raceIndex);
-            this.hide("raceInfo");
-            this.hide("raceSelection");
-            this.show("classSelection");
+            this.swapScreens("classSelection", ["raceInfo", "raceSelection"])
         } else {
             for (var i = 0; i < newRace.length; i++) {
                 if (newRace[i].index == raceIndex) {
                     drawChooseAnotherRace(newRace[i]);
-                    this.showInfo('alert');
-                    this.hide("raceInfo");
+                    this.swapScreens("alert", [])
+
                 }
             }
         }
@@ -179,9 +166,7 @@ export default class CharacterController {
     chooseAnotherRace(raceIndex) {
         _characterService.replaceRace(raceIndex);
         drawCharacterProgress();
-        this.hide('alert');
-        this.hide('raceSelection');
-        this.show('classSelection');
+        this.swapScreens("classSelection", ["alert", "raceSelection"]);
     }
         
     chooseClass(classIndex) {
@@ -189,15 +174,13 @@ export default class CharacterController {
         var newClass = _characterService.ClassesInfo;
         if (classCheck[1] == undefined) {
             _characterService.chosenClass(classIndex);
-            this.hide("classInfo");
-            this.hide("classSelection");
-            this.show("abilityScoreSelection");
+            this.swapScreens("abilityScoreSelection", ["classInfo","classSelection"])
         } else {
             for (var i = 0; i < newClass.length; i++) {
                 if (newClass[i].index == classIndex) {
                     drawChooseAnotherClass(newClass[i]);
-                    this.showInfo('alert')
-                    this.hide('classInfo')
+                    
+                    this.swapScreens("alert", ["classInfo"])
                 }
             }
         }
@@ -207,26 +190,57 @@ export default class CharacterController {
     chooseAnotherClass(classIndex) {
         _characterService.replaceClass(classIndex);
         drawCharacterProgress();
-        this.hide('alert');
-    }
-
-    hide(elementToHide) {
-        document.getElementById(elementToHide).style.zIndex = 0;
-        document.getElementById(elementToHide).style.visibility = "hidden";
+        this.swapScreens('abilityScoreSelection', ['alert','classSelection'])
+       
     }
 
     showInfo(elementToShow) {
-        document.getElementById(elementToShow).style.zIndex = 2;
+        document.getElementById(elementToShow).style.zIndex = 5;
         document.getElementById(elementToShow).style.visibility = "visible";
     }
 
     show(elementToShow) {
+        console.log("Showing HTML div element: ", elementToShow)
         document.getElementById(elementToShow).style.zIndex = 1;
         document.getElementById(elementToShow).style.visibility = "visible";
     }
 
+    hide(elementToHide) {
+        console.log("Closing HTML div element: ", elementToHide)
+        document.getElementById(elementToHide).style.zIndex = 0;
+        document.getElementById(elementToHide).style.visibility = "hidden";
+    }
+
+    swapScreens(showId, hideIds) {
+        var progressBar = ["raceSelection", "classSelection", "abilityScoreSelection", "raceInfo", "classInfo", "alert"];
+        var check = 0;
+        for (var i = 0; i < progressBar.length; i++) {
+            for (var j = 0; j < hideIds.length; j++) {
+                if (hideIds[j] == progressBar[i]) {
+                    //console.log("CLOSING")
+                    this.hide(hideIds[j])
+                    check++
+                }
+                if (check == hideIds.length) {
+                    //console.log("DID IT??")
+                    break;
+                }
+            }
+            if (check == hideIds.length) {
+                break;
+            }
+            console.log("Iterating swap screen")
+        }
+        if (showId == "alert") {
+            this.showInfo(showId)
+        } else {
+            this.show(showId)
+        }
+    }
+
     swapScreen(index) {
         var progressBar = ["raceSelection", "classSelection", "abilityScoreSelection"];
+
         for (var i = 0; i < progressBar.length; i++) {
             if (i == index) {
                 this.show(progressBar[i])
@@ -237,19 +251,23 @@ export default class CharacterController {
     }
     
     generateAbilityScores() {
-        var abilities = ["STR","DEX","CON","INT","WIS","CHA"];
         var abilityScores = _characterService.AbilityScores;
         for (var i = 0; i < abilityScores.count; i++){
-            if (abilityScores.results[i].name == abilities[i]) {
-                this.generateAbilityScore(abilityScores.results[i].name.toLowerCase())
-            }  
+            this.generateAbilityScore(abilityScores.results[i].name)
         }
     }
     
     generateAbilityScore(ability) {
         var num = randomNumber();
-        document.getElementById(ability).innerHTML = num;
-        //this.setAbilityScore( num)
+        document.getElementById(ability.toLowerCase()).innerHTML = num;
+        this.setAbilityScore(ability, num)
+    }
+
+    saveAbilityScores() {
+        var abilityScores = _characterService.AbilityScoresInfo
+        for (var i = 0; i < abilityScores.length; i++) {
+            console.log(abilityScores[i].full_name, abilityScores[i].points)
+        }
     }
 
     setAbilityScore(ability, num) {
