@@ -132,7 +132,7 @@ export default class CharacterService {
         }
     }
     saveAbilityScores() {
-        _setState('character', )
+        _setState('')
     }
 
     setAbilityScore(ability, num) {

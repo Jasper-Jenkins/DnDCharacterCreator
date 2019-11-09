@@ -1,133 +1,138 @@
-#body {
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-color: aquamarine;
-    padding:0px;
-}
-#alert {    
-   background-color: cadetblue;
-   margin: 0 auto;
-   padding: 20px; 
-   position: absolute;
-   z-index: 10;
-   visibility: hidden;
-   width:auto;
-}
+    #body {
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-color: aquamarine;
+        padding:0px;
+    }
+    #alert {    
+       background-color: cadetblue;
+       margin: 0 auto;
+       padding: 20px; 
+       position: absolute;
+       z-index: 10;
+       visibility: hidden;
+       width:auto;
+    }
 
-#raceSelection {
-    position: absolute;
-    background-color: aliceblue;
-    margin: 0px;
-    padding: 0px;
-    z-index: 1;
-    width: inherit;
-    top: 352px;
-}
+    #characterProgress {
+        width: 100%;
+        height: 50px;
+        margin: 0px;
+        padding: 0px;
+    }
 
-#classSelection {
-    position: absolute;
-    background-color: aliceblue;
-    margin: 0px;
-    padding: 5px 0px;
-    visibility: hidden;
-    z-index: 0;
-}
+    #raceSelection {
+        position: absolute;
+        background-color: aliceblue;
+        margin: 0px;
+        padding: 0px;
+        z-index: 1;
+        width: inherit;
+        top: 350px;
+    }
 
-#abilityScoreSelection {
-    position: absolute;
-    background-color: aliceblue;
-    margin: 3mm auto;
-    padding: 3mm 0mm;
-    visibility: hidden;
-    z-index: 0;
-}
+    #classSelection {
+        position: absolute;
+        background-color: aliceblue;
+        margin: 0px;
+        padding: 0px;
+        visibility: hidden;
+        z-index: 0;
+        top:350px;
+    }
 
-#raceInfo {
-    position: absolute;
-    margin: 0px;
-    padding: 0px;
-    height: 300px;
-    width: inherit;
-    top:52px;
-    z-index: 3;
-    background-color: burlywood;
-    overflow:scroll;
-}
+    #abilityScoreSelection {
+        position: absolute;
+        background-color: aliceblue;
+        margin: 0px;
+        padding: 0px;
+        visibility: hidden;
+        z-index: 0;
+    }
 
-#raceInfo p {
-    margin: 5px;
-    padding: 0px;
-}
+    #raceInfo {
+        position: absolute;
+        margin: 0px;
+        padding: 0px;
+        height: 300px;
+        width: inherit;
+        top:50px;
+        z-index: 3;
+        background-color: burlywood;
+        overflow:scroll;
+    }
 
-#classInfo {
-    position: absolute;
-    margin: 30mm auto;
-    padding: 0mm;
-    height: auto;
-    z-index: 0;
-    background-color: burlywood;
-}
+    #raceInfo p {
+        margin: 0px;
+        padding: 0px;
+        background-color:orangered;
+    }
 
-#classInfo p {
-    margin: 5px;
-    padding: 0px;
-}
+    #classInfo {
+        position: absolute;
+        margin: 0px;
+        padding: 0px;
+        height: 300px;
+        width: inherit;
+        top: 50px;
+        z-index: 3;
+        background-color: burlywood;
+        overflow: scroll;
+    }
 
-#chooseRace {
-    position:absolute;
-    background-color: aliceblue;
-    margin: 0px auto;
-    padding: 0px;
-}
+    #classInfo p {
+        margin: 0px;
+        padding: 0px;
+        background-color: orangered;
+    }
 
-#chooseRace :hover {
-    background-color: aquamarine;
-}
+    #chooseRace {
+        position:absolute;
+        background-color: aliceblue;
+        margin: 0px auto;
+        padding: 0px;
+    }
 
-#chooseClass {
-    background-color: aliceblue;
-    margin: 0px auto;
-    padding: 0px;
-}
+    #chooseRace :hover {
+        background-color: aquamarine;
+    }
 
-#chooseClass :hover {
-    background-color: aquamarine;
-}
+    #chooseClass {
+        background-color: aliceblue;
+        margin: 0px auto;
+        padding: 0px;
+    }
 
-.selection {
-    border: solid 1px black;
-    background-color: navajowhite;
-    min-height: 80px;
-    max-height: 80px;
-    min-width: 60px;
-    max-width: 60px;
-    margin: 0px;
-    padding: 0px;
-    font:bolder 18px bookman;
+    #chooseClass :hover {
+        background-color: aquamarine;
+    }
+
+    .selection {
+        border: solid 1px black;
+        background-color: navajowhite;
+        min-height: 80px;
+        max-height: 80px;
+        min-width: 60px;
+        max-width: 60px;
+        margin: 0px;
+        padding: 0px;
+        font:bolder 18px bookman;
    
-}
-/*
-.characterRace p {
-    margin: 0px;
-    padding: 0px;
-}
+    }
+    /*
+    .characterRace p {
+        margin: 0px;
+        padding: 0px;
+    }
 
-.characterClass p {
-    margin: 0px;
-    padding: 0px;
-}*/
+    .characterClass p {
+        margin: 0px;
+        padding: 0px;
+    }*/
 
-#characterProgress {
-    border-bottom: 1px black solid;
-    border-top: 1px black solid;
-    width: 100%;
-    height: 50px;
-    margin: 0px;
-    padding: 0px;
-}
 
-.chooseNewRace {
-    border: black 1px solid;
-    margin: 0px auto;
-}
+    .chooseNewRace {
+        border: black 1px solid;
+        margin: 0px auto;
+    }

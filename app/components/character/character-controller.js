@@ -1,4 +1,5 @@
 import CharacterService from "./character-service.js";
+import CharacterRace from "../../models/character-race.js";
 
 const _characterService = new CharacterService();
 
@@ -20,8 +21,6 @@ function drawRaceInfo(raceName) {
         }
     }
 }
-
-
 
 function drawClassSelection() {
     var classes = _characterService.Classes;
@@ -58,9 +57,16 @@ function drawAbilityScoresSelection() {
 function drawCharacterProgress() {
     var character = _characterService.Character;
     var template = '';
+  /*  for (var j = 0; j < character.length; j++) {
+        if (character[0].details instanceof CharacterRace) {
+            console.log("PROGRESS IS BEING MADE")
+            template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('raceSelection', ['alert', 'classSelection', 'abilityScoreSelection, 'raceInfo', 'classInfo'])">${character[i].details.name}</div> `
+        }
+    }*/
     console.log("CHARACTER", character)
     for (var i = 0; i < character.length; i++) {
-        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreen(${i})">${character[i].details.name}</div> `
+        template +=
+            `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreen(${i})">${character[i].details.name}</div> `
     } 
     document.getElementById('characterProgress').innerHTML = template;
 }
@@ -150,7 +156,7 @@ export default class CharacterController {
         var newRace = _characterService.RacesInfo;
         if (raceCheck[0] == undefined) {
             _characterService.chosenRace(raceIndex);
-            this.swapScreens("classSelection", ["raceInfo", "raceSelection"])
+            this.swapScreens("classSelection", ["raceInfo", "raceSelection", "alert"])
         } else {
             for (var i = 0; i < newRace.length; i++) {
                 if (newRace[i].index == raceIndex) {
@@ -174,7 +180,7 @@ export default class CharacterController {
         var newClass = _characterService.ClassesInfo;
         if (classCheck[1] == undefined) {
             _characterService.chosenClass(classIndex);
-            this.swapScreens("abilityScoreSelection", ["classInfo","classSelection"])
+            this.swapScreens("abilityScoreSelection", ["classInfo","classSelection", "alert"])
         } else {
             for (var i = 0; i < newClass.length; i++) {
                 if (newClass[i].index == classIndex) {
@@ -212,7 +218,7 @@ export default class CharacterController {
     }
 
     swapScreens(showId, hideIds) {
-        var progressBar = ["raceSelection", "classSelection", "abilityScoreSelection", "raceInfo", "classInfo", "alert"];
+        var progressBar = ["alert", "raceSelection", "raceInfo", "classSelection", "classInfo", "abilityScoreSelection"];
         var check = 0;
         for (var i = 0; i < progressBar.length; i++) {
             for (var j = 0; j < hideIds.length; j++) {

@@ -18,8 +18,7 @@ export default class CharacterClass {
         this.subclasses = data.subclasses;
     }
     get Template() {
-        var template = ''
-        template += `<div class="col-12">
+        var template = `<div class="col-12">
                         <p class="close" onclick="app.controllers.characterController.hide('classInfo')">Close</p>
                         <p> Class: ${this.name} </p>
                         <p> Hit die: ${this.hit_die} </p>
@@ -29,7 +28,7 @@ export default class CharacterClass {
                                 <p>Choose ${this.name}</p>
                             </div>    
                         </div>
-                     </div>`;
+                     </div>`
         return template;
     }
 }
