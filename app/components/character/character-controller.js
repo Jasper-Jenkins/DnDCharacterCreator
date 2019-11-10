@@ -1,5 +1,7 @@
 import CharacterService from "./character-service.js";
 import CharacterRace from "../../models/character-race.js";
+import CharacterClass from "../../models/character-class.js";
+import CharacterAbilityScore from "../../models/character-abilityscore.js";
 
 const _characterService = new CharacterService();
 
@@ -16,6 +18,7 @@ function drawRaceInfo(raceName) {
     for (var i = 0; i < race.length; i++) {
         if (race[i].name == raceName) {
             template += race[i].Template;
+            console.log(template)
             document.getElementById('raceInfo').innerHTML = template;
             break;
         }
@@ -42,32 +45,45 @@ function drawClassInfo(className) {
     }
 }
 
-
-
-
 function drawAbilityScoresSelection() {
     var scores = _characterService.AbilityScores;
     var template = '';
-    template += scores.Template;
-    document.getElementById('abilityScoreSelection').innerHTML = template;
-}
+    var templateTwo = '';
 
+    template += scores.Template;
+    document.getElementById('abilityScoreInfo').innerHTML = template;
+
+    templateTwo += scores.ScoreSelectorTemplate;
+    templateTwo += `<div class="col-12 text-center" onclick="app.controllers.characterController.generateAbilityScores()">
+                         <p>Generate All scores</p>
+                     </div>
+                     <div class="col-12 text-center" onclick="app.controllers.characterController.saveAbilityScores()">
+                         <p>Save scores</p>
+                     </div>   
+                     `
+    
+    document.getElementById('abilityScoreSelection').innerHTML = templateTwo;
+}
 
 
 function drawCharacterProgress() {
     var character = _characterService.Character;
     var template = '';
-  /*  for (var j = 0; j < character.length; j++) {
-        if (character[0].details instanceof CharacterRace) {
-            console.log("PROGRESS IS BEING MADE")
-            template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('raceSelection', ['alert', 'classSelection', 'abilityScoreSelection, 'raceInfo', 'classInfo'])">${character[i].details.name}</div> `
-        }
-    }*/
     console.log("CHARACTER", character)
-    for (var i = 0; i < character.length; i++) {
-        template +=
-            `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreen(${i})">${character[i].details.name}</div> `
-    } 
+    for (var j = 0; j < character.length; j++) {
+        if (character[j].details instanceof CharacterRace) {
+            console.log("PROGRESS IS BEING MADE in race")
+            template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('raceCreation', ['alert', 'classCreation', 'abilityScoreCreation', 'raceInfo'])">${character[j].details.name}</div> `
+        }
+        if (character[j].details instanceof CharacterClass) {
+            console.log("PROGRESS IS BEING MADE in class")
+            template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('classCreation', ['alert', 'raceCreation', 'abilityScoreCreation', 'classInfo'])">${character[j].details.name}</div> `
+        }
+        if (character[j].details[0] instanceof CharacterAbilityScore) {
+            console.log("PROGRESS IS BEING MADE in ability scores")
+            template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'raceCreation', 'classCreation'])">Ability Scores</div> `
+        }
+    }   
     document.getElementById('characterProgress').innerHTML = template;
 }
 
@@ -108,7 +124,7 @@ function drawChooseAnotherClass(newClass) {
     document.getElementById('alert').innerHTML = template;
 }
 
-function randomNumber() {
+function randomDSix() {
     var abilityPoints = 0;
     for (var i = 0; i < 3; i++) {
         abilityPoints += Math.floor((Math.random() * 6) + 1);       
@@ -156,7 +172,7 @@ export default class CharacterController {
         var newRace = _characterService.RacesInfo;
         if (raceCheck[0] == undefined) {
             _characterService.chosenRace(raceIndex);
-            this.swapScreens("classSelection", ["raceInfo", "raceSelection", "alert"])
+            this.swapScreens("classCreation", ["raceCreation", "alert"])
         } else {
             for (var i = 0; i < newRace.length; i++) {
                 if (newRace[i].index == raceIndex) {
@@ -172,7 +188,7 @@ export default class CharacterController {
     chooseAnotherRace(raceIndex) {
         _characterService.replaceRace(raceIndex);
         drawCharacterProgress();
-        this.swapScreens("classSelection", ["alert", "raceSelection"]);
+        this.swapScreens("classcreation", ["alert", "raceCreation"]);
     }
         
     chooseClass(classIndex) {
@@ -180,7 +196,7 @@ export default class CharacterController {
         var newClass = _characterService.ClassesInfo;
         if (classCheck[1] == undefined) {
             _characterService.chosenClass(classIndex);
-            this.swapScreens("abilityScoreSelection", ["classInfo","classSelection", "alert"])
+            this.swapScreens("abilityScoreCreation", ["classCreation", "alert"])
         } else {
             for (var i = 0; i < newClass.length; i++) {
                 if (newClass[i].index == classIndex) {
@@ -196,12 +212,12 @@ export default class CharacterController {
     chooseAnotherClass(classIndex) {
         _characterService.replaceClass(classIndex);
         drawCharacterProgress();
-        this.swapScreens('abilityScoreSelection', ['alert','classSelection'])
+        this.swapScreens('abilityScoreCreation', ['alert','classCreation'])
        
     }
 
     showInfo(elementToShow) {
-        document.getElementById(elementToShow).style.zIndex = 5;
+        document.getElementById(elementToShow).style.zIndex = 2;
         document.getElementById(elementToShow).style.visibility = "visible";
     }
 
@@ -218,11 +234,11 @@ export default class CharacterController {
     }
 
     swapScreens(showId, hideIds) {
-        var progressBar = ["alert", "raceSelection", "raceInfo", "classSelection", "classInfo", "abilityScoreSelection"];
+        var divElementIds = ["alert","classCreation", "raceCreation", "abilityScoreCreation", "raceSelection", "raceInfo", "classSelection", "classInfo", "abilityScoreSelection", "abilityScoreInfo"];
         var check = 0;
-        for (var i = 0; i < progressBar.length; i++) {
+        for (var i = 0; i < divElementIds.length; i++) {
             for (var j = 0; j < hideIds.length; j++) {
-                if (hideIds[j] == progressBar[i]) {
+                if (hideIds[j] == divElementIds[i]) {
                     //console.log("CLOSING")
                     this.hide(hideIds[j])
                     check++
@@ -264,21 +280,30 @@ export default class CharacterController {
     }
     
     generateAbilityScore(ability) {
-        var num = randomNumber();
+        var num = randomDSix();
         document.getElementById(ability.toLowerCase()).innerHTML = num;
         this.setAbilityScore(ability, num)
-    }
-
-    saveAbilityScores() {
-        var abilityScores = _characterService.AbilityScoresInfo
-        for (var i = 0; i < abilityScores.length; i++) {
-            console.log(abilityScores[i].full_name, abilityScores[i].points)
-        }
     }
 
     setAbilityScore(ability, num) {
         _characterService.setAbilityScore(ability, num)
     }
+
+    saveAbilityScores() {
+        var abilityScoreCheck = _characterService.Character;
+      //  var abilityScores = _characterService.AbilityScoresInfo
+
+        if (abilityScoreCheck[2] == undefined) {
+            console.log("SAVING SCORES")
+            _characterService.saveAbilityScores()
+        } else {
+            console.log("REPLACING SCORES")
+            _characterService.replaceAbilityScores()
+        }        
+        drawCharacterProgress()
+    }
+
+    
 
 
 }

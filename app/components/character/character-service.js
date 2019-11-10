@@ -30,7 +30,6 @@ let _state = {
     //  class: {},
     abilityScores: {},
     abilityScoresInfo: [],
-    abilityScoresData: [],
     levels:{ }
 }
 
@@ -58,7 +57,7 @@ function _setState(prop, data) {
         _state[prop].push(data);
     } else if (prop == "abilityScoresData") {
         _state[prop] = data.slice();
-    } else if (prop == "character" && (data.details instanceof CharacterRace) || (data.details instanceof CharacterClass)) {
+    } else if (prop == "character") {
         _state[prop].push(data);
     } else {
         _state[prop] = data 
@@ -131,8 +130,15 @@ export default class CharacterService {
             }
         }
     }
+
+    replaceAbilityScores() {
+        let abilityScores = _state.abilityScoresInfo;
+        _replaceInState('character', {'details': abilityScores}, 'abilityScores')
+    }
+
     saveAbilityScores() {
-        _setState('')
+        let abilityScores = _state.abilityScoresInfo;
+        _setState('character', {'details': abilityScores})
     }
 
     setAbilityScore(ability, num) {
@@ -142,14 +148,7 @@ export default class CharacterService {
             if (abilities[i].name == ability) {
                 abilities[i].setPoints(num)
             }
-        }/*
-        for (var j = 0; j < abilities.length; j++) {
-            var abilities2 = _state.abilityScoresInfo;
-
-            console.log(`'${abilities2[j].full_name}' 2`, abilities2[j].points)
-
-            console.log(`'${abilities[j].full_name}' 1`, abilities[j].points)
-        }*/
+        }
     }
 
     replaceClass(classIndex) {

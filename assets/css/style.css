@@ -22,63 +22,63 @@
         padding: 0px;
     }
 
-    #raceSelection {
-        position: absolute;
-        background-color: aliceblue;
+    #raceCreation {
+        position:absolute;
         margin: 0px;
         padding: 0px;
-        z-index: 1;
         width: inherit;
-        top: 350px;
-    }
-
-    #classSelection {
-        position: absolute;
-        background-color: aliceblue;
-        margin: 0px;
-        padding: 0px;
-        visibility: hidden;
-        z-index: 0;
-        top:350px;
-    }
-
-    #abilityScoreSelection {
-        position: absolute;
-        background-color: aliceblue;
-        margin: 0px;
-        padding: 0px;
-        visibility: hidden;
-        z-index: 0;
+        top: 50px;
+        background-color: teal;
     }
 
     #raceInfo {
-        position: absolute;
+        position:relative;
         margin: 0px;
         padding: 0px;
         height: 300px;
-        width: inherit;
-        top:50px;
-        z-index: 3;
-        background-color: burlywood;
-        overflow:scroll;
+        width: 100%;
+        background-color: lawngreen;
     }
 
     #raceInfo p {
         margin: 0px;
         padding: 0px;
-        background-color:orangered;
+        background-color: orangered;
     }
 
-    #classInfo {
+    #raceSelection {
+        background-color: aliceblue;
+        margin: 0px;
+        padding: 0px;
+        width: inherit;
+      
+    }
+
+    #classCreation {
+        visibility:hidden;
         position: absolute;
         margin: 0px;
         padding: 0px;
-        height: 300px;
         width: inherit;
         top: 50px;
-        z-index: 3;
-        background-color: burlywood;
-        overflow: scroll;
+        background-color: rosybrown;
+    }
+
+
+    #classSelection {
+        background-color: aliceblue;
+        margin: 0px;
+        padding: 0px;
+        width: inherit;
+    }
+
+    #classInfo {
+        position: relative;
+        margin: 0px;
+        padding: 0px;
+        height: 300px;
+        width: 100%;
+        background-color: lawngreen;
     }
 
     #classInfo p {
@@ -86,6 +86,37 @@
         padding: 0px;
         background-color: orangered;
     }
+
+    #abilityScoreCreation {
+        visibility:hidden;
+        position: absolute;
+        margin: 0px;
+        padding: 0px;
+        width: inherit;
+        top: 50px;
+        background-color: rosybrown;
+    }
+
+    #abilityScoreSelection {
+        background-color: aliceblue;
+        margin: 0px;
+        padding: 0px;
+        width: inherit;
+        
+    }
+
+    #abilityScoreInfo {
+        position: relative;
+        margin: 0px;
+        padding: 0px;
+        height: 300px;
+        width: 100%;
+        z-index:0;
+        background-color: lawngreen;
+    }
+
+
+    
 
     #chooseRace {
         position:absolute;
