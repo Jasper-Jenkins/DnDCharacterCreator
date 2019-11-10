@@ -93,13 +93,13 @@ function drawChooseAnotherRace(newRace) {
     if (character[0].details.name == newRace.name) {
         template += `<div class="col-12"><p>You already have ${character[0].details.name} chosen as a race.</p> 
                      <div class="row justify-content-center text-center">
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreSelection', ['alert', 'raceSelection'])"><p>Choose another</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'raceCreation'])"><p>Choose another</p></div>
                      </div>`   
     } else {
         template += `<div class="col-12"><p>You already have chosen ${character[0].details.name} as a race. Would you rather be ${newRace.name}</p> 
                      <div class="row justify-content-center text-center">
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherRace(${newRace.index})"><p>Change to ${newRace.name}</p></div>
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Continue as ${character[0].details.name}</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('classCreation', ['alert', 'raceCreation'])"><p>Continue as ${character[0].details.name}</p></div>
                      </div>`
     }                
     document.getElementById('alert').innerHTML = template;
@@ -109,7 +109,7 @@ function drawChooseAnotherClass(newClass) {
     var template = '';
     var character = _characterService.Character;
     if (character[1].details.name == newClass.name) {
-        template += `<div class="col-12"><p>You already have ${character[1].details.name} chosen as a race.</p> 
+        template += `<div class="col-12"><p>You already have ${character[1].details.name} chosen as a class.</p> 
                      <div class="row justify-content-center text-center">
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Choose another</p></div>
                      </div>`
@@ -117,7 +117,7 @@ function drawChooseAnotherClass(newClass) {
         template += `<div class="col-12"><p>You already have chosen ${character[1].details.name} as a race. Would you rather be ${newClass.name}</p> 
                      <div class="row justify-content-center text-center">
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherClass(${newClass.index})"><p>Change to ${newClass.name}</p></div>
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreSelection', ['alert', 'classSelection'])"><p>Continue as ${character[1].details.name}</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'classCreation'])"><p>Continue as ${character[1].details.name}</p></div>
                      </div>`;
     }
 
@@ -176,9 +176,8 @@ export default class CharacterController {
         } else {
             for (var i = 0; i < newRace.length; i++) {
                 if (newRace[i].index == raceIndex) {
-                    drawChooseAnotherRace(newRace[i]);
+                    drawChooseAnotherRace(newRace[i])
                     this.swapScreens("alert", [])
-
                 }
             }
         }
@@ -188,7 +187,7 @@ export default class CharacterController {
     chooseAnotherRace(raceIndex) {
         _characterService.replaceRace(raceIndex);
         drawCharacterProgress();
-        this.swapScreens("classcreation", ["alert", "raceCreation"]);
+        this.swapScreens("classCreation", ["alert", "raceCreation"]);
     }
         
     chooseClass(classIndex) {
@@ -260,17 +259,7 @@ export default class CharacterController {
         }
     }
 
-    swapScreen(index) {
-        var progressBar = ["raceSelection", "classSelection", "abilityScoreSelection"];
-
-        for (var i = 0; i < progressBar.length; i++) {
-            if (i == index) {
-                this.show(progressBar[i])
-            } else {
-                this.hide(progressBar[i])
-            }
-        }
-    }
+    
     
     generateAbilityScores() {
         var abilityScores = _characterService.AbilityScores;
