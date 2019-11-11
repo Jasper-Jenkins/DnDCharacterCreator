@@ -1,7 +1,7 @@
 export default class CharacterAbilityScore {
     constructor(data) {
 
-        console.log('[Character Ability Score Data]', data);
+      //  console.log('[Character Ability Score Data]', data);
         this.desc = data.desc;
         this.full_name = data.full_name;
         this.index = data.index;
@@ -13,7 +13,7 @@ export default class CharacterAbilityScore {
     }
 
     setPoints(points) {
-        console.log("ability set", this.name);
+    //    console.log("ability set", this.name);
         this.points = points;
     }
 } 

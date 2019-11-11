@@ -48,7 +48,7 @@ let _subscribers = {
 function _setStateCharacter(prop, data) {
     if (prop == "character" && (data.details instanceof CharacterRace) || (data.details instanceof CharacterClass)) {
         _state[prop].push(data);
-        console.log('Eureka!!!!!', data.details)
+    //    console.log('Eureka!!!!!', data.details)
     }
 }
 
@@ -67,13 +67,13 @@ function _setState(prop, data) {
 
 function _replaceInState(prop, data, key) {
     if (key == 'race') {
-        console.log('Eureka!Race!', data)
+       // console.log('Eureka!Race!', data)
         _state[prop][0] = data;
     } else if (key == 'class') {
-        console.log('Eureka!Class!', data)
+       // console.log('Eureka!Class!', data)
         _state[prop][1] = data;
     } else if (key == 'abilityScores') {
-        console.log('Eureka!AbilityPoints!', data)
+        //console.log('Eureka!AbilityPoints!', data)
         _state[prop][2] = data
     };
 }
@@ -143,7 +143,6 @@ export default class CharacterService {
 
     setAbilityScore(ability, num) {
         let abilities = _state.abilityScoresInfo;
-        
         for (var i = 0; i < abilities.length; i++) {
             if (abilities[i].name == ability) {
                 abilities[i].setPoints(num)
@@ -246,7 +245,7 @@ export default class CharacterService {
     getSpecificAbilityScore(url) {
         characterApi.get(url)
             .then(res => {
-                console.log("Ability Score Info", res.data)
+            //    console.log("Ability Score Info", res.data)
                 _setState('abilityScoresInfo', new CharacterAbilityScore(res.data))
             }).catch(err => {
                 console.log("Error requesting ability score info ", err)
