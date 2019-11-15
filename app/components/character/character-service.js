@@ -11,7 +11,11 @@ import CharacterClass from "../../models/character-class.js"
 //Class for handling ability scores
 import CharacterAbilityScores from "../../models/character-abilityscores.js"
 import CharacterAbilityScore from "../../models/character-abilityscore.js"
- 
+import CharacterProficiencies from "../../models/character-proficiencies.js"
+
+import CharacterProficienciesService from "./character-proficiencies-service.js"
+
+const _characterProficienciesService = new CharacterProficienciesService(); 
 
 // @ts-ignore
 const characterApi = axios.create({
@@ -30,7 +34,8 @@ let _state = {
     //  class: {},
     abilityScores: {},
     abilityScoresInfo: [],
-    levels:{ }
+    levels: {},
+    proficiencies: {}
 }
 
 let _subscribers = {
@@ -42,7 +47,8 @@ let _subscribers = {
     classesInfo: [],
    // class: [],
     abilityScores: [],
-    abilityScoresInfo: []
+    abilityScoresInfo: [],
+    proficiencies: []
 }
 
 function _setStateCharacter(prop, data) {
@@ -80,6 +86,10 @@ function _replaceInState(prop, data, key) {
 
 export default class CharacterService {
 
+    constructor() {
+        _characterProficienciesService.getAllProficiencies();
+    }
+
     get Character() { return _state.character }
            
     get Races() { return _state.races; }
@@ -99,6 +109,10 @@ export default class CharacterService {
     get AbilityScoresInfo() { return _state.abilityScoresInfo }
 
     get AbilityScoreData() { return _state.abilityScoreData }
+
+
+    get Proficiencies() { return _state.proficiencies }
+
 
     addSubscriber(prop, fn) {
         _subscribers[prop].push(fn)
@@ -131,6 +145,16 @@ export default class CharacterService {
         }
     }
 
+    
+    setProficiencies() {
+        var proficiencies = _characterProficienciesService.Proficiencies;
+        console.log("SETTING PROFICIENCIES TO SERVICE STATE: ", proficiencies)
+
+        //    _setState('proficiencies', new CharacterProficiencies(data))
+    }
+
+
+
     replaceAbilityScores() {
         let abilityScores = _state.abilityScoresInfo;
         _replaceInState('character', {'details': abilityScores}, 'abilityScores')
@@ -138,7 +162,8 @@ export default class CharacterService {
 
     saveAbilityScores() {
         let abilityScores = _state.abilityScoresInfo;
-        _setState('character', {'details': abilityScores})
+        _setState('character', { 'details': abilityScores })
+        this.setProficiencies();
     }
 
     setAbilityScore(ability, num) {
@@ -179,6 +204,7 @@ export default class CharacterService {
             this.getSpecificAbilityScore(abilityScores.results[i].url)
         }
     }
+
 
     getAllRaces() {
         console.log('Requesting the races of Faerun from the DnD API')

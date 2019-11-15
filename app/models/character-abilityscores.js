@@ -27,6 +27,18 @@ export default class CharacterAbilityScores {
 
         return template;
     }
+    /*
 
+    get AllScoreSelectorTemplate() {
+      
+        templateTwo += `<div class="col-12 text-center" onclick="app.controllers.characterController.generateAbilityScores()">
+                         <p>Generate All scores</p>
+                     </div>
+                     <div class="col-12 text-center" onclick="app.controllers.characterController.saveAbilityScores()">
+                         <p>Save scores</p>
+                     </div>   
+                     `
 
+        document.getElementById('abilityScoreSelection').innerHTML = templateTwo;
+    }*/
 } 

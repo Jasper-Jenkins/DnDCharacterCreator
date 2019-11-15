@@ -5,6 +5,13 @@ import CharacterAbilityScore from "../../models/character-abilityscore.js";
 
 const _characterService = new CharacterService();
 
+function drawProficiencies() {
+    var proficiencies = _characterService.Proficiencies
+    console.log("TRYING TO DRAW PROFICIENCIES: ", proficiencies)
+    var template = ''
+  //  template += 
+}
+
 function drawRaceSelection() {
     var races = _characterService.Races;
     var template = '';
@@ -18,7 +25,6 @@ function drawRaceInfo(raceName) {
     for (var i = 0; i < race.length; i++) {
         if (race[i].name == raceName) {
             template += race[i].Template;
-          //  console.log(template)
             document.getElementById('raceInfo').innerHTML = template;
             break;
         }
@@ -165,7 +171,7 @@ export default class CharacterController {
         this.showInfo('classInfo');
     }
 
-    disableSelection(raceIndex) {
+    disableRaceSelection(raceIndex) {
         var races = _characterService.RacesInfo;
         var raceSelection = _characterService.Races;
         var template = ''
@@ -175,8 +181,20 @@ export default class CharacterController {
             }
         }
         document.getElementById('raceSelection').innerHTML = template;
-        console.log("RACES", races)
     }
+
+    disableClassSelection(classIndex) {
+        var classes = _characterService.ClassesInfo;
+        var classSelection = _characterService.Classes;
+        var template = ''
+        for (var i = 0; i < classes.length; i++) {
+            if (classIndex == classes[i].index) {
+                template += classSelection.disableSelection(classes[i].name)
+            }
+        }
+        document.getElementById('classSelection').innerHTML = template;
+    }
+
 
     chooseRace(raceIndex) {
         var raceCheck = _characterService.Character;
@@ -184,7 +202,7 @@ export default class CharacterController {
         if (raceCheck[0] == undefined) {
             _characterService.chosenRace(raceIndex);
             this.swapScreens("classCreation", ["raceCreation", "alert"])
-            this.disableSelection(raceIndex)
+            this.disableRaceSelection(raceIndex)
         } else {
             for (var i = 0; i < newRace.length; i++) {
                 if (newRace[i].index == raceIndex) {
@@ -201,7 +219,7 @@ export default class CharacterController {
         _characterService.replaceRace(raceIndex);
         drawCharacterProgress();
         this.swapScreens("classCreation", ["alert", "raceCreation"]);
-        this.disableSelection(raceIndex)
+        this.disableRaceSelection(raceIndex)
     }
         
     chooseClass(classIndex) {
@@ -210,11 +228,11 @@ export default class CharacterController {
         if (classCheck[1] == undefined) {
             _characterService.chosenClass(classIndex);
             this.swapScreens("abilityScoreCreation", ["classCreation", "alert"])
+            this.disableClassSelection(classIndex)
         } else {
             for (var i = 0; i < newClass.length; i++) {
                 if (newClass[i].index == classIndex) {
                     drawChooseAnotherClass(newClass[i]);
-                    
                     this.swapScreens("alert", ["classInfo"])
                 }
             }
@@ -225,8 +243,8 @@ export default class CharacterController {
     chooseAnotherClass(classIndex) {
         _characterService.replaceClass(classIndex);
         drawCharacterProgress();
-        this.swapScreens('abilityScoreCreation', ['alert','classCreation'])
-       
+        this.swapScreens('abilityScoreCreation', ['alert', 'classCreation'])
+        this.disableClassSelection(classIndex)
     }
 
     showInfo(elementToShow) {
@@ -252,12 +270,10 @@ export default class CharacterController {
         for (var i = 0; i < divElementIds.length; i++) {
             for (var j = 0; j < hideIds.length; j++) {
                 if (hideIds[j] == divElementIds[i]) {
-                    //console.log("CLOSING")
                     this.hide(hideIds[j])
                     check++
                 }
                 if (check == hideIds.length) {
-                    //console.log("DID IT??")
                     break;
                 }
             }

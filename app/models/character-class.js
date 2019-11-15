@@ -1,6 +1,6 @@
 export default class CharacterClass {
     constructor(data) {
-      //  console.log('[Characer Class Data]', data);
+       //console.log('[Characer Class Data]', data);
      
         this.class_levels = data.class_levels;
         this.hit_die = data.hit_die;
@@ -22,7 +22,7 @@ export default class CharacterClass {
                             <p class="close" onclick="app.controllers.characterController.hide('classInfo')">Close</p>
                             <p> Class: ${this.name} </p>
                             <p> Hit die: ${this.hit_die} </p>
-                            <p> Starting equipment: ${this.starting_equipment[0]}</p>
+                            <p> Starting equipment: ${this.starting_equipment.class}</p>
                             <div class="row text-center" onclick="app.controllers.characterController.chooseClass(${this.index})">
                                 <div class="col-12" id="chooseClass"> 
                                     <p>Choose ${this.name}</p>
