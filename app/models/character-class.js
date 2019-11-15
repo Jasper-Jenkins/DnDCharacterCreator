@@ -10,7 +10,7 @@ export default class CharacterClass {
         this.proficiency_choices = data.proficiency_choices;
         this.saving_throws = data.saving_throws;
         if (data.spellcasting == undefined) {
-            this.spellcasting = []
+            this.spellcasting = {}
         } else{
             this.spellcasting = data.spellcasting;
         }
@@ -18,11 +18,15 @@ export default class CharacterClass {
         this.subclasses = data.subclasses;
     }
     get Template() {
+        var proficiencies = ''
+        for (var i = 0; i < this.proficiencies.length; i++) {
+            proficiencies += `<span> ${this.proficiencies[i].name}</span>`
+        }
         var template = `<div class="col-12">
                             <p class="close" onclick="app.controllers.characterController.hide('classInfo')">Close</p>
                             <p> Class: ${this.name} </p>
                             <p> Hit die: ${this.hit_die} </p>
-                            <p> Starting equipment: ${this.starting_equipment.class}</p>
+                            <p> Starting Proficiencies: ${proficiencies}</p>
                             <div class="row text-center" onclick="app.controllers.characterController.chooseClass(${this.index})">
                                 <div class="col-12" id="chooseClass"> 
                                     <p>Choose ${this.name}</p>

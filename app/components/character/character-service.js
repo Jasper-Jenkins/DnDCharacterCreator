@@ -148,7 +148,11 @@ export default class CharacterService {
     
     setProficiencies() {
         var proficiencies = _characterProficienciesService.Proficiencies;
-        console.log("SETTING PROFICIENCIES TO SERVICE STATE: ", proficiencies)
+        var proficiencyInfo = _characterProficienciesService.ProficiencyInfo;
+      //  console.log("SETTING PROFICIENCIES TO SERVICE STATE: ", proficiencies)
+        for (var i = 0; i < proficiencyInfo.length; i++) {
+        //    console.log("proficiency Info", proficiencyInfo[i].name)
+        }
 
         //    _setState('proficiencies', new CharacterProficiencies(data))
     }

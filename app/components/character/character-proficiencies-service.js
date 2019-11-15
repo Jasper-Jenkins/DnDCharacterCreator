@@ -8,16 +8,16 @@ const characterApi = axios.create({
 
 let _state = {
     proficiencies: {},
-    proficiency: []
+    proficiencyInfo: []
 }
 
 let _subscribers = {
     proficiencies: [],
-    proficiency:[]
+    proficiencyInfo:[]
 }
 
 function _setState(prop, data) {
-    if (prop == 'proficiency') {
+    if (prop == 'proficiencyInfo') {
         _state[prop].push(data)
     } else {
         _state[prop] = data
@@ -29,7 +29,8 @@ export default class CharacterProficienciesService {
 
     get Proficiencies() { return _state.proficiencies }
 
-
+    get ProficiencyInfo() { return _state.proficiencyInfo }
+    
     proficiencyInfo() {
         var proficiencies = _state.proficiencies;
         for (var i = 0; i < 10; i++) {
@@ -40,7 +41,7 @@ export default class CharacterProficienciesService {
     getAllProficiencies() {
     characterApi.get('/proficiencies/')
         .then(res => {
-            console.log("Proficiencies", res.data);
+           // console.log("Proficiencies", res.data);
             _setState('proficiencies', new CharacterProficiencies(res.data))
             this.proficiencyInfo();
         }).catch(err => {
@@ -51,8 +52,8 @@ export default class CharacterProficienciesService {
     getSpecificProficiency(url) {
         characterApi.get(url)
             .then(res => {
-                console.log("Specific Proficiency", res.data)
-                //  _setState('proficiency', new CharacterProficiency(res.data))    
+             //   console.log("Specific Proficiency", res.data)
+                _setState('proficiencyInfo', new CharacterProficiency(res.data))    
             }).catch(err => {
                 console.log("Error requesting a specific proficiency")
             })
