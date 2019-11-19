@@ -8,6 +8,6 @@
     "\\assets",
     "\\assets\\css"
   ],
-  "SelectedNode": "\\app\\models\\character-abilityscores.js",
+  "SelectedNode": "\\app\\components\\character\\character-service.js",
   "PreviewInSolutionExplorer": false
 }

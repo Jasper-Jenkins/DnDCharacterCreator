@@ -11,7 +11,7 @@ import CharacterClass from "../../models/character-class.js"
 //Class for handling ability scores
 import CharacterAbilityScores from "../../models/character-abilityscores.js"
 import CharacterAbilityScore from "../../models/character-abilityscore.js"
-import CharacterProficiencies from "../../models/character-proficiencies.js"
+import CharacterProficiency from "../../models/character-proficiency.js"
 
 import CharacterProficienciesService from "./character-proficiencies-service.js"
 
@@ -35,7 +35,8 @@ let _state = {
     abilityScores: {},
     abilityScoresInfo: [],
     levels: {},
-    proficiencies: {}
+    proficiencies: [],
+    classProficiencies: []
 }
 
 let _subscribers = {
@@ -48,7 +49,8 @@ let _subscribers = {
    // class: [],
     abilityScores: [],
     abilityScoresInfo: [],
-    proficiencies: []
+    proficiencies: [],
+    classProficiencies: []
 }
 
 function _setStateCharacter(prop, data) {
@@ -59,7 +61,7 @@ function _setStateCharacter(prop, data) {
 }
 
 function _setState(prop, data) {
-    if (prop == "racesInfo" || prop == "classesInfo" || prop == "abilityScoresInfo") {
+    if (prop == "racesInfo" || prop == "classesInfo" || prop == "abilityScoresInfo" || prop == "proficiencies" || prop == "classProficiencies") {
         _state[prop].push(data);
     } else if (prop == "abilityScoresData") {
         _state[prop] = data.slice();
@@ -125,6 +127,7 @@ export default class CharacterService {
                 _setState('character', { 'details': new CharacterRace(races[i]) })
             }
         }
+        this.setProficiencies();
     }
 
     replaceRace(raceIndex) {
@@ -147,16 +150,25 @@ export default class CharacterService {
 
     
     setProficiencies() {
-        var proficiencies = _characterProficienciesService.Proficiencies;
-        var proficiencyInfo = _characterProficienciesService.ProficiencyInfo;
+        var proficiency = _characterProficienciesService.Proficiency
       //  console.log("SETTING PROFICIENCIES TO SERVICE STATE: ", proficiencies)
-        for (var i = 0; i < proficiencyInfo.length; i++) {
-        //    console.log("proficiency Info", proficiencyInfo[i].name)
+        for (var i = 0; i < proficiency.length; i++) {
+            console.log("proficiency Info", proficiency[i].name)
+            _setState('proficiencies', new CharacterProficiency(proficiency[i]))
+        }
+    }
+    setClassProficiencies(className) {
+        var proficiencies = _characterProficienciesService.Proficiency
+        for (var i = 0; i < proficiencies.length; i++) {
+            for (var j = 0; j < proficiencies[i].classes.length; j++) {
+                if (proficiencies[i].classes[j].name == className) {
+                    console.log("SETTING CLASS PROFICIENCEIS", proficiencies[i])
+                    _setState('classProficiencies', new CharacterProficiency(proficiencies[i]))
+                }
+            }
         }
 
-        //    _setState('proficiencies', new CharacterProficiencies(data))
     }
-
 
 
     replaceAbilityScores() {
@@ -167,7 +179,7 @@ export default class CharacterService {
     saveAbilityScores() {
         let abilityScores = _state.abilityScoresInfo;
         _setState('character', { 'details': abilityScores })
-        this.setProficiencies();
+      
     }
 
     setAbilityScore(ability, num) {

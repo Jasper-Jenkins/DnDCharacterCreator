@@ -22,6 +22,8 @@ export default class CharacterClass {
         for (var i = 0; i < this.proficiencies.length; i++) {
             proficiencies += `<span> ${this.proficiencies[i].name}</span>`
         }
+
+
         var template = `<div class="col-12">
                             <p class="close" onclick="app.controllers.characterController.hide('classInfo')">Close</p>
                             <p> Class: ${this.name} </p>

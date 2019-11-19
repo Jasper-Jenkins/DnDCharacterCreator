@@ -4,7 +4,7 @@ export default class CharacterProficiency {
         this.classes = data.classes
         this.index = data.index
         this.name = data.name
-        this.races = data.race
+        this.races = data.races
         this.type = data.type
         this.url = data.url
         this._id = data._id

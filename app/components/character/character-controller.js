@@ -5,12 +5,27 @@ import CharacterAbilityScore from "../../models/character-abilityscore.js";
 
 const _characterService = new CharacterService();
 
-function drawProficiencies() {
+function drawRaceProficiencies() {
     var proficiencies = _characterService.Proficiencies
     console.log("TRYING TO DRAW PROFICIENCIES: ", proficiencies)
     var template = ''
   //  template += 
 }
+
+function drawClassProficiencies() {
+    var proficiencies = _characterService.Proficiencies
+    console.log("TRYING TO DRAW CLASS PROFICIENCIES: ", proficiencies)
+    var template = ''
+    //  template += 
+}
+
+function drawCharacterClassProficiencyChoices(classChoice) {
+
+    console.log(classChoice)
+    var classProficiencies = classChoice.details.proficiency_choices
+    console.log("drawing class proficiency choices", classProficiencies)
+}
+
 
 function drawRaceSelection() {
     var races = _characterService.Races;
@@ -130,6 +145,8 @@ function drawChooseAnotherClass(newClass) {
     document.getElementById('alert').innerHTML = template;
 }
 
+
+
 function randomDSix() {
     var abilityPoints = 0;
     for (var i = 0; i < 3; i++) {
@@ -211,6 +228,7 @@ export default class CharacterController {
                 }
             }
         }
+        drawRaceProficiencies();
         drawCharacterProgress();
     }
            
@@ -237,6 +255,8 @@ export default class CharacterController {
                 }
             }
         }
+        drawCharacterClassProficiencyChoices(classCheck[1]);
+
         drawCharacterProgress();
     }
 
@@ -280,7 +300,7 @@ export default class CharacterController {
             if (check == hideIds.length) {
                 break;
             }
-            console.log("Iterating swap screen")
+    //        console.log("Iterating swap screen")
         }
         if (showId == "alert") {
             this.showInfo(showId)
@@ -326,4 +346,3 @@ export default class CharacterController {
 
 
 }
-;
