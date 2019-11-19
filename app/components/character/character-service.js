@@ -25,14 +25,16 @@ const characterApi = axios.create({
 });
 
 let _state = {
-    character: [],
+    characters: [],
+    //character: [],
+    character: {},
     races: {},
     racesInfo: [],
     //race: {},
     classes: {},
     classesInfo: [],
     //  class: {},
-    abilityScores: {},
+    abilityScoresData: {},
     abilityScoresInfo: [],
     levels: {},
     proficiencies: [],
@@ -43,11 +45,12 @@ let _subscribers = {
     character: [],
     races: [],
     racesInfo: [],
-    //race: [],
+    race: [],
     classes: [],
     classesInfo: [],
-   // class: [],
-    abilityScores: [],
+    class: [],
+    abilityScores:[],
+    abilityScoresData: [],
     abilityScoresInfo: [],
     proficiencies: [],
     classProficiencies: []
@@ -64,26 +67,37 @@ function _setState(prop, data) {
     if (prop == "racesInfo" || prop == "classesInfo" || prop == "abilityScoresInfo" || prop == "proficiencies" || prop == "classProficiencies") {
         _state[prop].push(data);
     } else if (prop == "abilityScoresData") {
-        _state[prop] = data.slice();
-    } else if (prop == "character") {
-        _state[prop].push(data);
+        _state[prop] = data;
+    } else if (prop == "race") {
+        _state['character'][prop] = data;
+    } else if (prop == "class") {
+        _state['character'][prop] = data;
+    } else if (prop == "abilityScores") {
+        _state['character'][prop] = data;
     } else {
         _state[prop] = data 
     }
     _subscribers[prop].forEach(fn => fn());
 }
 
-function _replaceInState(prop, data, key) {
-    if (key == 'race') {
+
+
+
+
+
+
+
+function _replaceInState(prop, data) {
+    if (prop == 'race') {
        // console.log('Eureka!Race!', data)
-        _state[prop][0] = data;
-    } else if (key == 'class') {
+        _state["character"][prop] = data;
+    } else if (prop == 'class') {
        // console.log('Eureka!Class!', data)
-        _state[prop][1] = data;
-    } else if (key == 'abilityScores') {
+        _state["character"][prop] = data;
+    } else if (prop == 'abilityScores') {
         //console.log('Eureka!AbilityPoints!', data)
-        _state[prop][2] = data
-    };
+        _state["character"][prop] = data
+    }
 }
 
 export default class CharacterService {
@@ -106,7 +120,7 @@ export default class CharacterService {
 
     //get Class() { return _state.class }  
 
-    get AbilityScores() { return _state.abilityScores }
+    get AbilityScores() { return _state.abilityScoresData }
 
     get AbilityScoresInfo() { return _state.abilityScoresInfo }
 
@@ -124,7 +138,7 @@ export default class CharacterService {
         let races = _state.racesInfo; 
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-                _setState('character', { 'details': new CharacterRace(races[i]) })
+                _setState( 'race', new CharacterRace(races[i]))
             }
         }
         this.setProficiencies();
@@ -134,7 +148,7 @@ export default class CharacterService {
         let races = _state.racesInfo;
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-                _replaceInState('character', { 'details': new CharacterRace(races[i]) }, 'race')
+                _replaceInState('race', new CharacterRace(races[i]))
             }
         }
     }    
@@ -143,11 +157,10 @@ export default class CharacterService {
         let classes = _state.classesInfo;
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
-                _setStateCharacter('character', { 'details': new CharacterClass(classes[i]) })
+                _setState('class', new CharacterClass(classes[i]))
             }
         }
     }
-
     
     setProficiencies() {
         var proficiency = _characterProficienciesService.Proficiency
@@ -157,6 +170,7 @@ export default class CharacterService {
             _setState('proficiencies', new CharacterProficiency(proficiency[i]))
         }
     }
+
     setClassProficiencies(className) {
         var proficiencies = _characterProficienciesService.Proficiency
         for (var i = 0; i < proficiencies.length; i++) {
@@ -167,18 +181,16 @@ export default class CharacterService {
                 }
             }
         }
-
     }
-
 
     replaceAbilityScores() {
         let abilityScores = _state.abilityScoresInfo;
-        _replaceInState('character', {'details': abilityScores}, 'abilityScores')
+        _replaceInState('abilityScores', abilityScores)
     }
 
     saveAbilityScores() {
         let abilityScores = _state.abilityScoresInfo;
-        _setState('character', { 'details': abilityScores })
+        _setState( 'abilityScores', abilityScores)
       
     }
 
@@ -195,7 +207,7 @@ export default class CharacterService {
         let classes = _state.classesInfo;
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
-                _replaceInState('character', { 'details': new CharacterClass(classes[i]) }, 'class')
+                _replaceInState('class', new CharacterClass(classes[i]))
             }
         }
     }
@@ -215,7 +227,9 @@ export default class CharacterService {
     }
 
     fillAbilityScoreInfo() {
-        var abilityScores = _state.abilityScores;
+        var abilityScores = _state.abilityScoresData;
+
+    //    console.log("ABIIBSIISIFSDFD", abilityScores)
         for (var i = 0; i < abilityScores.count; i++) {
             this.getSpecificAbilityScore(abilityScores.results[i].url)
         }
@@ -226,7 +240,6 @@ export default class CharacterService {
         console.log('Requesting the races of Faerun from the DnD API')
         characterApi.get("/races/")
             .then(res => {
-    //            console.log('All the races of Faerun: ', res.data)
                 _setState('races', new CharacterRaces(res.data))
                 this.fillRaceSelection();    
             })                    
@@ -276,8 +289,8 @@ export default class CharacterService {
     getAllAbilityScores() {
         characterApi.get('/ability-scores/')
             .then(res => {
-             //  console.log("Ability Scores", res.data);
-                _setState('abilityScores', new CharacterAbilityScores(res.data))
+               console.log("Ability Scores", res.data);
+                _setState('abilityScoresData', new CharacterAbilityScores(res.data))
                 this.fillAbilityScoreInfo();
             }).catch(err => {
                 console.log("Error requesting ability scores: ", err)
@@ -287,7 +300,6 @@ export default class CharacterService {
     getSpecificAbilityScore(url) {
         characterApi.get(url)
             .then(res => {
-            //    console.log("Ability Score Info", res.data)
                 _setState('abilityScoresInfo', new CharacterAbilityScore(res.data))
             }).catch(err => {
                 console.log("Error requesting ability score info ", err)

@@ -1,7 +1,4 @@
 import CharacterService from "./character-service.js";
-import CharacterRace from "../../models/character-race.js";
-import CharacterClass from "../../models/character-class.js";
-import CharacterAbilityScore from "../../models/character-abilityscore.js";
 
 const _characterService = new CharacterService();
 
@@ -22,8 +19,8 @@ function drawClassProficiencies() {
 function drawCharacterClassProficiencyChoices(classChoice) {
 
     console.log(classChoice)
-    var classProficiencies = classChoice.details.proficiency_choices
-    console.log("drawing class proficiency choices", classProficiencies)
+  //  var classProficiencies = classChoice.details.proficiency_choices
+ //   console.log("drawing class proficiency choices", classProficiencies)
 }
 
 
@@ -91,36 +88,34 @@ function drawCharacterProgress() {
     var character = _characterService.Character;
     var template = '';
     console.log("CHARACTER", character)
-    for (var j = 0; j < character.length; j++) {
-        if (character[j].details instanceof CharacterRace) {
-           // console.log("PROGRESS IS BEING MADE in race")
-            template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('raceCreation', ['alert', 'classCreation', 'abilityScoreCreation', 'raceInfo'])">${character[j].details.name}</div> `
+    if (character.race) {
+        // console.log("PROGRESS IS BEING MADE in race")
+        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('raceCreation', ['alert', 'classCreation', 'abilityScoreCreation', 'raceInfo'])">${character.race.name}</div> `
+    }
+    if (character.class) {
+        //console.log("PROGRESS IS BEING MADE in class")
+        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('classCreation', ['alert', 'raceCreation', 'abilityScoreCreation', 'classInfo'])">${character.class.name}</div> `
+    }
+    if (character.abilityScores) {
+        //console.log("PROGRESS IS BEING MADE in ability scores")
+        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'raceCreation', 'classCreation'])">Ability Scores</div> `
         }
-        if (character[j].details instanceof CharacterClass) {
-            //console.log("PROGRESS IS BEING MADE in class")
-            template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('classCreation', ['alert', 'raceCreation', 'abilityScoreCreation', 'classInfo'])">${character[j].details.name}</div> `
-        }
-        if (character[j].details[0] instanceof CharacterAbilityScore) {
-            //console.log("PROGRESS IS BEING MADE in ability scores")
-            template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'raceCreation', 'classCreation'])">Ability Scores</div> `
-        }
-    }   
     document.getElementById('characterProgress').innerHTML = template;
 }
 
 function drawChooseAnotherRace(newRace) {
     var template = '';
     var character = _characterService.Character;
-    if (character[0].details.name == newRace.name) {
-        template += `<div class="col-12"><p>You already have ${character[0].details.name} chosen as a race.</p> 
+    if (character.race.name == newRace.name) {
+        template += `<div class="col-12"><p>You already have ${character.race.name} chosen as a race.</p> 
                      <div class="row justify-content-center text-center">
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'raceCreation'])"><p>Choose another</p></div>
                      </div>`   
     } else {
-        template += `<div class="col-12"><p>You already have chosen ${character[0].details.name} as a race. Would you rather be ${newRace.name}</p> 
+        template += `<div class="col-12"><p>You already have chosen ${character.race.name} as a race. Would you rather be ${newRace.name}</p> 
                      <div class="row justify-content-center text-center">
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherRace(${newRace.index})"><p>Change to ${newRace.name}</p></div>
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('classCreation', ['alert', 'raceCreation'])"><p>Continue as ${character[0].details.name}</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('classCreation', ['alert', 'raceCreation'])"><p>Continue as ${character.race.name}</p></div>
                      </div>`
     }                
     document.getElementById('alert').innerHTML = template;
@@ -129,16 +124,16 @@ function drawChooseAnotherRace(newRace) {
 function drawChooseAnotherClass(newClass) {
     var template = '';
     var character = _characterService.Character;
-    if (character[1].details.name == newClass.name) {
-        template += `<div class="col-12"><p>You already have ${character[1].details.name} chosen as a class.</p> 
+    if (character.class.name == newClass.name) {
+        template += `<div class="col-12"><p>You already have ${character.class.name} chosen as a class.</p> 
                      <div class="row justify-content-center text-center">
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Choose another</p></div>
                      </div>`
     } else {
-        template += `<div class="col-12"><p>You already have chosen ${character[1].details.name} as a race. Would you rather be ${newClass.name}</p> 
+        template += `<div class="col-12"><p>You already have chosen ${character.class.name} as a race. Would you rather be ${newClass.name}</p> 
                      <div class="row justify-content-center text-center">
                            <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherClass(${newClass.index})"><p>Change to ${newClass.name}</p></div>
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'classCreation'])"><p>Continue as ${character[1].details.name}</p></div>
+                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'classCreation'])"><p>Continue as ${character.class.name}</p></div>
                      </div>`;
     }
 
@@ -161,7 +156,7 @@ export default class CharacterController {
     constructor() {
         _characterService.addSubscriber('races', drawRaceSelection);
         _characterService.addSubscriber('classes', drawClassSelection);
-        _characterService.addSubscriber('abilityScores', drawAbilityScoresSelection);
+        _characterService.addSubscriber('abilityScoresData', drawAbilityScoresSelection);
         _characterService.getAllRaces();
         _characterService.getAllClasses();
         _characterService.getAllAbilityScores();
@@ -214,10 +209,11 @@ export default class CharacterController {
 
 
     chooseRace(raceIndex) {
-        var raceCheck = _characterService.Character;
+        var character = _characterService.Character
         var newRace = _characterService.RacesInfo
-        if (raceCheck[0] == undefined) {
-            _characterService.chosenRace(raceIndex);
+        
+        if (character.race == undefined) {
+            _characterService.chosenRace(raceIndex)
             this.swapScreens("classCreation", ["raceCreation", "alert"])
             this.disableRaceSelection(raceIndex)
         } else {
@@ -243,6 +239,8 @@ export default class CharacterController {
     chooseClass(classIndex) {
         var classCheck = _characterService.Character;
         var newClass = _characterService.ClassesInfo;
+
+        console.log("iS CLASS WORKING", classCheck)
         if (classCheck[1] == undefined) {
             _characterService.chosenClass(classIndex);
             this.swapScreens("abilityScoreCreation", ["classCreation", "alert"])
@@ -273,13 +271,13 @@ export default class CharacterController {
     }
 
     show(elementToShow) {
-        console.log("Showing HTML div element: ", elementToShow)
+     //   console.log("Showing HTML div element: ", elementToShow)
         document.getElementById(elementToShow).style.zIndex = 1;
         document.getElementById(elementToShow).style.visibility = "visible";
     }
 
     hide(elementToHide) {
-        console.log("Closing HTML div element: ", elementToHide)
+    //    console.log("Closing HTML div element: ", elementToHide)
         document.getElementById(elementToHide).style.zIndex = 0;
         document.getElementById(elementToHide).style.visibility = "hidden";
     }
@@ -330,7 +328,6 @@ export default class CharacterController {
 
     saveAbilityScores() {
         var abilityScoreCheck = _characterService.Character;
-      //  var abilityScores = _characterService.AbilityScoresInfo
 
         if (abilityScoreCheck[2] == undefined) {
             console.log("SAVING SCORES")

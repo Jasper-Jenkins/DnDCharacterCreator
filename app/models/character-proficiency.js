@@ -1,6 +1,6 @@
 export default class CharacterProficiency {
     constructor(data) {
-        console.log("[Proficiency Data]", data)
+      //  console.log("[Proficiency Data]", data)
         this.classes = data.classes
         this.index = data.index
         this.name = data.name
