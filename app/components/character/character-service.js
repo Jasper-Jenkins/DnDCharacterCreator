@@ -1,4 +1,6 @@
 //import Characters from "../../models/characters.js";
+//import APIService from "./api-service.js"
+
 
 //Classes for handling races
 import CharacterRaces from "../../models/character-races.js"
@@ -56,23 +58,13 @@ let _subscribers = {
     classProficiencies: []
 }
 
-function _setStateCharacter(prop, data) {
-    if (prop == "character" && (data.details instanceof CharacterRace) || (data.details instanceof CharacterClass)) {
-        _state[prop].push(data);
-    //    console.log('Eureka!!!!!', data.details)
-    }
-}
 
 function _setState(prop, data) {
     if (prop == "racesInfo" || prop == "classesInfo" || prop == "abilityScoresInfo" || prop == "proficiencies" || prop == "classProficiencies") {
         _state[prop].push(data);
     } else if (prop == "abilityScoresData") {
         _state[prop] = data;
-    } else if (prop == "race") {
-        _state['character'][prop] = data;
-    } else if (prop == "class") {
-        _state['character'][prop] = data;
-    } else if (prop == "abilityScores") {
+    } else if (prop == "race" || prop == "class" || prop == "abilityScores") {
         _state['character'][prop] = data;
     } else {
         _state[prop] = data 
@@ -141,17 +133,10 @@ export default class CharacterService {
                 _setState( 'race', new CharacterRace(races[i]))
             }
         }
-        this.setProficiencies();
+    //    this.setProficiencies();
     }
 
-    replaceRace(raceIndex) {
-        let races = _state.racesInfo;
-        for (var i = 0; i < races.length; i++) {
-            if (races[i].index == raceIndex) {
-                _replaceInState('race', new CharacterRace(races[i]))
-            }
-        }
-    }    
+     
      
     chosenClass(classIndex) {
         let classes = _state.classesInfo;
@@ -166,7 +151,7 @@ export default class CharacterService {
         var proficiency = _characterProficienciesService.Proficiency
       //  console.log("SETTING PROFICIENCIES TO SERVICE STATE: ", proficiencies)
         for (var i = 0; i < proficiency.length; i++) {
-            console.log("proficiency Info", proficiency[i].name)
+ //           console.log("proficiency Info", proficiency[i].name)
             _setState('proficiencies', new CharacterProficiency(proficiency[i]))
         }
     }
@@ -183,15 +168,9 @@ export default class CharacterService {
         }
     }
 
-    replaceAbilityScores() {
-        let abilityScores = _state.abilityScoresInfo;
-        _replaceInState('abilityScores', abilityScores)
-    }
-
     saveAbilityScores() {
         let abilityScores = _state.abilityScoresInfo;
         _setState( 'abilityScores', abilityScores)
-      
     }
 
     setAbilityScore(ability, num) {

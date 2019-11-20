@@ -55,7 +55,7 @@ function drawClassInfo(className) {
     var template = '';
     for (var i = 0; i < cClass.length; i++) {
         if (cClass[i].name == className) {
-            console.log("eureka");
+         //   console.log("eureka");
             template += cClass[i].Template;
             document.getElementById('classInfo').innerHTML = template;
             break;
@@ -224,24 +224,24 @@ export default class CharacterController {
                 }
             }
         }
-        drawRaceProficiencies();
+      //  drawRaceProficiencies();
         drawCharacterProgress();
     }
            
     chooseAnotherRace(raceIndex) {
-        console.log("RACE INDEX", raceIndex)
-        _characterService.replaceRace(raceIndex);
+     //   console.log("RACE INDEX", raceIndex)
+        _characterService.chosenRace(raceIndex);
         drawCharacterProgress();
         this.swapScreens("classCreation", ["alert", "raceCreation"]);
         this.disableRaceSelection(raceIndex)
     }
         
     chooseClass(classIndex) {
-        var classCheck = _characterService.Character;
+        var character = _characterService.Character;
         var newClass = _characterService.ClassesInfo;
 
-        console.log("iS CLASS WORKING", classCheck)
-        if (classCheck[1] == undefined) {
+        //console.log("iS CLASS WORKING", character)
+        if (character.class == undefined) {
             _characterService.chosenClass(classIndex);
             this.swapScreens("abilityScoreCreation", ["classCreation", "alert"])
             this.disableClassSelection(classIndex)
@@ -253,7 +253,7 @@ export default class CharacterController {
                 }
             }
         }
-        drawCharacterClassProficiencyChoices(classCheck[1]);
+//        drawCharacterClassProficiencyChoices(character.class);
 
         drawCharacterProgress();
     }
@@ -283,7 +283,7 @@ export default class CharacterController {
     }
 
     swapScreens(showId, hideIds) {
-        var divElementIds = ["alert","classCreation", "raceCreation", "abilityScoreCreation", "raceSelection", "raceInfo", "classSelection", "classInfo", "abilityScoreSelection", "abilityScoreInfo"];
+        var divElementIds = ["alert","classCreation", "raceCreation", "abilityScoreCreation"];
         var check = 0;
         for (var i = 0; i < divElementIds.length; i++) {
             for (var j = 0; j < hideIds.length; j++) {
@@ -327,15 +327,7 @@ export default class CharacterController {
     }
 
     saveAbilityScores() {
-        var abilityScoreCheck = _characterService.Character;
-
-        if (abilityScoreCheck[2] == undefined) {
-            console.log("SAVING SCORES")
-            _characterService.saveAbilityScores()
-        } else {
-            console.log("REPLACING SCORES")
-            _characterService.replaceAbilityScores()
-        }        
+        _characterService.saveAbilityScores()
         drawCharacterProgress()
     }
 

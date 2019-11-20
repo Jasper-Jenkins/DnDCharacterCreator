@@ -20,7 +20,6 @@ export default class CharacterRace {
 
     get Template() {
         var template = `<div class="col-12">
-                            <p class="close" onclick="app.controllers.characterController.hide('raceInfo')">Close</p>
                             <p>Race: ${this.name}</p>
                             <p>Ability Bonuses: STR +${this.ability_bonuses[0]}, DEX +${this.ability_bonuses[1]}, CON +${this.ability_bonuses[2]}, INT +${this.ability_bonuses[3]}, WIS +${this.ability_bonuses[4]}, CHA +${this.ability_bonuses[5]}</p>
                             <p>Size: ${this.size} </p>
