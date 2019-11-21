@@ -20,11 +20,15 @@ export default class CharacterRaces {
 
     disableSelection(raceName) {
         var template = ""
+
+
+         
+
         for (var i = 0; i < this.count; i++) {
           //  console.log("WTF", this.results[i])
             if (raceName == this.results[i].name) {
              //   console.log("DISABLED")
-                template += `<button class="selection text-center" disabled id="${this.results[i].name.toLowerCase()}" onclick="app.controllers.characterController.raceInfo('${this.results[i].name}')">
+                template += `<button class="selection text-center" id="${this.results[i].name.toLowerCase()}" onclick="app.controllers.characterController.raceInfo('${this.results[i].name}')">
                                 ${this.results[i].name} 
                              </button>`
             } else {

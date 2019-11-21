@@ -25,21 +25,18 @@ export default class CharacterRace {
         
         var chooseRaceButton = ''
         if (!this.chosen) {
-            chooseRaceButton = `<div class="col-12" id="chooseRace">
-                                    <p>Choose ${this.name}</p>
-                                </div>`
+            chooseRaceButton = `<div class="col-12" id="chooseRace"> <p>Choose ${this.name}</p> </div>`
         } else {
             chooseRaceButton = ''
         }
                
         var template = `<div class="col-12">
-                            <p>Race: ${this.name}</p>
+                            <h1 class="text-center"> ${this.name}</h1>
                             <p>Ability Bonuses: STR +${this.ability_bonuses[0]}, DEX +${this.ability_bonuses[1]}, CON +${this.ability_bonuses[2]}, INT +${this.ability_bonuses[3]}, WIS +${this.ability_bonuses[4]}, CHA +${this.ability_bonuses[5]}</p>
                             <p>Size: ${this.size} </p>
                             <p>Alignment: ${this.alignment}</p>
                             <div class="row text-center" onclick="app.controllers.characterController.chooseRace(${this.index})">
-                               <!-- choose race button is going here -->
-                            `+ chooseRaceButton+`
+                                 `+chooseRaceButton+`
                             </div>
                          </div>`
         return template;

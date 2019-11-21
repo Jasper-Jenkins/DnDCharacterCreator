@@ -10,7 +10,7 @@ export default class CharacterClass {
         this.proficiency_choices = data.proficiency_choices;
         this.saving_throws = data.saving_throws;
         if (data.spellcasting == undefined) {
-            this.spellcasting = {}
+            this.spellcasting = {};
         } else{
             this.spellcasting = data.spellcasting;
         }
@@ -19,33 +19,31 @@ export default class CharacterClass {
         this.chosen = false;
     }
 
-    switchClass(switchClass) { this.chosen = !switchClass }
-
     get Template() {
         var proficiencies = ''
+        var chooseClassButton = ''
+
         for (var i = 0; i < this.proficiencies.length; i++) {
             proficiencies += `<span> ${this.proficiencies[i].name}</span>`
         }
-        
-        var chooseClassButton = ''
+
         if (!this.chosen) {
-            chooseClassButton = `<div class="col-12" id="chooseClass">
-                                    <p>Choose ${this.name}</p>
-                                </div>`
+            chooseClassButton = `<div class="col-12" id="chooseClass"><p>Choose ${this.name}</p></div>`
         } else {
             chooseClassButton = ''
         }
 
-
         var template = `<div class="col-12">
-                            <p class="close" onclick="app.controllers.characterController.hide('classInfo')">Close</p>
-                            <p> Class: ${this.name} </p>
+                            <h1 class="text-center"> ${this.name}</h1>
                             <p> Hit die: ${this.hit_die} </p>
                             <p> Starting Proficiencies: ${proficiencies}</p>
                             <div class="row text-center" onclick="app.controllers.characterController.chooseClass(${this.index})">
-                                `+chooseClassButton+`    
+                                `+ chooseClassButton + `    
                             </div>
                         </div>`
-        return template;
+        return template
     }
+
+    switchClass(switchClass) { this.chosen = !switchClass }
+
 }

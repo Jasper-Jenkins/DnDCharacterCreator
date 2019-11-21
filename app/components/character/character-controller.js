@@ -36,8 +36,6 @@ function drawRaceInfo(raceName) {
     var template = '';
     for (var i = 0; i < race.length; i++) {
         if (race[i].name == raceName) {
-
-            console.log("Race info for possible choice", race[i].chosen)
             template += race[i].Template;
             document.getElementById('raceInfo').innerHTML = template;
             break;
@@ -169,31 +167,7 @@ export default class CharacterController {
         drawClassInfo(className);
         this.showInfo('classInfo');
     }
-
-    disableRaceSelection(raceIndex) {
-        var races = _characterService.RacesInfo;
-        var raceSelection = _characterService.Races;
-        var template = ''
-        for (var i = 0; i < races.length; i++) {
-            if (raceIndex == races[i].index) {
-                template += raceSelection.disableSelection(races[i].name)
-            }
-        }
-        document.getElementById('raceSelection').innerHTML = template;
-    }
-
-    disableClassSelection(classIndex) {
-        var classes = _characterService.ClassesInfo;
-        var classSelection = _characterService.Classes;
-        var template = ''
-        for (var i = 0; i < classes.length; i++) {
-            if (classIndex == classes[i].index) {
-                template += classSelection.disableSelection(classes[i].name)
-            }
-        }
-        document.getElementById('classSelection').innerHTML = template;
-    }
-
+    
 
     chooseRace(raceIndex) {
         var character = _characterService.Character
@@ -207,7 +181,6 @@ export default class CharacterController {
 
         //Why should I use functions private to the controller as apposed to those outside the controller
         this.swapScreens("classCreation", ["raceCreation", "alert"])
-        this.disableRaceSelection(raceIndex)
         drawCharacterProgress();
         drawRaceInfo(character.race.name);
     }
@@ -222,24 +195,11 @@ export default class CharacterController {
     chooseClass(classIndex) {
         var character = _characterService.Character;
         var newClass = _characterService.ClassesInfo;
-        /*
-        if (character.class == undefined) {
-            _characterService.chosenClass(classIndex);
-            this.swapScreens("abilityScoreCreation", ["classCreation", "alert"])
-            this.disableClassSelection(classIndex)
-        } else {
-            for (var i = 0; i < newClass.length; i++) {
-                if (newClass[i].index == classIndex) {
-                    drawChooseAnotherClass(newClass[i]);
-                    this.swapScreens("alert", ["classInfo"])
-                }
-            }
-        }*/
+    
 //        drawCharacterClassProficiencyChoices(character.class);
         _characterService.chosenClass(classIndex);
         _characterService.flipChosenClass(classIndex);
         this.swapScreens("abilityScoreCreation", ["classCreation", "alert"])
-        this.disableClassSelection(classIndex)
         drawCharacterProgress();
         drawClassInfo(character.class.name)
     }
@@ -249,14 +209,7 @@ export default class CharacterController {
         drawClassInfo(character.class.name)
         this.swapScreens('classCreation', ['alert', 'raceCreation', 'abilityScoreCreation'])
     }
-
-    chooseAnotherClass(classIndex) {
-        _characterService.replaceClass(classIndex);
-        drawCharacterProgress();
-        this.swapScreens('abilityScoreCreation', ['alert', 'classCreation'])
-        this.disableClassSelection(classIndex)
-    }
-
+    
     showInfo(elementToShow) {
         document.getElementById(elementToShow).style.zIndex = 2;
         document.getElementById(elementToShow).style.visibility = "visible";
