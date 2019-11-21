@@ -16,18 +16,30 @@ export default class CharacterRace {
         this.subraces = data.subraces;
         this.traits = data.traits;
         this.url = data.url;
+        this.chosen = false;
     }  
 
+    switchRace(switchRace) { this.chosen = !switchRace }
+
     get Template() {
+        
+        var chooseRaceButton = ''
+        if (!this.chosen) {
+            chooseRaceButton = `<div class="col-12" id="chooseRace">
+                                    <p>Choose ${this.name}</p>
+                                </div>`
+        } else {
+            chooseRaceButton = ''
+        }
+               
         var template = `<div class="col-12">
                             <p>Race: ${this.name}</p>
                             <p>Ability Bonuses: STR +${this.ability_bonuses[0]}, DEX +${this.ability_bonuses[1]}, CON +${this.ability_bonuses[2]}, INT +${this.ability_bonuses[3]}, WIS +${this.ability_bonuses[4]}, CHA +${this.ability_bonuses[5]}</p>
                             <p>Size: ${this.size} </p>
                             <p>Alignment: ${this.alignment}</p>
                             <div class="row text-center" onclick="app.controllers.characterController.chooseRace(${this.index})">
-                                <div class="col-12" id="chooseRace"> 
-                                    <p>Choose ${this.name}</p>
-                                </div>    
+                               <!-- choose race button is going here -->
+                            `+ chooseRaceButton+`
                             </div>
                          </div>`
         return template;

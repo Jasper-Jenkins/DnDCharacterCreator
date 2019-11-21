@@ -16,11 +16,24 @@ export default class CharacterClass {
         }
         this.starting_equipment = data.starting_equipment;
         this.subclasses = data.subclasses;
+        this.chosen = false;
     }
+
+    switchClass(switchClass) { this.chosen = !switchClass }
+
     get Template() {
         var proficiencies = ''
         for (var i = 0; i < this.proficiencies.length; i++) {
             proficiencies += `<span> ${this.proficiencies[i].name}</span>`
+        }
+        
+        var chooseClassButton = ''
+        if (!this.chosen) {
+            chooseClassButton = `<div class="col-12" id="chooseClass">
+                                    <p>Choose ${this.name}</p>
+                                </div>`
+        } else {
+            chooseClassButton = ''
         }
 
 
@@ -30,9 +43,7 @@ export default class CharacterClass {
                             <p> Hit die: ${this.hit_die} </p>
                             <p> Starting Proficiencies: ${proficiencies}</p>
                             <div class="row text-center" onclick="app.controllers.characterController.chooseClass(${this.index})">
-                                <div class="col-12" id="chooseClass"> 
-                                    <p>Choose ${this.name}</p>
-                                </div>    
+                                `+chooseClassButton+`    
                             </div>
                         </div>`
         return template;

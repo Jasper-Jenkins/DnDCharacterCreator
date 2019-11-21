@@ -130,11 +130,39 @@ export default class CharacterService {
         let races = _state.racesInfo; 
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-                _setState( 'race', new CharacterRace(races[i]))
+                _setState('race', new CharacterRace(races[i]))
             }
         }
     //    this.setProficiencies();
     }
+
+    flipChosenRace(raceIndex) {
+        let races = _state.racesInfo;
+        var index = 0;
+        for (var i = 0; i < races.length; i++) {
+            if (races[i].index == raceIndex) {
+               // console.log("did we make it???", races[i].name)
+                races[i].switchRace(races[i].chosen)
+                index = i;
+            }
+        }
+        console.log("This should be true: ", _state.racesInfo[index].chosen)
+    }
+
+    flipChosenClass(classIndex) {
+        let classes = _state.classesInfo;
+        var index = 0;
+        for (var i = 0; i < classes.length; i++) {
+            if (classes[i].index == classIndex) {
+                console.log("did we make it class???", classes[i].name)
+                classes[i].switchClass(classes[i].chosen)
+                index = i;
+            }
+        }
+        console.log("This should be true: ", _state.classesInfo[index].chosen)
+    }
+
+
 
      
      
