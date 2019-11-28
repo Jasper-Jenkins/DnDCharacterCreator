@@ -13,6 +13,8 @@ import CharacterClass from "../../models/character-class.js"
 //Class for handling ability scores
 import CharacterAbilityScores from "../../models/character-abilityscores.js"
 import CharacterAbilityScore from "../../models/character-abilityscore.js"
+
+
 import CharacterProficiency from "../../models/character-proficiency.js"
 
 import CharacterProficienciesService from "./character-proficiencies-service.js"
@@ -73,12 +75,6 @@ function _setState(prop, data) {
 }
 
 
-
-
-
-
-
-
 function _replaceInState(prop, data) {
     if (prop == 'race') {
        // console.log('Eureka!Race!', data)
@@ -92,10 +88,16 @@ function _replaceInState(prop, data) {
     }
 }
 
+function proficiencies() {
+    let proficiencies = _characterProficienciesService.ProficienciesList
+    console.log("PROFICIENCEIS OIJDOISJDOIJSDOIJS ", proficiencies)
+}  
+
 export default class CharacterService {
 
     constructor() {
         _characterProficienciesService.getAllProficiencies();
+       
     }
 
     get Character() { return _state.character }
@@ -133,7 +135,8 @@ export default class CharacterService {
                 _setState('race', new CharacterRace(races[i]))
             }
         }
-    //    this.setProficiencies();
+        //    this.setProficiencies();
+      //  proficiencies()
     }
 
     flipChosenRace(raceIndex) {
@@ -162,38 +165,33 @@ export default class CharacterService {
         console.log("This should be true: ", _state.classesInfo[index].chosen)
     }
 
-
-
-     
-     
     chosenClass(classIndex) {
         let classes = _state.classesInfo;
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
                 _setState('class', new CharacterClass(classes[i]))
+                console.log("chosen class: ", classes[i].proficiencies)
             }
         }
+
+
+        this.classProficiencies()
     }
     
-    setProficiencies() {
-        var proficiency = _characterProficienciesService.Proficiency
-      //  console.log("SETTING PROFICIENCIES TO SERVICE STATE: ", proficiencies)
-        for (var i = 0; i < proficiency.length; i++) {
- //           console.log("proficiency Info", proficiency[i].name)
-            _setState('proficiencies', new CharacterProficiency(proficiency[i]))
-        }
-    }
+    classProficiencies() {
+        var proficiencies = _characterProficienciesService.Proficiencies
+        var characterClass = _state.character.class
 
-    setClassProficiencies(className) {
-        var proficiencies = _characterProficienciesService.Proficiency
-        for (var i = 0; i < proficiencies.length; i++) {
+        console.log("WHATTTT", characterClass)
+        /*
+        for (var i = 0; i < characterClass.) {
             for (var j = 0; j < proficiencies[i].classes.length; j++) {
                 if (proficiencies[i].classes[j].name == className) {
                     console.log("SETTING CLASS PROFICIENCEIS", proficiencies[i])
                     _setState('classProficiencies', new CharacterProficiency(proficiencies[i]))
                 }
             }
-        }
+        }*/
     }
 
     saveAbilityScores() {

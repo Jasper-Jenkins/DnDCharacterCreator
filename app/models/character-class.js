@@ -28,7 +28,7 @@ export default class CharacterClass {
         }
 
         if (!this.chosen) {
-            chooseClassButton = `<div class="col-12" id="chooseClass"><p>Choose ${this.name}</p></div>`
+            chooseClassButton = `<button type="button" class="btn btn-secondary btn-lg btn-block" onclick="app.controllers.characterController.chooseClass(${this.index})">Choose ${this.name}</button>`
         } else {
             chooseClassButton = ''
         }
@@ -37,9 +37,7 @@ export default class CharacterClass {
                             <h1 class="text-center"> ${this.name}</h1>
                             <p> Hit die: ${this.hit_die} </p>
                             <p> Starting Proficiencies: ${proficiencies}</p>
-                            <div class="row text-center" onclick="app.controllers.characterController.chooseClass(${this.index})">
-                                `+ chooseClassButton + `    
-                            </div>
+                              `+ chooseClassButton + `   
                         </div>`
         return template
     }

@@ -2,27 +2,12 @@ import CharacterService from "./character-service.js";
 
 const _characterService = new CharacterService();
 
-function drawRaceProficiencies() {
-    var proficiencies = _characterService.Proficiencies
-    console.log("TRYING TO DRAW PROFICIENCIES: ", proficiencies)
-    var template = ''
-  //  template += 
-}
-
 function drawClassProficiencies() {
     var proficiencies = _characterService.Proficiencies
     console.log("TRYING TO DRAW CLASS PROFICIENCIES: ", proficiencies)
     var template = ''
     //  template += 
 }
-
-function drawCharacterClassProficiencyChoices(classChoice) {
-
-    console.log(classChoice)
-  //  var classProficiencies = classChoice.details.proficiency_choices
- //   console.log("drawing class proficiency choices", classProficiencies)
-}
-
 
 function drawRaceSelection() {
     var races = _characterService.Races;
@@ -87,12 +72,16 @@ function drawAbilityScoresSelection() {
 function drawCharacterProgress() {
     var character = _characterService.Character;
     var template = '';
+    var characterCategories = ["race","class","abilityScores","proficiencies"]
     console.log("CHARACTER", character)
+    for (var i = 0; i < characterCategories.length; i++) {
+        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.${characterCategories[i]}Progress()">${character.race.name}</div> `
+    }
+
     if (character.race) {
         // console.log("PROGRESS IS BEING MADE in race")
 //        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('raceCreation', ['alert', 'classCreation', 'abilityScoreCreation', 'raceInfo'])">${character.race.name}</div> `
         template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.raceProgress()">${character.race.name}</div> `
-
     }
     if (character.class) {
         //console.log("PROGRESS IS BEING MADE in class")
@@ -100,32 +89,10 @@ function drawCharacterProgress() {
     }
     if (character.abilityScores) {
         //console.log("PROGRESS IS BEING MADE in ability scores")
-        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'raceCreation', 'classCreation'])">Ability Scores</div> `
+        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.abilityScoresProgress()">Ability Scores</div> `
         }
     document.getElementById('characterProgress').innerHTML = template;
 }
-
-
-function drawChooseAnotherClass(newClass) {
-    var template = '';
-    var character = _characterService.Character;
-    if (character.class.name == newClass.name) {
-        template += `<div class="col-12"><p>You already have ${character.class.name} chosen as a class.</p> 
-                     <div class="row justify-content-center text-center">
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.hide('alert')"><p>Choose another</p></div>
-                     </div>`
-    } else {
-        template += `<div class="col-12"><p>You already have chosen ${character.class.name} as a race. Would you rather be ${newClass.name}</p> 
-                     <div class="row justify-content-center text-center">
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.chooseAnotherClass(${newClass.index})"><p>Change to ${newClass.name}</p></div>
-                           <div class="col-6 chooseNewRace" onclick="app.controllers.characterController.swapScreens('abilityScoreCreation', ['alert', 'classCreation'])"><p>Continue as ${character.class.name}</p></div>
-                     </div>`;
-    }
-
-    document.getElementById('alert').innerHTML = template;
-}
-
-
 
 function randomDSix() {
     var abilityPoints = 0;
@@ -133,8 +100,7 @@ function randomDSix() {
         abilityPoints += Math.floor((Math.random() * 6) + 1);       
     }
     return abilityPoints;
-}
-
+} 
 
 export default class CharacterController {
 
@@ -145,8 +111,10 @@ export default class CharacterController {
         _characterService.getAllRaces();
         _characterService.getAllClasses();
         _characterService.getAllAbilityScores();
+   //     _characterService.drawProficiencies();
     }
-  
+
+      
     /*chooseName(e) {
         e.preventDefault()
         var form = e.target
@@ -193,10 +161,8 @@ export default class CharacterController {
    
         
     chooseClass(classIndex) {
-        var character = _characterService.Character;
-        var newClass = _characterService.ClassesInfo;
-    
-//        drawCharacterClassProficiencyChoices(character.class);
+        var character = _characterService.Character
+
         _characterService.chosenClass(classIndex);
         _characterService.flipChosenClass(classIndex);
         this.swapScreens("abilityScoreCreation", ["classCreation", "alert"])
@@ -208,6 +174,12 @@ export default class CharacterController {
         var character = _characterService.Character
         drawClassInfo(character.class.name)
         this.swapScreens('classCreation', ['alert', 'raceCreation', 'abilityScoreCreation'])
+    }
+
+    abilityScoresProgress() {
+        var character = _characterService.Character
+        
+        this.swapScreens('abilityScoreCreation', ['alert', 'raceCreation', 'classCreation'])
     }
     
     showInfo(elementToShow) {

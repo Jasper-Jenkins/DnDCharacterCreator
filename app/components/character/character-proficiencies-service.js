@@ -9,16 +9,18 @@ const characterApi = axios.create({
 
 let _state = {
     proficienciesList: {},
-    proficiency: []
+    proficiencies: []
 }
+
 /*
-let _subscribers = {
-    proficiencies: [],
-    proficiencyInfo:[]
-}*/
+    let _subscribers = {
+        proficiencies: [],
+        proficiencyInfo:[]
+    }
+*/
 
 function _setState(prop, data) {
-    if (prop == 'proficiency') {
+    if (prop == 'proficiencies') {
         _state[prop].push(data)
     } else {
         _state[prop] = data
@@ -28,35 +30,45 @@ function _setState(prop, data) {
 
 export default class CharacterProficienciesService {
 
-    get Proficiencies() { return _state.proficienciesList }
+    get ProficienciesList() { return _state.proficienciesList }
 
-    get Proficiency() { return _state.proficiency }
+    get Proficiencies() { return _state.proficiencies }
     
     proficiencyInfo() {
         var proficiencies = _state.proficienciesList;
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < proficiencies.count; i++) {
             this.getSpecificProficiency(proficiencies.results[i].url)
         }
     }
-
+ 
     getAllProficiencies() {
     characterApi.get('/proficiencies/')
         .then(res => {
-           // console.log("Proficiencies", res.data);
-            _setState('proficienciesList', new CharacterProficiencies(res.data))
-            this.proficiencyInfo();
+               //new CharacterProficiencies(res.data)
+            console.log("Proficiencies", res.data)
+            _setState('proficienciesList', res.data)
+        //    this.proficiencyInfo();
         }).catch(err => {
-            console.log("Error requesting proficiencies: ", err)
+            console.log("Error requesting all proficiencies: ", err)
         })
+
     }
 
+    classProficiencies(url) {
+        characterApi.get(url).then(res => {
+            console.log("Class proficiencies", res)
+        }).catch(err => {console.log("Error requesting class proficiencies". err)})
+    }
+       
     getSpecificProficiency(url) {
         characterApi.get(url)
             .then(res => {
-             //   console.log("Specific Proficiency", res.data)
-                _setState('proficiency', new CharacterProficiency(res.data))    
+                console.log("Specific Proficiency", res.data)
+                _setState('proficiencies', res.data)    
             }).catch(err => {
-                console.log("Error requesting a specific proficiency")
+                console.log("Error requesting a specific proficiency", err)
             })
     }
+
+    
 }
