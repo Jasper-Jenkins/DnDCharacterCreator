@@ -43,5 +43,15 @@ export default class CharacterClass {
     }
 
     switchClass(switchClass) { this.chosen = !switchClass }
+    
+    addProficiency(proficiency) {
+        if (proficiency.name && proficiency.url) {
+            console.log("choosing proficiency: ", proficiency)
+            this.proficiencies.push(proficiency)
+        } else {
+            console.log("NOOOO")
+        }
+    }
 
+    removeProficiency() {}
 }

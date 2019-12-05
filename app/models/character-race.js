@@ -1,3 +1,5 @@
+
+console.log("6")
 export default class CharacterRace {
     constructor(data) {
        // console.log('[Character Race Data]', data);

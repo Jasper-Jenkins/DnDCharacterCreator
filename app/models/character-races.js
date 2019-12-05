@@ -17,7 +17,7 @@ export default class CharacterRaces {
         return template;
     }
 
-
+    /*
     disableSelection(raceName) {
         var template = ""
 
@@ -40,5 +40,5 @@ export default class CharacterRaces {
             
         }
         return template;
-    }
+    }*/
 } 

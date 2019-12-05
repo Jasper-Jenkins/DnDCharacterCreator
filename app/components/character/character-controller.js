@@ -2,22 +2,19 @@ import CharacterService from "./character-service.js";
 
 const _characterService = new CharacterService();
 
-function drawClassProficiencies() {
-    var proficiencies = _characterService.Proficiencies
-    console.log("TRYING TO DRAW CLASS PROFICIENCIES: ", proficiencies)
-    var template = ''
-    //  template += 
-}
-
+/**
+ * Race Control
+ **/
 function drawRaceSelection() {
-    var races = _characterService.Races;
+    var races = _characterService.RaceSelection
     var template = '';
     template += races.Template;
     document.getElementById('raceSelection').innerHTML = template;
 }
 
 function drawRaceInfo(raceName) {
-    var race = _characterService.RacesInfo;
+    var race = _characterService.Races;
+    console.log("races YOU KNIT WHIT RACES", race)
     var template = '';
     for (var i = 0; i < race.length; i++) {
         if (race[i].name == raceName) {
@@ -28,15 +25,23 @@ function drawRaceInfo(raceName) {
     }
 }
 
+
+function drawClassProficiencies() {
+    var proficiencies = _characterService.Proficiencies
+    console.log("TRYING TO DRAW CLASS PROFICIENCIES: ", proficiencies)
+    var template = ''
+    //  template += 
+}
+
 function drawClassSelection() {
-    var classes = _characterService.Classes;
+    var classes = _characterService.ClassSelection;
     var template = '';
     template += classes.Template;
     document.getElementById('classSelection').innerHTML = template;
 }
 
 function drawClassInfo(className) {
-    var cClass = _characterService.ClassesInfo;
+    var cClass = _characterService.Classes;
     var template = '';
     for (var i = 0; i < cClass.length; i++) {
         if (cClass[i].name == className) {
@@ -70,28 +75,36 @@ function drawAbilityScoresSelection() {
 
 
 function drawCharacterProgress() {
+
     var character = _characterService.Character;
     var template = '';
-    var characterCategories = ["race","class","abilityScores","proficiencies"]
-    console.log("CHARACTER", character)
+
+    var characterCategories = [
+        { name: "race", buttonName: "Race" },
+        { name: "class", buttonName: "Class" },
+        { name: "abilityScores", buttonName: "Ability Scores" },
+        { name: "proficiencies", buttonName: "Proficiencies" }
+    ]
+    
     for (var i = 0; i < characterCategories.length; i++) {
-        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.${characterCategories[i]}Progress()">${character.race.name}</div> `
+        template += `<div id="${characterCategories[i].name}Progress" class="col-2 characterProgress" onclick="app.controllers.characterController.${characterCategories[i].name}Progress()">${characterCategories[i].buttonName}</div> `
     }
 
+    document.getElementById('characterProgress').innerHTML = template;
+
     if (character.race) {
-        // console.log("PROGRESS IS BEING MADE in race")
-//        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.swapScreens('raceCreation', ['alert', 'classCreation', 'abilityScoreCreation', 'raceInfo'])">${character.race.name}</div> `
-        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.raceProgress()">${character.race.name}</div> `
+        template = `${character.race.name}`
+        document.getElementById('raceProgress').innerHTML = template;
     }
     if (character.class) {
-        //console.log("PROGRESS IS BEING MADE in class")
-        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.classProgress()">${character.class.name}</div> `
+        template = `${character.class.name}`
+        document.getElementById('classProgress').innerHTML = template;
     }
     if (character.abilityScores) {
-        //console.log("PROGRESS IS BEING MADE in ability scores")
-        template += `<div class="col-2 characterProgress" onclick="app.controllers.characterController.abilityScoresProgress()">Ability Scores</div> `
-        }
-    document.getElementById('characterProgress').innerHTML = template;
+        template = `Ability Scores`
+        document.getElementById('abilityScoresProgress').innerHTML = template;
+    }
+
 }
 
 function randomDSix() {
@@ -105,17 +118,20 @@ function randomDSix() {
 export default class CharacterController {
 
     constructor() {
-        _characterService.addSubscriber('races', drawRaceSelection);
-        _characterService.addSubscriber('classes', drawClassSelection);
+        _characterService.addSubscriber('raceSelection', drawRaceSelection);
+        _characterService.addSubscriber('classSelection', drawClassSelection);
         _characterService.addSubscriber('abilityScoresData', drawAbilityScoresSelection);
-        _characterService.getAllRaces();
-        _characterService.getAllClasses();
+       // _characterService.getAllRaces();
+       // _characterService.getAllClasses();
         _characterService.getAllAbilityScores();
-   //     _characterService.drawProficiencies();
-    }
+   //   drawClassSelection()  //this is undefined why????
 
+        drawCharacterProgress()
+
+    }
       
-    /*chooseName(e) {
+    /*
+        chooseName(e) {
         e.preventDefault()
         var form = e.target
         console.log("Response from the Character GET on DnD api:", e.target)
@@ -123,8 +139,8 @@ export default class CharacterController {
            name: form.characterName.value
         }
         form.reset()
-        console.log("Name Chosen by the player: ", characterName)
-    }*/
+        console.log("Name Chosen by the player: ", characterName)}
+    */
 
     raceInfo(raceName) {
         drawRaceInfo(raceName);
@@ -143,8 +159,7 @@ export default class CharacterController {
         if (character.race != undefined) {
             _characterService.flipChosenRace(character.race.index)
         }
-
-        _characterService.chosenRace(raceIndex)
+        _characterService.chooseRace(raceIndex)
         _characterService.flipChosenRace(raceIndex)
 
         //Why should I use functions private to the controller as apposed to those outside the controller
@@ -155,31 +170,43 @@ export default class CharacterController {
 
     raceProgress() {
         var character = _characterService.Character
-        drawRaceInfo(character.race.name)
-        this.swapScreens('raceCreation', ['alert', 'classCreation', 'abilityScoreCreation'])
+        if (character.race) {
+            drawRaceInfo(character.race.name)
+        }
+        this.swapScreens('raceCreation', ['alert', 'classCreation', 'abilityScoresCreation', 'proficienciesCreation'])
     }
    
         
     chooseClass(classIndex) {
         var character = _characterService.Character
 
-        _characterService.chosenClass(classIndex);
-        _characterService.flipChosenClass(classIndex);
-        this.swapScreens("abilityScoreCreation", ["classCreation", "alert"])
+        if (character.class != undefined) {
+            _characterService.flipChosenClass(character.class.index)
+        }
+
+        _characterService.chooseClass(classIndex)
+     
+        this.swapScreens("abilityScoresCreation", ["classCreation", "alert"])
         drawCharacterProgress();
         drawClassInfo(character.class.name)
     }
 
     classProgress() {
         var character = _characterService.Character
-        drawClassInfo(character.class.name)
-        this.swapScreens('classCreation', ['alert', 'raceCreation', 'abilityScoreCreation'])
+        if (character.class) {
+            drawClassInfo(character.class.name)
+        }
+        this.swapScreens('classCreation', ['alert', 'raceCreation', 'abilityScoresCreation', 'proficienciesCreation'])
     }
 
     abilityScoresProgress() {
         var character = _characterService.Character
         
-        this.swapScreens('abilityScoreCreation', ['alert', 'raceCreation', 'classCreation'])
+        this.swapScreens('abilityScoresCreation', ['alert', 'raceCreation', 'classCreation', 'proficienciesCreation'])
+    }
+
+    proficienciesProgress() {
+        this.swapScreens('proficienciesCreation', ['alert','raceCreation','classCreation','abilityScoresCreation'])    
     }
     
     showInfo(elementToShow) {
@@ -200,7 +227,7 @@ export default class CharacterController {
     }
 
     swapScreens(showId, hideIds) {
-        var divElementIds = ["alert","classCreation", "raceCreation", "abilityScoreCreation"];
+        var divElementIds = ["alert","classCreation", "raceCreation", "abilityScoresCreation", "proficienciesCreation"];
         var check = 0;
         for (var i = 0; i < divElementIds.length; i++) {
             for (var j = 0; j < hideIds.length; j++) {
@@ -224,20 +251,18 @@ export default class CharacterController {
         }
     }
 
-    
+    generateAbilityScore(ability) {
+        var num = randomDSix();
+        document.getElementById(ability.toLowerCase()).innerHTML = num;
+        this.setAbilityScore(ability, num)
+    }
     
     generateAbilityScores() {
         var abilityScores = _characterService.AbilityScores;
         for (var i = 0; i < abilityScores.count; i++){
             this.generateAbilityScore(abilityScores.results[i].name)
         }
-    }
-    
-    generateAbilityScore(ability) {
-        var num = randomDSix();
-        document.getElementById(ability.toLowerCase()).innerHTML = num;
-        this.setAbilityScore(ability, num)
-    }
+    }  
 
     setAbilityScore(ability, num) {
         _characterService.setAbilityScore(ability, num)
