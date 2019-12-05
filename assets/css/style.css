@@ -152,18 +152,17 @@
         background-color: aquamarine;
     }
 
-    .selection {
-        border: solid 1px black;
-        background-color: navajowhite;
-        min-height: 80px;
-        max-height: 80px;
-        min-width: 60px;
-        max-width: 60px;
-        margin: 0px;
-        padding: 0px;
-        font:bolder 18px bookman;
-   
-    }
+.selection {
+    border: solid 1px black;
+    background-color: navajowhite;
+    min-height: 60px;
+    max-height: 60px;
+    min-width: 60px;
+    /*  max-width: 60px;*/
+    margin: 0px;
+    padding: 0px;
+    font: bolder 18px bookman;
+}
     /*
     .characterRace p {
         margin: 0px;

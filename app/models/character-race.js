@@ -23,14 +23,11 @@ export default class CharacterRace {
 
     switchRace(switchRace) { this.chosen = !switchRace }
 
-    get Template() {
+    get RaceInfo() {
         
         var chooseRaceButton = ''
         if (!this.chosen) {
-            //chooseRaceButton = `<div class="col-12" id="chooseRace"> <p>Choose ${this.name}</p> </div>`
             chooseRaceButton = `<button type="button" class="btn btn-secondary btn-lg btn-block" onclick="app.controllers.characterController.chooseRace(${this.index})">Choose ${this.name}</button>`
-        } else {
-       //     chooseRaceButton = ''
         }
                
         var template = `<div class="col-12">
@@ -42,5 +39,8 @@ export default class CharacterRace {
                         </div>`
         return template;
     }
+
+    get 
+
 
 }

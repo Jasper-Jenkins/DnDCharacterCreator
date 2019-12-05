@@ -5,16 +5,16 @@ export default class CharacterClasses {
         this.results = data.results;
     }
 
-    get Template() {
+    get ClassSelection() {
         var template = '';
         for (var i = 0; i < this.count; i++) {
-            template += `<div class="col selection text-center" onclick="app.controllers.characterController.classInfo('${this.results[i].name}')">
+            template += `<div class="col-4 selection text-center" onclick="app.controllers.characterController.classInfo('${this.results[i].name}')">
                             <p>${this.results[i].name}</p> 
                          </div>`;
         }
         return template;
     } 
-
+    /*
     disableSelection(className) {
         var template = ""
         for (var i = 0; i < this.count; i++) {
@@ -33,5 +33,5 @@ export default class CharacterClasses {
 
         }
         return template;
-    }
+    }*/
 }

@@ -1,16 +1,14 @@
 export default class CharacterRaces {
-    constructor(data) {
-       // console.log('[ALL Races Data]', data);
-      
+
+    constructor(data) {      
         this.count = data.count;
         this.results = data.results;
-        this.selectionSwitch = true;
     }
     
-    get Template() {
+    get RaceSelection() {
         var template = ""
         for (var i = 0; i < this.count; i++) {
-            template += `<div class="col-2 selection text-center" id="${this.results[i].name.toLowerCase()}" onclick="app.controllers.characterController.raceInfo('${this.results[i].name}')">
+            template += `<div class="col-4 selection text-center" id="${this.results[i].name.toLowerCase()}" onclick="app.controllers.characterController.raceInfo('${this.results[i].name}')">
                             <p>${this.results[i].name}</p> 
                          </div>`
         }
@@ -19,10 +17,7 @@ export default class CharacterRaces {
 
     /*
     disableSelection(raceName) {
-        var template = ""
-
-
-         
+        var template = ""         
 
         for (var i = 0; i < this.count; i++) {
           //  console.log("WTF", this.results[i])

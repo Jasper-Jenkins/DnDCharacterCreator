@@ -4,12 +4,10 @@
     "\\app",
     "\\app\\components",
     "\\app\\components\\character",
-    "\\app\\components\\character\\class",
-    "\\app\\components\\character\\race",
     "\\app\\models",
     "\\assets",
     "\\assets\\css"
   ],
-  "SelectedNode": "\\app\\components\\character",
+  "SelectedNode": "\\app\\components\\character\\races-service.js",
   "PreviewInSolutionExplorer": false
 }

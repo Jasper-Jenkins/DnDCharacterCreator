@@ -19,7 +19,7 @@ export default class CharacterClass {
         this.chosen = false;
     }
 
-    get Template() {
+    get ClassInfo() {
         var proficiencies = ''
         var chooseClassButton = ''
 
@@ -42,15 +42,14 @@ export default class CharacterClass {
         return template
     }
 
+
+
+
+
     switchClass(switchClass) { this.chosen = !switchClass }
     
-    addProficiency(proficiency) {
-        if (proficiency.name && proficiency.url) {
-            console.log("choosing proficiency: ", proficiency)
-            this.proficiencies.push(proficiency)
-        } else {
-            console.log("NOOOO")
-        }
+    addProficiency() {
+        console.log("CHOOSE PROFICIENCIES", this.proficiency_choices)
     }
 
     removeProficiency() {}

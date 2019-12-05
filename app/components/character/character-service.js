@@ -30,14 +30,13 @@ const characterApi = axios.create({
 
 let _state = {
     characters: [],
-    //character: [],
     character: {},
     raceSelection: {},
     races: [],
     //race: {},
     classSelection: {},
     classes: [], 
-    //  class: {},
+    //class: {},
     abilityScoresData: {},
     abilityScoresInfo: [],
     levels: {},
@@ -75,41 +74,20 @@ function _setState(prop, data) {
     _subscribers[prop].forEach(fn => fn());
 }
 
-
-function _replaceInState(prop, data) {
-    if (prop == 'race') {
-       // console.log('Eureka!Race!', data)
-        _state["character"][prop] = data;
-    } else if (prop == 'class') {
-       // console.log('Eureka!Class!', data)
-        _state["character"][prop] = data;
-    } else if (prop == 'abilityScores') {
-        //console.log('Eureka!AbilityPoints!', data)
-        _state["character"][prop] = data
-    }
-}
-
 function raceSelection() {
-    var raceSelection = _racesService.RaceSelection
-    console.log("SON OF A", raceSelection)
-    _setState('raceSelection', raceSelection)
- //   _state['raceSelection'] = raceSelection; 
+    _setState('raceSelection', _racesService.RaceSelection) 
 }
 
 function races() {
-    var races = _racesService.Races
-    console.log("WHEEEE", races)
-    _setState('races', races)
+    _setState('races', _racesService.Races)
 }
 
 function classSelection() {
-    var classSelection = _classesService.ClassSelection
-    _setState('classSelection', classSelection)
+    _setState('classSelection', _classesService.ClassSelection)
 }
 
 function classes() {
-    var classes = _classesService.Classes
-    _setState('classes', classes)
+    _setState('classes', _classesService.Classes)
 }
 
 
@@ -161,8 +139,6 @@ export default class CharacterService {
                 _setState('race', new CharacterRace(races[i]))
             }
         }
-        //    this.setProficiencies();
-      //  proficiencies()
     }
 
     flipChosenRace(raceIndex) {
@@ -170,12 +146,10 @@ export default class CharacterService {
         var index = 0;
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-               // console.log("did we make it???", races[i].name)
                 races[i].switchRace(races[i].chosen)
                 index = i;
             }
         }
-        console.log("race choice flip, this should be true: ", _state.races[index].chosen)
     }
 
     flipChosenClass(classIndex) {
@@ -183,51 +157,26 @@ export default class CharacterService {
         var index = 0;
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
-                console.log("did we make it class???", classes[i].name)
                 classes[i].switchClass(classes[i].chosen)
                 index = i;
             }
         }
-        console.log("class choice flip, this should be true: ", _state.classes[index].chosen)
     }
 
     chooseClass(classIndex) {
         let classes = _state.classes;
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
-                _setState('class', new CharacterClass(classes[i]))
+                _setState('class', classes[i])
                 break
             }
         }
         this.flipChosenClass(classIndex)
-        this.chooseProficiencies()
-    //    this.classProficiencies()
-    }
+        this.classProficiencies()
+    } 
 
-    chooseProficiencies() {
-        var classProficiencies = _state.character.class.proficiencies
-        var chooseProficiencies = _state.character.class.proficiency_choices
-        console.log("CCLLAASS PROFICIENCIES", classProficiencies)
-        console.log("CHOOSE CCLLAASS PROFICIENCIES", chooseProficiencies)
-        for (var i = 0; i < chooseProficiencies.length; i++) {
-            
-        }
-    }
-    
     classProficiencies() {
-        var proficiencies = _characterProficienciesService.classProficiencies
-        var characterClass = _state.character.class
-
-        console.log("WHATTTT", characterClass)
-        /*
-        for (var i = 0; i < characterClass.) {
-            for (var j = 0; j < proficiencies[i].classes.length; j++) {
-                if (proficiencies[i].classes[j].name == className) {
-                    console.log("SETTING CLASS PROFICIENCEIS", proficiencies[i])
-                    _setState('classProficiencies', new CharacterProficiency(proficiencies[i]))
-                }
-            }
-        }*/
+        let cClass = _state.character.class
     }
 
     saveAbilityScores() {
@@ -240,15 +189,6 @@ export default class CharacterService {
         for (var i = 0; i < abilities.length; i++) {
             if (abilities[i].name == ability) {
                 abilities[i].setPoints(num)
-            }
-        }
-    }
-
-    replaceClass(classIndex) {
-        let classes = _state.classesInfo;
-        for (var i = 0; i < classes.length; i++) {
-            if (classes[i].index == classIndex) {
-                _replaceInState('class', new CharacterClass(classes[i]))
             }
         }
     }
@@ -274,29 +214,6 @@ export default class CharacterService {
         for (var i = 0; i < abilityScores.count; i++) {
             this.getSpecificAbilityScore(abilityScores.results[i].url)
         }
-    }
-    getAllClasses() {
-        console.log('Conjuring the champion classes of Faerun.')
-        characterApi.get("/classes/")
-            .then(res => {
-             //   console.log('All the classes of Fearun: ', res.data)
-                _setState('classSelection', new CharacterClasses(res.data))
-                this.fillClassSelection();
-            }).catch(err => {
-                console.log("Error requesting ALL Classes: ", err)
-                //_setState('error', err.response.data)
-            })
-    }
-
-    getSpecificClass(url) {
-        console.log('Requesting specific class information.')
-        characterApi.get(url)
-            .then(res => {
-               // console.log('Class information: ', res.data)
-                _setState('classes', new CharacterClass(res.data))
-            }).catch(err => {
-                console.log("Error requesting specific class info: ", err)
-            })
     }
 
     getAllAbilityScores() {
