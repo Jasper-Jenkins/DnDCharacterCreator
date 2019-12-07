@@ -37,11 +37,9 @@ let _state = {
     classSelection: {},
     classes: [], 
     //class: {},
-    abilityScoresData: {},
-    abilityScoresInfo: [],
-    levels: {},
-    proficiencies: [],
-    classProficiencies: []
+    abilityScoresSelection: {},
+    abilityScoresData: [],
+    levels: {}
 }
 
 let _subscribers = {
@@ -53,16 +51,14 @@ let _subscribers = {
     classes: [],
     classSelection: [],
     class: [],
-    abilityScores:[],
+    abilityScoresSelection: [],
     abilityScoresData: [],
-    abilityScoresInfo: [],
-    proficiencies: [],
-    classProficiencies: []
+    levels: []
 }
 
 
 function _setState(prop, data) {
-    if (prop == "abilityScoresInfo" || prop == "proficiencies" || prop == "classProficiencies") {
+    if (prop == "abilityScoresData" || prop == "proficiencies" || prop == "classProficiencies") {
         _state[prop].push(data);
     } else if (prop == "abilityScoresData") {
         _state[prop] = data;
@@ -94,35 +90,34 @@ function classes() {
 export default class CharacterService {
 
     constructor() {
-        _racesService.allRaces()
-        _racesService.addRaceSubscriber('raceSelection', raceSelection)
-        _racesService.addRaceSubscriber('races', races)
+     //   _racesService.allRaces()
+       // _racesService.addRaceSubscriber('raceSelection', raceSelection)
+       // _racesService.addRaceSubscriber('races', races)
 
         _classesService.allClasses()
         _classesService.addClassSubscriber('classSelection', classSelection)
         _classesService.addClassSubscriber('classes', classes)
-
     }
 
     get Character() { return _state.character }
            
-    get Races() { return _state.races }
-
     get RaceSelection() { return _state.raceSelection }
 
+    get Races() { return _state.races }
+    
     //get Race() { return _state.race; }
     
-    get Classes() { return _state.classes }
-
     get ClassSelection() { return _state.classSelection }
-
+    
+    get Classes() { return _state.classes }
+        
     //get Class() { return _state.class }  
 
-    get AbilityScores() { return _state.abilityScoresData }
+    get AbilityScoresSelection() { return _state.abilityScoresSelection }
 
-    get AbilityScoresInfo() { return _state.abilityScoresInfo }
+    get AbilityScoresData() { return _state.abilityScoresData }
 
-    get AbilityScoreData() { return _state.abilityScoreData }
+    //get AbilityScoreData() { return _state.abilityScoreData }
 
 
     get Proficiencies() { return _state.proficiencies }
@@ -136,7 +131,8 @@ export default class CharacterService {
         let races = _state.races;
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
-                _setState('race', new CharacterRace(races[i]))
+                _setState('race', races[i])
+                break
             }
         }
     }
@@ -147,7 +143,8 @@ export default class CharacterService {
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
                 races[i].switchRace(races[i].chosen)
-                index = i;
+                index = i
+                break
             }
         }
     }
@@ -158,7 +155,8 @@ export default class CharacterService {
         for (var i = 0; i < classes.length; i++) {
             if (classes[i].index == classIndex) {
                 classes[i].switchClass(classes[i].chosen)
-                index = i;
+                index = i
+                break
             }
         }
     }
@@ -173,44 +171,31 @@ export default class CharacterService {
         }
         this.flipChosenClass(classIndex)
         this.classProficiencies()
+        
     } 
 
     classProficiencies() {
         let cClass = _state.character.class
+       
     }
 
     saveAbilityScores() {
-        let abilityScores = _state.abilityScoresInfo;
+        let abilityScores = _state.abilityScores
         _setState( 'abilityScores', abilityScores)
     }
 
     setAbilityScore(ability, num) {
-        let abilities = _state.abilityScoresInfo;
+        let abilities = _state.abilityScores;
         for (var i = 0; i < abilities.length; i++) {
             if (abilities[i].name == ability) {
                 abilities[i].setPoints(num)
             }
         }
     }
-    
-    fillRaceSelection() {
-        var races = _state.races;
-        for (var i = 0; i < races.count; i++) {
-            this.getSpecificRace(races.results[i].url)
-        }
-    }
-
-    fillClassSelection() {
-        var classes = _state.classes;
-        for (var i = 0; i < classes.count; i++) {
-            this.getSpecificClass(classes.results[i].url)
-        }
-    }
-
+   
     fillAbilityScoreInfo() {
-        var abilityScores = _state.abilityScoresData;
-
-    //    console.log("ABIIBSIISIFSDFD", abilityScores)
+        console.log("FILL ABILITY SCORE INFO")
+        var abilityScores = _state.abilityScoresData
         for (var i = 0; i < abilityScores.count; i++) {
             this.getSpecificAbilityScore(abilityScores.results[i].url)
         }
@@ -219,20 +204,20 @@ export default class CharacterService {
     getAllAbilityScores() {
         characterApi.get('/ability-scores/')
             .then(res => {
-               console.log("Ability Scores", res.data);
-                _setState('abilityScoresData', new CharacterAbilityScores(res.data))
+               console.log("Ability scores selection", res.data);
+                _setState('abilityScoresSelection', new CharacterAbilityScores(res.data))
                 this.fillAbilityScoreInfo();
             }).catch(err => {
-                console.log("Error requesting ability scores: ", err)
+                console.log("Error requesting all ability scores: ", err)
             })
     }
 
     getSpecificAbilityScore(url) {
         characterApi.get(url)
             .then(res => {
-                _setState('abilityScoresInfo', new CharacterAbilityScore(res.data))
+                _setState('abilityScoresData', new CharacterAbilityScore(res.data))
             }).catch(err => {
-                console.log("Error requesting ability score info ", err)
+                console.log("Error requesting specific ability score", err)
             })
     }
 

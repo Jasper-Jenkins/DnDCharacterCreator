@@ -25,11 +25,10 @@ function drawRaceInfo(raceName) {
 }
 
 
-function drawClassProficiencies() {
-    var proficiencies = _characterService.Proficiencies
-    console.log("TRYING TO DRAW CLASS PROFICIENCIES: ", proficiencies)
-    var template = ''
-    //  template += 
+function drawClassProficiencies(characterClass) {
+    var proficiencies = characterClass.ProficiencyChoices
+    console.log("TRYING TO DRAW CLASS PROFICIENCIES: ")
+    document.getElementById('classProficienciesSelect').innerHTML = proficiencies
 }
 
 function drawClassSelection() {
@@ -116,12 +115,11 @@ function randomDSix() {
 export default class CharacterController {
 
     constructor() {
-        _characterService.addSubscriber('raceSelection', drawRaceSelection)
+       // _characterService.addSubscriber('raceSelection', drawRaceSelection)
         _characterService.addSubscriber('classSelection', drawClassSelection)
-        _characterService.addSubscriber('abilityScoresData', drawAbilityScoresSelection)
-        _characterService.getAllAbilityScores()
-   //   drawClassSelection()  //this is undefined why????
-
+       // _characterService.addSubscriber('abilityScoresData', drawAbilityScoresSelection)
+       // _characterService.getAllAbilityScores()
+  
         drawCharacterProgress()
 
     }
@@ -184,6 +182,7 @@ export default class CharacterController {
         this.swapScreens("abilityScoresCreation", ["classCreation", "alert"])
         drawCharacterProgress()
         drawClassInfo(character.class.name)
+        drawClassProficiencies(character.class)
     }
 
     classProgress() {
@@ -197,7 +196,7 @@ export default class CharacterController {
     abilityScoresProgress() {
         var character = _characterService.Character
         if (character.abilityScores) {
-            drawAbilityScores
+            drawAbilityScoresSelection()
         }
         this.swapScreens('abilityScoresCreation', ['alert', 'raceCreation', 'classCreation', 'proficienciesCreation'])
     }
@@ -254,7 +253,7 @@ export default class CharacterController {
     }
     
     generateAbilityScores() {
-        var abilityScores = _characterService.AbilityScores
+        var abilityScores = _characterService.AbilityScoresData
         for (var i = 0; i < abilityScores.count; i++){
             this.generateAbilityScore(abilityScores.results[i].name)
         }

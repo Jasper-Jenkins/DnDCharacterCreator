@@ -40,9 +40,7 @@ export default class RacesService {
 
     fillRaces() {
         var races = _racesState.raceSelection
-     //   console.log("race selection fill", races)
         for (var i = 0; i < races.count; i++) {
-            //console.log(races.results[i].name)
             this.getSpecificRace(races.results[i].url)
         }
     }
@@ -51,10 +49,7 @@ export default class RacesService {
         console.log('Requesting the races of Faerun from the DnD API')
         raceApi.get("/races/")
             .then(res => {
-             //   _setState('racesSelection', res.data)
-          //      console.log("RACE DATA", res.data)
                 _setRacesState('raceSelection', new CharacterRaces(res.data))
-      //          this.racesSelection = new CharacterRaces(res.data)
                 this.fillRaces()
             })
             .catch(err => {
@@ -67,9 +62,7 @@ export default class RacesService {
         console.log('Requesting specific race information.')
         raceApi.get(url)
             .then(res => {
-         //        console.log('Race information: ', res.data)
                 _setRacesState('races', new CharacterRace(res.data))
-            //    this.races.push(new CharacterRace(res.data))
             })
             .catch(err => {
                 console.log("Error requesting a SINGLE race: ", err)

@@ -42,14 +42,26 @@ export default class CharacterClass {
         return template
     }
 
-
-
-
-
     switchClass(switchClass) { this.chosen = !switchClass }
-    
-    addProficiency() {
-        console.log("CHOOSE PROFICIENCIES", this.proficiency_choices)
+
+    get ProficiencyChoices() {
+        var choices = this.proficiency_choices
+        console.log("CHOICES CHOICES CHOICES", choices)
+        var template = ''
+        for (var i = 0; i < choices.length; i++) {
+            template += `<div class="col-6">`
+            for (var j = 0; j < choices[i].from.length; j++) {
+                if (j == 0) {template += `<h3>Choose ${choices[i].choose}</h3>`}
+                template += `<button type="button" class="btn btn-primary btn-sm" onclick="app.controllers.characterController.addProficiency('${choices[i].from[j].name}')">${choices[i].from[j].name}</button>`
+            }
+            template += `</div>`
+        }  
+        return template
+    }
+
+
+    addProficiency(proficiency) {
+        //this.proficiencies
     }
 
     removeProficiency() {}
