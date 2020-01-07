@@ -18,14 +18,11 @@ export default class CharacterClasses {
     disableSelection(className) {
         var template = ""
         for (var i = 0; i < this.count; i++) {
-          //  console.log("WTF", this.results[i])
             if (className == this.results[i].name) {
-          //      console.log("DISABLED")
                 template += `<button class="selection text-center" disabled id="${this.results[i].name.toLowerCase()}" onclick="app.controllers.characterController.classInfo('${this.results[i].name}')">
                                 ${this.results[i].name} 
                              </button>`
             } else {
-        //        console.log("ENABLED")
                 template += `<button class="selection text-center" id="${this.results[i].name.toLowerCase()}" onclick="app.controllers.characterController.classInfo('${this.results[i].name}')">
                                 ${this.results[i].name} 
                             </button>`

@@ -24,10 +24,8 @@ function drawRaceInfo(raceName) {
     }
 }
 
-
 function drawClassProficiencies(characterClass) {
     var proficiencies = characterClass.ProficiencyChoices
-    console.log("TRYING TO DRAW CLASS PROFICIENCIES: ")
     document.getElementById('classProficienciesSelect').innerHTML = proficiencies
 }
 
@@ -43,7 +41,6 @@ function drawClassInfo(className) {
     var template = ''
     for (var i = 0; i < cClass.length; i++) {
         if (cClass[i].name == className) {
-         //   console.log("eureka")
             template += cClass[i].ClassInfo
             document.getElementById('classInfo').innerHTML = template
             break
@@ -52,22 +49,38 @@ function drawClassInfo(className) {
 }
 
 function drawAbilityScoresSelection() {
-    var scores = _characterService.AbilityScores
+    var character = _characterService.Character
+    var scores = _characterService.AbilityScoresSelection
+
     var template = ''
     var templateTwo = ''
 
-    template += scores.Template
-    document.getElementById('abilityScoreInfo').innerHTML = template
+    if (character.abilityScores) {
+        console.log("WEEEE")
+        for (var i = 0; i < character.abilityScores.length; i++) {
+            console.log("GHOST", character.abilityScores[i])
 
+            document.getElementById(character.abilityScores[i].name.toLowerCase()).innerHTML = character.abilityScores[i].points
+           /* template +=
+                `<div class="col-3 abilityScore text-center">
+                    <p>${character.abilityScores[i].name}: <span id="${character.abilityScores[i].name.toLowerCase()}">0</span><p>
+                 </div>`*/
+        }
+       /* document.getElementById('abilityScoreInfo').innerHTML = template */
+    } else {
+        template += scores.Template
+        document.getElementById('abilityScoreInfo').innerHTML = template
+    }
+
+    
     templateTwo += scores.ScoreSelectorTemplate
     templateTwo += `<div class="col-12 text-center" onclick="app.controllers.characterController.generateAbilityScores()">
-                         <p>Generate All scores</p>
-                     </div>
-                     <div class="col-12 text-center" onclick="app.controllers.characterController.saveAbilityScores()">
-                         <p>Save scores</p>
-                     </div>   
-                     `
-    
+                        <p>Generate All scores</p>
+                    </div>
+                    <div class="col-12 text-center" onclick="app.controllers.characterController.saveAbilityScores()">
+                        <p>Save scores</p>
+                    </div>   
+                   `    
     document.getElementById('abilityScoreSelection').innerHTML = templateTwo
 }
 
@@ -115,12 +128,10 @@ function randomDSix() {
 export default class CharacterController {
 
     constructor() {
-       // _characterService.addSubscriber('raceSelection', drawRaceSelection)
-        _characterService.addSubscriber('classSelection', drawClassSelection)
-       // _characterService.addSubscriber('abilityScoresData', drawAbilityScoresSelection)
-       // _characterService.getAllAbilityScores()
-  
-        drawCharacterProgress()
+      _characterService.addSubscriber('raceSelection', drawRaceSelection)
+      _characterService.addSubscriber('classSelection', drawClassSelection)
+      _characterService.addSubscriber('abilityScoresSelection', drawAbilityScoresSelection)
+      drawCharacterProgress()
 
     }
       
@@ -194,10 +205,7 @@ export default class CharacterController {
     }
 
     abilityScoresProgress() {
-        var character = _characterService.Character
-        if (character.abilityScores) {
-            drawAbilityScoresSelection()
-        }
+        drawAbilityScoresSelection()
         this.swapScreens('abilityScoresCreation', ['alert', 'raceCreation', 'classCreation', 'proficienciesCreation'])
     }
 
@@ -247,13 +255,14 @@ export default class CharacterController {
     }
 
     generateAbilityScore(ability) {
+        console.log("Made it", ability)
         var num = randomDSix()
         document.getElementById(ability.toLowerCase()).innerHTML = num
         this.setAbilityScore(ability, num)
     }
     
     generateAbilityScores() {
-        var abilityScores = _characterService.AbilityScoresData
+        var abilityScores = _characterService.AbilityScoresSelection
         for (var i = 0; i < abilityScores.count; i++){
             this.generateAbilityScore(abilityScores.results[i].name)
         }
@@ -267,8 +276,4 @@ export default class CharacterController {
         _characterService.saveAbilityScores()
         drawCharacterProgress()
     }
-
-    
-
-
 }

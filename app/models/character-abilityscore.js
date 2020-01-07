@@ -1,7 +1,7 @@
-export default class CharacterAbilityScore {
+ export default class CharacterAbilityScore {
     constructor(data) {
 
-      //  console.log('[Character Ability Score Data]', data);
+        console.log('[Character Ability Score Data]', data);
         this.desc = data.desc;
         this.full_name = data.full_name;
         this.index = data.index;

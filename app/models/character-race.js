@@ -1,8 +1,6 @@
-
-console.log("6")
 export default class CharacterRace {
     constructor(data) {
-       // console.log('[Character Race Data]', data);
+     //   console.log('[Character Race Data]', data);
 
         this._id = data._id;
         this.ability_bonuses = data.ability_bonuses;
@@ -26,21 +24,24 @@ export default class CharacterRace {
     get RaceInfo() {
         
         var chooseRaceButton = ''
+        var abilityBonuses = ''
+        for (var i = 0; i < this.ability_bonuses.length; i++) {
+            abilityBonuses += `${this.ability_bonuses[i].name} ${this.ability_bonuses[i].bonus}`
+        }
+
         if (!this.chosen) {
-            chooseRaceButton = `<button type="button" class="btn btn-secondary btn-lg btn-block" onclick="app.controllers.characterController.chooseRace(${this.index})">Choose ${this.name}</button>`
+            chooseRaceButton = `<button type="button" class="btn btn-secondary btn-lg btn-block" onclick="app.controllers.characterController.chooseRace('${this.index}')">Choose ${this.name}</button>`
         }
                
         var template = `<div class="col-12">
                             <h1 class="text-center"> ${this.name}</h1>
-                            <p>Ability Bonuses: STR +${this.ability_bonuses[0]}, DEX +${this.ability_bonuses[1]}, CON +${this.ability_bonuses[2]}, INT +${this.ability_bonuses[3]}, WIS +${this.ability_bonuses[4]}, CHA +${this.ability_bonuses[5]}</p>
+
+                            <p>Ability Bonuses: ${abilityBonuses}</p>
                             <p>Size: ${this.size} </p>
                             <p>Alignment: ${this.alignment}</p>
                             `+chooseRaceButton+`
                         </div>`
         return template;
     }
-
-    get 
-
 
 }

@@ -3,7 +3,7 @@ import CharacterClass from "../../models/character-class.js"
 
 // @ts-ignore
 const classApi = axios.create({
-    baseURL: "http://www.dnd5eapi.co/api",
+    baseURL: "http://www.dnd5eapi.co/",
     timeout: 3000
 })
 
@@ -45,7 +45,7 @@ export default class ClassesService {
 
     allClasses() {
         console.log('Requesting the classes of Faerun from the DnD API')
-        classApi.get("/classes/")
+        classApi.get("api/classes/")
             .then(res => {
                 _setClassesState('classSelection', new CharacterClasses(res.data))
                 this.fillClasses()

@@ -16,7 +16,7 @@ export default class CharacterClass {
         }
         this.starting_equipment = data.starting_equipment;
         this.subclasses = data.subclasses;
-        this.chosen = false;
+        this.chosen = false; // this will need tweaking to anticipate chosen being true 
     }
 
     get ClassInfo() {
@@ -28,7 +28,7 @@ export default class CharacterClass {
         }
 
         if (!this.chosen) {
-            chooseClassButton = `<button type="button" class="btn btn-secondary btn-lg btn-block" onclick="app.controllers.characterController.chooseClass(${this.index})">Choose ${this.name}</button>`
+            chooseClassButton = `<button type="button" class="btn btn-secondary btn-lg btn-block" onclick="app.controllers.characterController.chooseClass('${this.index}')">Choose ${this.name}</button>`
         } else {
             chooseClassButton = ''
         }

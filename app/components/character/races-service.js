@@ -5,7 +5,7 @@ import CharacterRace from "../../models/character-race.js"
 console.log("1")
 // @ts-ignore
 const raceApi = axios.create({
-    baseURL: "http://www.dnd5eapi.co/api",
+    baseURL: "http://www.dnd5eapi.co/",
     timeout: 3000
 })
 
@@ -40,6 +40,7 @@ export default class RacesService {
 
     fillRaces() {
         var races = _racesState.raceSelection
+       // console.log("Sorting this url problem", races)
         for (var i = 0; i < races.count; i++) {
             this.getSpecificRace(races.results[i].url)
         }
@@ -47,7 +48,7 @@ export default class RacesService {
 
     allRaces() {
         console.log('Requesting the races of Faerun from the DnD API')
-        raceApi.get("/races/")
+        raceApi.get("api/races")
             .then(res => {
                 _setRacesState('raceSelection', new CharacterRaces(res.data))
                 this.fillRaces()

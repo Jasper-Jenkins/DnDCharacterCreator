@@ -13,12 +13,13 @@ let _state = {
     proficiencies: []
 }
 
-/*
-    let _subscribers = {
-        proficiencies: [],
-        proficiencyInfo:[]
-    }
-*/
+
+let _subscribers = {
+    proficienciesList: [],
+    proficiencies: [],
+    proficiencyInfo:[]
+}
+
 
 function _setState(prop, data) {
     if (prop == 'proficiencies' || prop == 'classProficiencies') {
@@ -26,7 +27,7 @@ function _setState(prop, data) {
     } else {
         _state[prop] = data
     }
-  // _subscribers[prop].forEach(fn => fn());
+    _subscribers[prop].forEach(fn => fn());
 }
 
 export default class ProficienciesService {

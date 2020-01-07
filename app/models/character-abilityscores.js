@@ -1,5 +1,6 @@
 export default class CharacterAbilityScores {
     constructor(data) {
+        console.log("ABILITY SCORE DATA: ",data)
         this.count = data.count;
         this.results = data.results;
     }
@@ -9,10 +10,9 @@ export default class CharacterAbilityScores {
         for (var i = 0; i < this.count; i++) {
             template +=
                 `<div class="col-3 abilityScore text-center">
-                    <p>${this.results[i].name}: <span id="${this.results[i].name.toLowerCase()}">0</span><p>
+                    <p>${this.results[i].name}: <span id="${this.results[i].index}">0</span></p>
                  </div>`
-        }
-        
+        }        
         return template;
     }
 
@@ -24,7 +24,6 @@ export default class CharacterAbilityScores {
                     <p>${this.results[i].name}<p>
                  </div>`
         }
-
         return template;
     }
     /*
