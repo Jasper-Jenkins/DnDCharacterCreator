@@ -149,12 +149,10 @@ export default class CharacterController {
 
     raceInfo(raceName) {
         drawRaceInfo(raceName)
-        this.showInfo('raceInfo')
     }
 
     classInfo(className) {
         drawClassInfo(className)
-        this.showInfo('classInfo')
     }    
 
     chooseRace(raceIndex) {
@@ -213,7 +211,7 @@ export default class CharacterController {
         this.swapScreens('proficienciesCreation', ['alert','raceCreation','classCreation','abilityScoresCreation'])    
     }
     
-    showInfo(elementToShow) {
+    showAlert(elementToShow) {
         document.getElementById(elementToShow).style.zIndex = 2
         document.getElementById(elementToShow).style.visibility = "visible"
     }
@@ -248,7 +246,7 @@ export default class CharacterController {
             }
         }
         if (showId == "alert") {
-            this.showInfo(showId)
+            this.showAlert(showId)
         } else {
             this.show(showId)
         }
