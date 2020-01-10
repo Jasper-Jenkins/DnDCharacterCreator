@@ -118,10 +118,24 @@ function drawCharacterProgress() {
 }
 
 function randomDSix() {
+    var totalDiceRolls = 5;
+    var totalRollsToKeep = 3;
+
+    var abilityPoint = 0
     var abilityPoints = 0
-    for (var i = 0; i < 3; i++) {
-        abilityPoints += Math.floor((Math.random() * 6) + 1)       
+    var abilityPointsArray = []
+    
+    for (var i = 0; i < totalDiceRolls; i++) {
+        abilityPoint = Math.floor((Math.random() * 6) + 1)
+        abilityPointsArray.push(abilityPoint)
     }
+    abilityPointsArray.sort()
+    abilityPointsArray.splice(0, totalDiceRolls - totalRollsToKeep)
+
+    for (var j = 0; j < abilityPointsArray.length; j++) {
+        abilityPoints += abilityPointsArray[j]
+    }
+
     return abilityPoints
 } 
 

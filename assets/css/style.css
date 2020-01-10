@@ -23,8 +23,7 @@
         margin: 0px;
         padding: 0px;
     }
-
-    #raceCreation {
+/*#raceCreation {
         position: absolute;
         margin: 0px;
         padding: 0px;
@@ -32,7 +31,8 @@
         top: 50px;
         background-color: teal;
     }
-
+*/
+    
     #raceInfo {
         margin: 0px;
         padding: 0px;
@@ -51,16 +51,15 @@
         width: inherit;
       
     }
-
-#proficienciesCreation {
-    visibility: hidden;
-    position: absolute;
-    margin: 0px;
-    padding: 0px;    
-    width: inherit;
-    top: 50px;
-    background-color: teal;
-}
+/*#proficienciesCreation {
+        visibility: hidden;
+        position: absolute;
+        margin: 0px;
+        padding: 0px;    
+        width: inherit;
+        top: 50px;
+        background-color: teal;
+    }
        
     #classCreation {
         visibility:hidden;
@@ -70,8 +69,16 @@
         width: inherit;
         top: 50px;
         background-color: teal;
+    }*/
+    
+    .creation {
+        position: absolute;
+        margin: 0px;
+        padding: 0px;
+        width: inherit;
+        top: 50px;
+        background-color: teal;
     }
-
 
     #classSelection {
         background-color: aliceblue;
@@ -143,17 +150,17 @@
         background-color: aquamarine;
     }
 
-.selection {
-    border: solid 1px black;
-    background-color: navajowhite;
-    min-height: 30px;
-    max-height: 30px;
-    min-width: 60px;
-    /*  max-width: 60px;*/
-    margin: 0px;
-    padding: 0px;
-    font: bolder 18px bookman;
-}
+    .selection {
+        border: solid 1px black;
+        background-color: navajowhite;
+        min-height: 30px;
+        max-height: 30px;
+        min-width: 60px;
+        /*  max-width: 60px;*/
+        margin: 0px;
+        padding: 0px;
+        font: bolder 18px bookman;
+    }
 
     .chooseNewRace {
         border: black 1px solid;
