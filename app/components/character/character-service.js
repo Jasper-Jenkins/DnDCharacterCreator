@@ -123,12 +123,17 @@ export default class CharacterService {
 
     chooseRace(raceIndex) {
         let races = _state.races;
+        let character = _state.character
+        if (character.race != undefined) {
+            this.flipChosenRace(character.race.index)
+        }
         for (var i = 0; i < races.length; i++) {
             if (races[i].index == raceIndex) {
                 _setState('race', races[i])
                 break
             }
         }
+        this.flipChosenRace(raceIndex)
     }
 
     flipChosenRace(raceIndex) {
@@ -141,6 +146,21 @@ export default class CharacterService {
         }
     }
 
+    chooseClass(classIndex) {
+        let classes = _state.classes;
+        let character = _state.character
+        if (character.class != undefined) {
+            this.flipChosenClass(character.class.index)
+        }
+        for (var i = 0; i < classes.length; i++) {
+            if (classes[i].index == classIndex) {
+                _setState('class', classes[i])
+                break
+            }
+        }
+        this.flipChosenClass(classIndex)
+    }
+
     flipChosenClass(classIndex) {
         let classes = _state.classes;
         for (var i = 0; i < classes.length; i++) {
@@ -151,22 +171,6 @@ export default class CharacterService {
         }
     }
 
-    chooseClass(classIndex) {
-        let classes = _state.classes;
-        for (var i = 0; i < classes.length; i++) {
-            if (classes[i].index == classIndex) {
-                _setState('class', classes[i])
-                break
-            }
-        }
-        this.flipChosenClass(classIndex)
-    }
-
-    saveAbilityScores() {
-        let abilityScores = _state.abilityScoresData
-        _setState('abilityScores', abilityScores)
-    }
-
     setAbilityScore(ability, num) {
         let abilities = _state.abilityScoresData;
         for (var i = 0; i < abilities.length; i++) {
@@ -175,15 +179,20 @@ export default class CharacterService {
             }
         }
     }
-  
-    getClassLevels(url) {
+       
+    saveAbilityScores() {
+        let abilityScores = _state.abilityScoresData
+        _setState('abilityScores', abilityScores)
+    }   
+
+    /*getClassLevels(url) {
         characterApi.get(url)
             .then(res => {
                 console.log("CLASS LEVELS RESPONSE", res.data)
             }).catch(err => {
                 console.log("Error requesting class levels info ", err)
             })
-    }
+    }*/
   
   
 }

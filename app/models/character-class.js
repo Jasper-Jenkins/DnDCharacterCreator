@@ -42,11 +42,10 @@ export default class CharacterClass {
         return template
     }
 
-    switchClass(switchClass) { this.chosen = !switchClass }
 
     get ProficiencyChoices() {
         var choices = this.proficiency_choices
-        console.log("CHOICES CHOICES CHOICES", choices)
+     //   console.log("CHOICES CHOICES CHOICES", choices)
         var template = ''
         for (var i = 0; i < choices.length; i++) {
             template += `<div class="col-6">`
@@ -59,6 +58,7 @@ export default class CharacterClass {
         return template
     }
 
+    switchClass(switchClass) { this.chosen = !switchClass }
 
     addProficiency(proficiency) {
         //this.proficiencies

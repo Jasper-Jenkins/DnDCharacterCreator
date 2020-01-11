@@ -35,7 +35,6 @@ export default class CharacterRace {
                
         var template = `<div class="col-12">
                             <h1 class="text-center"> ${this.name}</h1>
-
                             <p>Ability Bonuses: ${abilityBonuses}</p>
                             <p>Size: ${this.size} </p>
                             <p>Alignment: ${this.alignment}</p>
